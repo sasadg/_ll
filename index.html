@@ -55,30 +55,34 @@ img{
 
 a{
     text-decoration:none;
-    color:#2b7cff;
+    color:#555;
 }
 
 a:hover{
-    color:red;
+    color:#333;
 }
 
 .link-button{
     display:block;
-    width:250px;
-    padding:10px 20px;
+    width:100%;
+    max-width:400px;
+    padding:12px 20px;
     margin:10px 0;
-    border:1px solid #b8c9d6;
-    border-radius:8px;
-    background:#ffffff;
     box-sizing:border-box;
+
+    background:rgba(255,255,255,0.65);
+    border:1px solid rgba(255,255,255,0.8);
+    border-radius:8px;
+
+    color:#555;
     transition:0.2s;
 }
 
 .link-button:hover{
-    background:#eef6fa;
-    color:#2b7cff;
+    background:rgba(255,255,255,0.85);
+    color:#333;
 }
-
+    
 .character{
     margin-bottom:15px;
 }
@@ -142,13 +146,13 @@ a:hover{
 
 <h2>Links</h2>
 
-<a href="https://twitter.com/27__sasa" target="_blank">X</a><br>
+<a class="link-button" href="https://twitter.com/27__sasa" target="_blank">X</a>
 
-<a href="https://www.pixiv.net/users/121175181" target="_blank">Pixiv</a><br>
+<a class="link-button" href="https://www.pixiv.net/users/121175181" target="_blank">Pixiv</a>
 
-<a href="https://sasadg.booth.pm/" target="_blank">BOOTH</a><br>
+<a class="link-button" href="https://sasadg.booth.pm/" target="_blank">BOOTH</a>
 
-<a href="https://wavebox.me/wave/45xs3ciwrw9npp5n/" target="_blank">Wavebox</a>
+<a class="link-button" href="https://wavebox.me/wave/45xs3ciwrw9npp5n/" target="_blank">Wavebox</a>
 
 
 </div>

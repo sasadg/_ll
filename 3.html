@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 
 <html lang="ja">
@@ -162,6 +163,30 @@ h2 {
   z-index: 1102;
 }
 
+.comic-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 60px;
+  cursor: pointer;
+  user-select: none;
+  padding: 20px;
+  z-index: 1102;
+}
+
+.comic-arrow:hover {
+  opacity: 0.6;
+}
+
+.comic-arrow-left {
+  left: 10px;
+}
+
+.comic-arrow-right {
+  right: 10px;
+}
+
 .comic-pages {
   width: 80vw;
   max-width: 1000px;
@@ -225,6 +250,14 @@ h2 {
 &times;
 </span>
 
+<span class="comic-arrow comic-arrow-left" onclick="previousComic()">
+&#10094;
+</span>
+
+<span class="comic-arrow comic-arrow-right" onclick="nextComic()">
+&#10095;
+</span>
+
 <div id="comicPages" class="comic-pages"></div>
 
 </div>
@@ -239,7 +272,7 @@ for (let i = 1; i <= 63; i++) {
   );
 }
 
-  images.reverse();
+images.reverse();
 
 const comics = [
   {
@@ -276,7 +309,7 @@ const comics = [
   }
 ];
 
-  comics.reverse();
+comics.reverse();
 
 const galleryC =
   document.getElementById("gallery-cyrimoni");
@@ -371,14 +404,28 @@ function closeModal() {
     .remove("show");
 }
 
+let currentComicIndex = 0;
+
 function openComicModal(index) {
+
+  currentComicIndex = index;
+
+  showComic();
+
+  document
+    .getElementById("comicModal")
+    .classList
+    .add("show");
+}
+
+function showComic() {
 
   const comicPages =
     document.getElementById("comicPages");
 
   comicPages.innerHTML = "";
 
-  const comic = comics[index];
+  const comic = comics[currentComicIndex];
 
   for (let i = 1; i <= comic.pages; i++) {
 
@@ -395,8 +442,29 @@ function openComicModal(index) {
 
   document
     .getElementById("comicModal")
-    .classList
-    .add("show");
+    .scrollTop = 0;
+}
+
+function nextComic() {
+
+  currentComicIndex++;
+
+  if (currentComicIndex >= comics.length) {
+    currentComicIndex = 0;
+  }
+
+  showComic();
+}
+
+function previousComic() {
+
+  currentComicIndex--;
+
+  if (currentComicIndex < 0) {
+    currentComicIndex = comics.length - 1;
+  }
+
+  showComic();
 }
 
 function closeComicModal() {
@@ -429,6 +497,22 @@ document.addEventListener(
 
       if (event.key === "ArrowLeft") {
         previousImage();
+      }
+    }
+
+    if (
+      document
+        .getElementById("comicModal")
+        .classList
+        .contains("show")
+    ) {
+
+      if (event.key === "ArrowRight") {
+        nextComic();
+      }
+
+      if (event.key === "ArrowLeft") {
+        previousComic();
       }
     }
   }
@@ -465,3 +549,4 @@ document
 </body>
 
 </html>
+```

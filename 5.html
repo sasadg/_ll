@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -141,7 +142,7 @@ function createGallery(galleryId, folder, count) {
 
   const gallery = document.getElementById(galleryId);
 
-  for (let i = 1; i <= count; i++) {
+  for (let i = count; i >= 1; i--) {
 
     const number = String(i).padStart(3, '0');
     const src = folder + '/' + number + '.PNG';
@@ -243,3 +244,4 @@ document.getElementById('modal').addEventListener('click', function(event) {
 
 </body>
 </html>
+```

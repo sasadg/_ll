@@ -9,23 +9,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gallery/サイレント・ウィッチ</title>
 
 <style>
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #7C97CD;
   font-family: "Hina Mincho", serif;
-  margin: 40px;
+  margin: 0;
   color: #000;
+  overflow-x: hidden;
 }
 
 .container {
-  width: 80%;
-  margin: 0 auto;
+  width: calc(100% - 80px);
+  max-width: 1500px;
+  margin: 40px auto;
+  transition:
+    margin-left 0.3s ease,
+    width 0.3s ease;
+}
+
+body.menu-open .container {
+  margin-left: 250px;
+  margin-right: 20px;
+  width: calc(100% - 270px);
 }
 
 h1 {
+  margin-top: 0;
   margin-bottom: 30px;
 }
 
@@ -58,8 +75,8 @@ h2 {
   top: 50%;
   left: 0;
   transform: translateY(-50%);
-  width: 28px;
-  height: 100px;
+  width: 32px;
+  height: 105px;
   background-color: #E4E5EE;
   border: none;
   color: #000;
@@ -67,7 +84,7 @@ h2 {
   cursor: pointer;
   z-index: 2001;
   writing-mode: vertical-rl;
-  font-size: 14px;
+  font-size: 15px;
   padding: 10px 5px;
   transition: left 0.3s ease;
 }
@@ -78,44 +95,54 @@ h2 {
 
 .menu-title {
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  padding: 5px;
 }
 
 .menu-all {
+  display: block;
   width: 100%;
-  padding: 8px 5px;
-  margin-bottom: 15px;
+  padding: 11px 8px;
+  margin-bottom: 6px;
   border: none;
+  border-radius: 6px;
   background: transparent;
   color: #000;
   font-family: "Hina Mincho", serif;
   font-size: 16px;
   text-align: left;
   cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .menu-all:hover {
-  opacity: 0.55;
+  background-color: rgba(255,255,255,0.45);
+  opacity: 0.7;
 }
 
 .menu-category {
-  margin-bottom: 8px;
+  margin-bottom: 3px;
 }
 
 .menu-category-title {
+  display: block;
   width: 100%;
+  min-height: 44px;
   border: none;
+  border-radius: 6px;
   background: transparent;
   color: #000;
   font-family: "Hina Mincho", serif;
   font-size: 16px;
   text-align: left;
   cursor: pointer;
-  padding: 8px 5px;
+  padding: 10px 8px;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .menu-category-title:hover {
-  opacity: 0.55;
+  background-color: rgba(255,255,255,0.45);
+  opacity: 0.7;
 }
 
 .menu-category-title::after {
@@ -129,7 +156,7 @@ h2 {
 
 .menu-items {
   display: none;
-  padding-left: 10px;
+  padding-left: 5px;
 }
 
 .menu-category.open .menu-items {
@@ -139,48 +166,60 @@ h2 {
 .menu-item {
   display: block;
   width: 100%;
-  padding: 6px 5px;
+  min-height: 40px;
+  padding: 8px 8px;
   border: none;
+  border-radius: 5px;
   background: transparent;
   color: #000;
   font-family: "Hina Mincho", serif;
   font-size: 14px;
+  line-height: 1.4;
   text-align: left;
   cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .menu-item:hover {
-  opacity: 0.55;
+  background-color: rgba(255,255,255,0.45);
+  opacity: 0.7;
+}
+
+.work {
+  width: 100%;
 }
 
 .gallery {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 10px;
-  row-gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
 }
 
 .gallery img {
-  width: 200px;
-  height: 200px;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   cursor: pointer;
 }
 
 .comic-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
 }
 
 .comic-item {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   cursor: pointer;
 }
 
 .comic-item img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -189,7 +228,7 @@ h2 {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 3000;
   top: 0;
   left: 0;
   width: 100%;
@@ -219,7 +258,7 @@ h2 {
   color: white;
   font-size: 45px;
   cursor: pointer;
-  z-index: 1002;
+  z-index: 3002;
 }
 
 .arrow {
@@ -231,7 +270,7 @@ h2 {
   cursor: pointer;
   user-select: none;
   padding: 20px;
-  z-index: 1002;
+  z-index: 3002;
 }
 
 .arrow:hover {
@@ -253,13 +292,13 @@ h2 {
   transform: translateX(-50%);
   color: white;
   font-size: 16px;
-  z-index: 1002;
+  z-index: 3002;
 }
 
 .comic-modal {
   display: none;
   position: fixed;
-  z-index: 1100;
+  z-index: 3100;
   top: 0;
   left: 0;
   width: 100%;
@@ -279,7 +318,7 @@ h2 {
   color: white;
   font-size: 45px;
   cursor: pointer;
-  z-index: 1102;
+  z-index: 3102;
 }
 
 .comic-arrow {
@@ -291,7 +330,7 @@ h2 {
   cursor: pointer;
   user-select: none;
   padding: 20px;
-  z-index: 1102;
+  z-index: 3102;
 }
 
 .comic-arrow:hover {
@@ -323,39 +362,137 @@ h2 {
 
 @media (max-width: 600px) {
 
+  .gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .comic-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
   body {
-    margin: 20px 15px;
+    margin: 0;
   }
 
   .container {
-    width: 100%;
+    width: calc(100% - 20px);
+    margin: 15px 10px 25px;
+  }
+
+  body.menu-open .container {
+    margin-left: 215px;
+    margin-right: 5px;
+    width: calc(100% - 220px);
+  }
+
+  h1 {
+    font-size: 25px;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 21px;
+    margin-top: 30px;
+    margin-bottom: 12px;
   }
 
   .gallery-menu {
     width: 200px;
     transform: translateX(-200px);
+    padding: 20px 12px;
+  }
+
+  .gallery-menu.open {
+    transform: translateX(0);
+  }
+
+  .menu-toggle {
+    width: 34px;
+    height: 110px;
+    font-size: 15px;
   }
 
   .menu-toggle.open {
     left: 200px;
   }
 
-  .gallery img {
-    width: calc(50vw - 25px);
-    height: calc(50vw - 25px);
+  .menu-title {
+    font-size: 18px;
+    margin-bottom: 12px;
   }
 
-  .comic-item {
-    width: calc(50vw - 25px);
-    height: calc(50vw - 25px);
+  .menu-all {
+    min-height: 44px;
+    padding: 10px 8px;
+    margin-bottom: 3px;
+    font-size: 16px;
+  }
+
+  .menu-category {
+    margin-bottom: 2px;
+  }
+
+  .menu-category-title {
+    min-height: 46px;
+    padding: 11px 8px;
+    font-size: 16px;
+  }
+
+  .menu-item {
+    min-height: 42px;
+    padding: 9px 8px;
+    font-size: 14px;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .comic-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .comic-pages {
-    width: 95vw;
+    width: 100%;
+    margin: 50px auto 25px;
   }
 
   .comic-pages img {
-    max-width: 95vw;
+    max-width: 100%;
+    max-height: none;
+    margin: 0 auto 12px;
+  }
+
+  .close,
+  .comic-close {
+    top: 8px;
+    right: 15px;
+    font-size: 40px;
+  }
+
+  .arrow,
+  .comic-arrow {
+    font-size: 45px;
+    padding: 12px;
+  }
+
+  .arrow-left,
+  .comic-arrow-left {
+    left: 0;
+  }
+
+  .arrow-right,
+  .comic-arrow-right {
+    right: 0;
   }
 
 }
@@ -370,10 +507,9 @@ h2 {
 id="menuToggle"
 class="menu-toggle"
 onclick="toggleMenu()"
-
 >
-
-MENU </button>
+MENU
+</button>
 
 <nav
   id="galleryMenu"
@@ -384,16 +520,11 @@ MENU </button>
     サイレント・ウィッチ
   </div>
 
-<button
-class="menu-all"
-onclick="showAll()"
-
->
-
-
-All
-
-
+  <button
+    class="menu-all"
+    onclick="showAll()"
+  >
+    All
   </button>
 
   <div
@@ -401,46 +532,44 @@ All
     id="combinationCategory"
   >
 
+    <button
+      class="menu-category-title"
+      onclick="toggleCategory('combinationCategory')"
+    >
+      Combination
+    </button>
 
-<button
-  class="menu-category-title"
-  onclick="toggleCategory('combinationCategory')"
->
-  Combination
-</button>
+    <div class="menu-items">
 
-<div class="menu-items">
+      <button
+        class="menu-item"
+        onclick="filterWorks('シリモニ')"
+      >
+        シリモニ
+      </button>
 
-  <button
-    class="menu-item"
-    onclick="filterWorks('シリモニ')"
-  >
-    シリモニ
-  </button>
+      <button
+        class="menu-item"
+        onclick="filterWorks('雪山組')"
+      >
+        雪山組
+      </button>
 
-  <button
-    class="menu-item"
-    onclick="filterWorks('雪山組')"
-  >
-    雪山組
-  </button>
+      <button
+        class="menu-item"
+        onclick="filterWorks('尊敬△')"
+      >
+        尊敬トライアングル
+      </button>
 
-  <button
-    class="menu-item"
-    onclick="filterWorks('尊敬△')"
-  >
-    尊敬トライアングル
-  </button>
+      <button
+        class="menu-item"
+        onclick="filterWorks('共同研究組')"
+      >
+        共同研究組
+      </button>
 
-  <button
-    class="menu-item"
-    onclick="filterWorks('共同研究組')"
-  >
-    共同研究組
-  </button>
-
-</div>
-
+    </div>
 
   </div>
 
@@ -449,164 +578,152 @@ All
     id="characterCategory"
   >
 
+    <button
+      class="menu-category-title"
+      onclick="toggleCategory('characterCategory')"
+    >
+      Character
+    </button>
 
-<button
-  class="menu-category-title"
-  onclick="toggleCategory('characterCategory')"
->
-  Character
-</button>
+    <div class="menu-items">
 
-<div class="menu-items">
+      <button class="menu-item" onclick="filterWorks('アデライン・オルブライト')">
+        アデライン・オルブライト
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('アデライン・オルブライト')">
-    アデライン・オルブライト
-  </button>
+      <button class="menu-item" onclick="filterWorks('アイザック・ウォーカー')">
+        アイザック・ウォーカー
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('アイザック・ウォーカー')">
-    アイザック・ウォーカー
-  </button>
+      <button class="menu-item" onclick="filterWorks('イザベル・ノートン')">
+        イザベル・ノートン
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('イザベル・ノートン')">
-    イザベル・ノートン
-  </button>
+      <button class="menu-item" onclick="filterWorks('ウィル')">
+        ウィル
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ウィル')">
-    ウィル
-  </button>
+      <button class="menu-item" onclick="filterWorks('エリオット・ハワード')">
+        エリオット・ハワード
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('エリオット・ハワード')">
-    エリオット・ハワード
-  </button>
+      <button class="menu-item" onclick="filterWorks('グレン・ダドリー')">
+        グレン・ダドリー
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('グレン・ダドリー')">
-    グレン・ダドリー
-  </button>
+      <button class="menu-item" onclick="filterWorks('クローディア・アシュリー')">
+        クローディア・アシュリー
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('クローディア・アシュリー')">
-    クローディア・アシュリー
-  </button>
+      <button class="menu-item" onclick="filterWorks('シリル・アシュリー')">
+        シリル・アシュリー
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('シリル・アシュリー')">
-    シリル・アシュリー
-  </button>
+      <button class="menu-item" onclick="filterWorks('トゥーレ')">
+        トゥーレ
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('トゥーレ')">
-    トゥーレ
-  </button>
+      <button class="menu-item" onclick="filterWorks('ニール・クレイ・メイウッド')">
+        ニール・クレイ・メイウッド
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ニール・クレイ・メイウッド')">
-    ニール・クレイ・メイウッド
-  </button>
+      <button class="menu-item" onclick="filterWorks('ネロ')">
+        ネロ
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ネロ')">
-    ネロ
-  </button>
+      <button class="menu-item" onclick="filterWorks('バーニー・ジョーンズ')">
+        バーニー・ジョーンズ
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('バーニー・ジョーンズ')">
-    バーニー・ジョーンズ
-  </button>
+      <button class="menu-item" onclick="filterWorks('ピケ')">
+        ピケ
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ピケ')">
-    ピケ
-  </button>
+      <button class="menu-item" onclick="filterWorks('フェリクス・アーク・リディル')">
+        フェリクス・アーク・リディル
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('フェリクス・アーク・リディル')">
-    フェリクス・アーク・リディル
-  </button>
+      <button class="menu-item" onclick="filterWorks('フリーダ・ブランケ')">
+        フリーダ・ブランケ
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('フリーダ・ブランケ')">
-    フリーダ・ブランケ
-  </button>
+      <button class="menu-item" onclick="filterWorks('ブリジット・グレイアム')">
+        ブリジット・グレイアム
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ブリジット・グレイアム')">
-    ブリジット・グレイアム
-  </button>
+      <button class="menu-item" onclick="filterWorks('マイラ・ウェイン')">
+        マイラ・ウェイン
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('マイラ・ウェイン')">
-    マイラ・ウェイン
-  </button>
+      <button class="menu-item" onclick="filterWorks('モニカ・エヴァレット')">
+        モニカ・エヴァレット
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('モニカ・エヴァレット')">
-    モニカ・エヴァレット
-  </button>
+      <button class="menu-item" onclick="filterWorks('ラウル・ローブバーグ')">
+        ラウル・ローブバーグ
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ラウル・ローブバーグ')">
-    ラウル・ローブバーグ
-  </button>
+      <button class="menu-item" onclick="filterWorks('ラナ・コレット')">
+        ラナ・コレット
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ラナ・コレット')">
-    ラナ・コレット
-  </button>
+      <button class="menu-item" onclick="filterWorks('リン')">
+        リン
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('リン')">
-    リン
-  </button>
+      <button class="menu-item" onclick="filterWorks('ルイス・ミラー')">
+        ルイス・ミラー
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('ルイス・ミラー')">
-    ルイス・ミラー
-  </button>
+      <button class="menu-item" onclick="filterWorks('レイ・オルブライト')">
+        レイ・オルブライト
+      </button>
 
-  <button class="menu-item" onclick="filterWorks('レイ・オルブライト')">
-    レイ・オルブライト
-  </button>
-
-</div>
-
+    </div>
 
   </div>
 
-<button
-class="menu-all"
-onclick="filterType('illustration')"
-
->
-
-
-Illustration
-
-
+  <button
+    class="menu-all"
+    onclick="filterType('illustration')"
+  >
+    Illustration
   </button>
 
-<button
-class="menu-all"
-onclick="filterType('comic')"
-
->
-
-
-Comic
-
-
+  <button
+    class="menu-all"
+    onclick="filterType('comic')"
+  >
+    Comic
   </button>
 
 </nav>
 
 <div class="container">
 
-<h1>Gallery/サイレント・ウィッチ</h1>
+  <h1>Gallery/サイレント・ウィッチ</h1>
 
-<div class="work">
+  <div class="work">
 
-<h2 id="illustrationTitle">
-Illustration
-</h2>
+    <h2 id="illustrationTitle">
+      Illustration
+    </h2>
 
-<div
-  id="gallery"
-  class="gallery"
-></div>
+    <div
+      id="gallery"
+      class="gallery"
+    ></div>
 
-<h2 id="comicTitle">
-Comic
-</h2>
+    <h2 id="comicTitle">
+      Comic
+    </h2>
 
-<div
-  id="comicGallery"
-  class="comic-gallery"
-></div>
+    <div
+      id="comicGallery"
+      class="comic-gallery"
+    ></div>
 
-</div>
+  </div>
 
 </div>
 
@@ -615,41 +732,37 @@ Comic
   class="modal"
 >
 
-<span
-class="close"
-onclick="closeModal()"
+  <span
+    class="close"
+    onclick="closeModal()"
+  >
+    ×
+  </span>
 
->
+  <span
+    class="arrow arrow-left"
+    onclick="previousImage()"
+  >
+    ❮
+  </span>
 
-× </span>
+  <img
+    id="modalImage"
+    class="modal-image"
+    src=""
+  >
 
-<span
-class="arrow arrow-left"
-onclick="previousImage()"
+  <span
+    class="arrow arrow-right"
+    onclick="nextImage()"
+  >
+    ❯
+  </span>
 
->
-
-❮ </span>
-
-<img
-id="modalImage"
-class="modal-image"
-src=""
-
->
-
-<span
-class="arrow arrow-right"
-onclick="nextImage()"
-
->
-
-❯ </span>
-
-<div
-  id="imageNumber"
-  class="image-number"
-></div>
+  <div
+    id="imageNumber"
+    class="image-number"
+  ></div>
 
 </div>
 
@@ -658,34 +771,31 @@ onclick="nextImage()"
   class="comic-modal"
 >
 
-<span
-class="comic-close"
-onclick="closeComicModal()"
+  <span
+    class="comic-close"
+    onclick="closeComicModal()"
+  >
+    ×
+  </span>
 
->
+  <span
+    class="comic-arrow comic-arrow-left"
+    onclick="previousComic()"
+  >
+    ❮
+  </span>
 
-× </span>
+  <span
+    class="comic-arrow comic-arrow-right"
+    onclick="nextComic()"
+  >
+    ❯
+  </span>
 
-<span
-class="comic-arrow comic-arrow-left"
-onclick="previousComic()"
-
->
-
-❮ </span>
-
-<span
-class="comic-arrow comic-arrow-right"
-onclick="nextComic()"
-
->
-
-❯ </span>
-
-<div
-  id="comicPages"
-  class="comic-pages"
-></div>
+  <div
+    id="comicPages"
+    class="comic-pages"
+  ></div>
 
 </div>
 
@@ -702,6 +812,8 @@ function toggleMenu() {
   menu.classList.toggle("open");
 
   button.classList.toggle("open");
+
+  document.body.classList.toggle("menu-open");
 
 }
 
@@ -757,7 +869,7 @@ const categories = {
   ],
 
   "クローディア・アシュリー": [
-    "0006.PNG","0015.PNG","0039.PNG","0094.PNG","0160.PNG",
+"0006.PNG","0015.PNG","0039.PNG","0094.PNG","0160.PNG",
   ],
 
   "シリル・アシュリー": [
@@ -888,8 +1000,8 @@ const comics = [
       "シリル・アシュリー",
       "モニカ・エヴァレット",
       "レイ・オルブライト",
-　　　"ピケ",
-　　　"トゥーレ",
+      "ピケ",
+      "トゥーレ",
       "シリモニ"
     ]
   },
@@ -909,8 +1021,8 @@ const comics = [
     pages: 1,
     tags: [
       "シリル・アシュリー",
-　　　"ピケ",
-　　　"トゥーレ",
+      "ピケ",
+      "トゥーレ",
       "シリモニ"
     ]
   },
@@ -960,8 +1072,8 @@ const comics = [
     pages: 1,
     tags: [
       "シリル・アシュリー",
- 　　　"ピケ",
-　　　"トゥーレ",
+      "ピケ",
+      "トゥーレ",
       "雪山組"
     ]
   },
@@ -971,8 +1083,8 @@ const comics = [
     pages: 1,
     tags: [
       "シリル・アシュリー",
- 　　　"ピケ",
-　　　"トゥーレ",
+      "ピケ",
+      "トゥーレ",
       "雪山組"
     ]
   }

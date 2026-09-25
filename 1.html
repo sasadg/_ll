@@ -27,7 +27,7 @@ body {
 }
 
 .container {
-  width: calc(100% - 80px);
+  width: calc(100% - 120px);
   max-width: 1500px;
   margin: 40px auto;
   transition:
@@ -451,15 +451,15 @@ h2 {
     font-size: 14px;
   }
 
-  .gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
+ .gallery {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
 
-  .comic-gallery {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
+.comic-gallery {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
 
   .comic-pages {
     width: 100%;

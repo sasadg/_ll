@@ -68,6 +68,35 @@ a:hover{
 }
 
 
+/* プロフィール */
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.profile-icon{
+    flex-shrink:0;
+}
+
+.profile-icon img{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.profile-text{
+    flex:1;
+}
+
+.profile-text h2{
+    margin-top:0;
+}
+
+
 /* 上部メニューボタン */
 
 .top-menu{
@@ -132,7 +161,7 @@ a:hover{
 }
 
 
-/* スマホだけ変更 */
+/* スマホ */
 
 @media (max-width:600px){
 
@@ -158,6 +187,29 @@ a:hover{
         padding:20px;
     }
 
+    .profile{
+        display:block;
+        text-align:center;
+        margin-bottom:30px;
+    }
+
+    .profile-icon{
+        margin-bottom:15px;
+    }
+
+    .profile-icon img{
+        width:110px;
+        height:110px;
+    }
+
+    .profile-text{
+        text-align:left;
+    }
+
+    .profile-text h2{
+        text-align:left;
+    }
+
     .top-menu{
         gap:6px;
     }
@@ -175,18 +227,28 @@ a:hover{
 
 <body>
 
-<!-- 上部メニュー -->
-
 <div class="container">
 
 <div class="main">
 
+<div class="profile">
+
+<div class="profile-icon">
+<img src="icon.PNG" alt="笹団子">
+</div>
+
+<div class="profile-text">
+
 <h2 id="about">About</h2>
 
 <p>
-『サイレント・ウィッチ』に関するイラストなどを気ままに投稿しています。<br>
+主に『サイレント・ウィッチ』に関するイラストなどを気ままに投稿しています。<br>
 シリルとシリモニとイタチを愛で隊
 </p>
+
+</div>
+
+</div>
 
 <h2 id="artwork">Artwork</h2>
 

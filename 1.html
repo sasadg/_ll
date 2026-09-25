@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
+
+<meta charset="UTF-8">
+<title>Gallery/サイレント・ウィッチ</title>
+
+<style>
+
+body {
+  background-color: #7C97CD;
+  font-family: "Hina Mincho", serif;
+  margin: 40px;
+  color: #000;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.gallery-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 230px;
+  height: 100vh;
+  background-color: #E4E5EE;
+  z-index: 2000;
+  transform: translateX(-230px);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  padding: 25px 15px;
+  box-sizing: border-box;
+}
+
+.gallery-menu.open {
+  transform: translateX(0);
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 100px;
+  background-color: #E4E5EE;
+  border: none;
+  color: #000;
+  font-family: "Hina Mincho", serif;
+  cursor: pointer;
+  z-index: 2001;
+  writing-mode: vertical-rl;
+  font-size: 14px;
+  padding: 10px 5px;
+  transition: left 0.3s ease;
+}
+
+.menu-toggle.open {
+  left: 230px;
+}
+
+.menu-title {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.menu-all {
+  width: 100%;
+  padding: 8px 5px;
+  margin-bottom: 15px;
+  border: none;
+  background: transparent;
+  color: #000;
+  font-family: "Hina Mincho", serif;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-all:hover {
+  opacity: 0.55;
+}
+
+.menu-category {
+  margin-bottom: 8px;
+}
+
+.menu-category-title {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #000;
+  font-family: "Hina Mincho", serif;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  padding: 8px 5px;
+}
+
+.menu-category-title:hover {
+  opacity: 0.55;
+}
+
+.menu-category-title::after {
+  content: "＋";
+  float: right;
+}
+
+.menu-category.open .menu-category-title::after {
+  content: "－";
+}
+
+.menu-items {
+  display: none;
+  padding-left: 10px;
+}
+
+.menu-category.open .menu-items {
+  display: block;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 6px 5px;
+  border: none;
+  background: transparent;
+  color: #000;
+  font-family: "Hina Mincho", serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  opacity: 0.55;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 15px;
+}
+
+.gallery img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.comic-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.comic-item {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.comic-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-image {
+  max-width: 80vw;
+  max-height: 85vh;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain;
+  cursor: default;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  color: white;
+  font-size: 45px;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 60px;
+  cursor: pointer;
+  user-select: none;
+  padding: 20px;
+  z-index: 1002;
+}
+
+.arrow:hover {
+  opacity: 0.6;
+}
+
+.arrow-left {
+  left: 10px;
+}
+
+.arrow-right {
+  right: 10px;
+}
+
+.image-number {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 16px;
+  z-index: 1002;
+}
+
+.comic-modal {
+  display: none;
+  position: fixed;
+  z-index: 1100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-y: auto;
+}
+
+.comic-modal.show {
+  display: block;
+}
+
+.comic-close {
+  position: fixed;
+  top: 15px;
+  right: 25px;
+  color: white;
+  font-size: 45px;
+  cursor: pointer;
+  z-index: 1102;
+}
+
+.comic-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 60px;
+  cursor: pointer;
+  user-select: none;
+  padding: 20px;
+  z-index: 1102;
+}
+
+.comic-arrow:hover {
+  opacity: 0.6;
+}
+
+.comic-arrow-left {
+  left: 10px;
+}
+
+.comic-arrow-right {
+  right: 10px;
+}
+
+.comic-pages {
+  width: 80vw;
+  max-width: 1000px;
+  margin: 60px auto 40px;
+}
+
+.comic-pages img {
+  display: block;
+  width: auto;
+  max-width: 80vw;
+  max-height: 85vh;
+  height: auto;
+  margin: 0 auto 20px;
+}
+
+@media (max-width: 600px) {
+
+  body {
+    margin: 20px 15px;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .gallery-menu {
+    width: 200px;
+    transform: translateX(-200px);
+  }
+
+  .menu-toggle.open {
+    left: 200px;
+  }
+
+  .gallery img {
+    width: calc(50vw - 25px);
+    height: calc(50vw - 25px);
+  }
+
+  .comic-item {
+    width: calc(50vw - 25px);
+    height: calc(50vw - 25px);
+  }
+
+  .comic-pages {
+    width: 95vw;
+  }
+
+  .comic-pages img {
+    max-width: 95vw;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button
+id="menuToggle"
+class="menu-toggle"
+onclick="toggleMenu()"
+
+>
+
+MENU </button>
+
+<nav
+  id="galleryMenu"
+  class="gallery-menu"
+>
+
+  <div class="menu-title">
+    サイレント・ウィッチ
+  </div>
+
+<button
+class="menu-all"
+onclick="showAll()"
+
+>
+
+
+All
+
+
+  </button>
+
+  <div
+    class="menu-category"
+    id="combinationCategory"
+  >
+
+
+<button
+  class="menu-category-title"
+  onclick="toggleCategory('combinationCategory')"
+>
+  Combination
+</button>
+
+<div class="menu-items">
+
+  <button
+    class="menu-item"
+    onclick="filterWorks('シリモニ')"
+  >
+    シリモニ
+  </button>
+
+  <button
+    class="menu-item"
+    onclick="filterWorks('雪山組')"
+  >
+    雪山組
+  </button>
+
+  <button
+    class="menu-item"
+    onclick="filterWorks('尊敬△')"
+  >
+    尊敬トライアングル
+  </button>
+
+  <button
+    class="menu-item"
+    onclick="filterWorks('共同研究組')"
+  >
+    共同研究組
+  </button>
+
+</div>
+
+
+  </div>
+
+  <div
+    class="menu-category"
+    id="characterCategory"
+  >
+
+
+<button
+  class="menu-category-title"
+  onclick="toggleCategory('characterCategory')"
+>
+  Character
+</button>
+
+<div class="menu-items">
+
+  <button class="menu-item" onclick="filterWorks('アデライン・オルブライト')">
+    アデライン・オルブライト
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('アイザック・ウォーカー')">
+    アイザック・ウォーカー
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('イザベル・ノートン')">
+    イザベル・ノートン
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ウィル')">
+    ウィル
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('エリオット・ハワード')">
+    エリオット・ハワード
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('グレン・ダドリー')">
+    グレン・ダドリー
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('クローディア・アシュリー')">
+    クローディア・アシュリー
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('シリル・アシュリー')">
+    シリル・アシュリー
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('トゥーレ')">
+    トゥーレ
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ニール・クレイ・メイウッド')">
+    ニール・クレイ・メイウッド
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ネロ')">
+    ネロ
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('バーニー・ジョーンズ')">
+    バーニー・ジョーンズ
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ピケ')">
+    ピケ
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('フェリクス・アーク・リディル')">
+    フェリクス・アーク・リディル
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('フリーダ・ブランケ')">
+    フリーダ・ブランケ
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ブリジット・グレイアム')">
+    ブリジット・グレイアム
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('マイラ・ウェイン')">
+    マイラ・ウェイン
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('モニカ・エヴァレット')">
+    モニカ・エヴァレット
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ラウル・ローブバーグ')">
+    ラウル・ローブバーグ
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ラナ・コレット')">
+    ラナ・コレット
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('リン')">
+    リン
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('ルイス・ミラー')">
+    ルイス・ミラー
+  </button>
+
+  <button class="menu-item" onclick="filterWorks('レイ・オルブライト')">
+    レイ・オルブライト
+  </button>
+
+</div>
+
+
+  </div>
+
+<button
+class="menu-all"
+onclick="filterType('illustration')"
+
+>
+
+
+Illustration
+
+
+  </button>
+
+<button
+class="menu-all"
+onclick="filterType('comic')"
+
+>
+
+
+Comic
+
+
+  </button>
+
+</nav>
+
+<div class="container">
+
+<h1>Silent Witch / Gallery</h1>
+
+<div class="work">
+
+<h2 id="illustrationTitle">
+Illustration
+</h2>
+
+<div
+  id="gallery"
+  class="gallery"
+></div>
+
+<h2 id="comicTitle">
+Comic
+</h2>
+
+<div
+  id="comicGallery"
+  class="comic-gallery"
+></div>
+
+</div>
+
+</div>
+
+<div
+  id="modal"
+  class="modal"
+>
+
+<span
+class="close"
+onclick="closeModal()"
+
+>
+
+× </span>
+
+<span
+class="arrow arrow-left"
+onclick="previousImage()"
+
+>
+
+❮ </span>
+
+<img
+id="modalImage"
+class="modal-image"
+src=""
+
+>
+
+<span
+class="arrow arrow-right"
+onclick="nextImage()"
+
+>
+
+❯ </span>
+
+<div
+  id="imageNumber"
+  class="image-number"
+></div>
+
+</div>
+
+<div
+  id="comicModal"
+  class="comic-modal"
+>
+
+<span
+class="comic-close"
+onclick="closeComicModal()"
+
+>
+
+× </span>
+
+<span
+class="comic-arrow comic-arrow-left"
+onclick="previousComic()"
+
+>
+
+❮ </span>
+
+<span
+class="comic-arrow comic-arrow-right"
+onclick="nextComic()"
+
+>
+
+❯ </span>
+
+<div
+  id="comicPages"
+  class="comic-pages"
+></div>
+
+</div>
+
+<script>
+
+function toggleMenu() {
+
+  const menu =
+    document.getElementById("galleryMenu");
+
+  const button =
+    document.getElementById("menuToggle");
+
+  menu.classList.toggle("open");
+
+  button.classList.toggle("open");
+
+}
+
+function toggleCategory(id) {
+
+  const category =
+    document.getElementById(id);
+
+  category.classList.toggle("open");
+
+}
+
+const categories = {
+
+  "シリモニ": [
+"0001.PNG","0002.PNG","0007.PNG","0009.PNG","0010.PNG","0012.PNG","0014.PNG","0017.PNG","0018.PNG","0020.PNG","0021.PNG","0025.PNG","0026.PNG","0028.PNG","0032.PNG","0034.PNG","0036.PNG","0038.PNG","0039.PNG","0040.PNG","0042.PNG","0048.PNG","0058.PNG","0059.PNG","0060.PNG","0061.PNG","0062.PNG","0065.PNG","0068.PNG","0075.PNG","0076.PNG","0081.PNG","0085.PNG","0086.PNG","0087.PNG","0090.PNG","0091.PNG","0092.PNG","0093.PNG","0097.PNG","0098.PNG","0100.PNG","0101.PNG","0103.PNG","0107.PNG","0109.PNG","0112.PNG","0113.PNG","0115.PNG","0118.PNG","0119.PNG","0127.PNG","0128.PNG","0129.PNG","0130.PNG","0133.PNG","0135.PNG","0140.PNG","0142.PNG","0144.PNG","0147.PNG","0149.PNG","0150.PNG","0155.PNG","0161.PNG",
+  ],
+
+  "雪山組": [
+"0011.PNG","0031.PNG","0045.PNG","0046.PNG","0049.PNG","0055.PNG","0056.PNG","0079.PNG","0081.PNG","0083.PNG","0084.PNG","0100.PNG","0104.PNG","0137.PNG","0143.PNG","0146.PNG","0147.PNG","0151.PNG","0159.PNG",
+  ],
+
+  "尊敬△": [
+"0003.PNG","0028.PNG","0037.PNG","0158.PNG",
+  ],
+
+  "共同研究組": [
+"0069.PNG","0084.PNG","0131.PNG","0139.PNG",
+  ],
+
+  "アデライン・オルブライト": [
+"0124.PNG",
+  ],
+
+  "アイザック・ウォーカー": [
+"0003.PNG","0023.PNG","0028.PNG","0037.PNG","0043.PNG","0052.PNG","0057.PNG","0066.PNG","0106.PNG","0108.PNG","0110.PNG","0117.PNG","0126.PNG","0154.PNG","0157.PNG","0158.PNG",
+  ],
+
+  "イザベル・ノートン": [
+"0106.PNG",
+  ],
+
+  "ウィル": [
+"0057.PNG","0154.PNG",
+  ],
+
+  "エリオット・ハワード": [
+"0023.PNG","0024.PNG","0043.PNG","0051.PNG","0052.PNG",
+  ],
+
+  "グレン・ダドリー": [
+"0126.PNG","0154.PNG",
+  ],
+
+  "クローディア・アシュリー": [
+    "0006.PNG","0015.PNG","0039.PNG","0094.PNG","0160.PNG",
+  ],
+
+  "シリル・アシュリー": [
+"0001.PNG","0002.PNG","0003.PNG","0004.PNG","0006.PNG","0007.PNG","0008.PNG","0010.PNG","0011.PNG","0012.PNG","0013.PNG","0014.PNG","0015.PNG","0016.PNG","0017.PNG","0018.PNG","0020.PNG","0021.PNG","0023.PNG","0024.PNG","0025.PNG","0026.PNG","0027.PNG","0028.PNG","0029.PNG","0031.PNG","0032.PNG","0034.PNG","0036.PNG","0037.PNG","0038.PNG","0039.PNG","0040.PNG","0042.PNG","0043.PNG","0045.PNG","0046.PNG","0047.PNG","0048.PNG","0049.PNG","0051.PNG","0053.PNG","0055.PNG","0056.PNG","0057.PNG","0058.PNG","0059.PNG","0060.PNG","0061.PNG","0062.PNG","0063.PNG","0065.PNG","0068.PNG","0069.PNG","0071.PNG","0075.PNG","0076.PNG","0079.PNG","0081.PNG","0083.PNG","0084.PNG","0085.PNG","0086.PNG","0087.PNG","0088.PNG","0089.PNG","0090.PNG","0091.PNG","0092.PNG","0093.PNG","0094.PNG","0095.PNG","0097.PNG","0098.PNG","0100.PNG","0101.PNG","0103.PNG","0104.PNG","0107.PNG","0108.PNG","0109.PNG","0110.PNG","0111.PNG","0112.PNG","0113.PNG","0115.PNG","0117.PNG","0118.PNG","0119.PNG","0125.PNG","0126.PNG","0127.PNG","0128.PNG","0129.PNG","0130.PNG","0131.PNG","0132.PNG","0133.PNG","0135.PNG","0137.PNG","0138.PNG","0139.PNG","0140.PNG","0141.PNG","0142.PNG","0143.PNG","0144.PNG","0146.PNG","0147.PNG","0149.PNG","0150.PNG","0151.PNG","0153.PNG","0154.PNG","0155.PNG","0156.PNG","0158.PNG","0159.PNG","0161.PNG",
+  ],
+
+  "トゥーレ": [
+"0011.PNG","0031.PNG","0041.PNG","0045.PNG","0046.PNG","0049.PNG","0050.PNG","0055.PNG","0056.PNG","0057.PNG","0058.PNG","0062.PNG","0073.PNG","0078.PNG","0079.PNG","0081.PNG","0083.PNG","0099.PNG","0100.PNG","0104.PNG","0121.PNG","0137.PNG","0143.PNG","0146.PNG","0147.PNG","0151.PNG","0159.PNG",
+  ],
+
+  "ニール・クレイ・メイウッド": [
+"0023.PNG","0052.PNG","0160.PNG",
+  ],
+
+  "ネロ": [
+"0005.PNG","0057.PNG","0062.PNG","0071.PNG","0080.PNG","0081.PNG","0100.PNG","0102.PNG","0121.PNG","0136.PNG","0145.PNG","0154.PNG",
+  ],
+
+  "バーニー・ジョーンズ": [
+"0030.PNG","0108.PNG","0134.PNG",
+  ],
+
+  "ピケ": [
+"0011.PNG","0031.PNG","0038.PNG","0041.PNG","0045.PNG","0046.PNG","0049.PNG","0050.PNG","0055.PNG","0056.PNG","0057.PNG","0058.PNG","0062.PNG","0072.PNG","0078.PNG","0079.PNG","0081.PNG","0083.PNG","0099.PNG","0100.PNG","0104.PNG","0121.PNG","0137.PNG","0143.PNG","0146.PNG","0147.PNG","0151.PNG","0159.PNG",
+  ],
+
+  "フェリクス・アーク・リディル": [
+"0022.PNG",
+  ],
+
+  "フリーダ・ブランケ": [
+"0124.PNG","0126.PNG",
+  ],
+
+  "ブリジット・グレイアム": [
+"0022.PNG","0023.PNG",
+  ],
+
+  "マイラ・ウェイン": [
+"0111.PNG",
+  ],
+
+  "モニカ・エヴァレット": [
+"0002.PNG","0003.PNG","0005.PNG","0007.PNG","0009.PNG","0010.PNG","0012.PNG","0014.PNG","0017.PNG","0018.PNG","0019.PNG","0020.PNG","0021.PNG","0023.PNG","0025.PNG","0026.PNG","0028.PNG","0032.PNG","0033.PNG","0034.PNG","0035.PNG","0036.PNG","0037.PNG","0038.PNG","0039.PNG","0040.PNG","0042.PNG","0043.PNG","0044.PNG","0048.PNG","0054.PNG","0057.PNG","0058.PNG","0060.PNG","0061.PNG","0062.PNG","0065.PNG","0067.PNG","0068.PNG","0069.PNG","0070.PNG","0074.PNG","0075.PNG","0076.PNG","0077.PNG","0080.PNG","0081.PNG","0082.PNG","0084.PNG","0085.PNG","0086.PNG","0087.PNG","0090.PNG","0091.PNG","0092.PNG","0093.PNG","0096.PNG","0097.PNG","0098.PNG","0100.PNG","0101.PNG","0102.PNG","0103.PNG","0105.PNG","0106.PNG","0107.PNG","0109.PNG","0112.PNG","0113.PNG","0115.PNG","0116.PNG","0118.PNG","0119.PNG","0122.PNG","0123.PNG","0126.PNG","0127.PNG","0128.PNG","0129.PNG","0130.PNG","0131.PNG","0132.PNG","0133.PNG","0134.PNG","0135.PNG","0136.PNG","0139.PNG","0140.PNG","0142.PNG","0144.PNG","0145.PNG","0147.PNG","0148.PNG","0149.PNG","0150.PNG","0152.PNG","0154.PNG","0155.PNG","0158.PNG","0161.PNG",
+  ],
+
+  "ラウル・ローブバーグ": [
+"0069.PNG","0084.PNG","0116.PNG","0120.PNG","0126.PNG","0131.PNG","0132.PNG","0139.PNG","0153.PNG",
+  ],
+
+  "ラナ・コレット": [
+"0039.PNG","0057.PNG","0074.PNG",
+  ],
+
+  "リン": [
+  ],
+
+  "ルイス・ミラー": [
+"0064.PNG",
+  ],
+
+  "レイ・オルブライト": [
+"0114.PNG","0116.PNG","0124.PNG","0126.PNG","0132.PNG",
+  ]
+
+};
+
+const images = [];
+
+for (let i = 1; i <= 161; i++) {
+
+  const filename =
+    String(i).padStart(4, "0") + ".PNG";
+
+  images.push({
+
+    src: `Gallery/${filename}`,
+
+    type: "illustration",
+
+    tags: []
+
+  });
+
+}
+
+const imageMap = {};
+
+for (const image of images) {
+
+  const filename =
+    image.src.split("/").pop();
+
+  imageMap[filename] = image;
+
+}
+
+for (const category in categories) {
+
+  for (const filename of categories[category]) {
+
+    if (imageMap[filename]) {
+
+      imageMap[filename].tags.push(category);
+
+    }
+
+  }
+
+}
+
+const comics = [
+
+  {
+    folder: "comic01",
+    pages: 1,
+    tags: [
+      "シリル・アシュリー",
+      "モニカ・エヴァレット",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic02",
+    pages: 2,
+    tags: [
+      "シリル・アシュリー",
+      "モニカ・エヴァレット",
+      "レイ・オルブライト",
+　　　"ピケ",
+　　　"トゥーレ",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic03",
+    pages: 3,
+    tags: [
+      "シリル・アシュリー",
+      "モニカ・エヴァレット",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic04",
+    pages: 1,
+    tags: [
+      "シリル・アシュリー",
+　　　"ピケ",
+　　　"トゥーレ",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic05",
+    pages: 4,
+    tags: [
+      "シリル・アシュリー",
+      "モニカ・エヴァレット",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic06",
+    pages: 1,
+    tags: [
+      "ラナ・コレット",
+      "モニカ・エヴァレット",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic07",
+    pages: 1,
+    tags: [
+      "シリル・アシュリー",
+      "モニカ・エヴァレット",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic08",
+    pages: 2,
+    tags: [
+      "シリル・アシュリー",
+      "モニカ・エヴァレット",
+      "シリモニ"
+    ]
+  },
+
+  {
+    folder: "comic09",
+    pages: 1,
+    tags: [
+      "シリル・アシュリー",
+ 　　　"ピケ",
+　　　"トゥーレ",
+      "雪山組"
+    ]
+  },
+
+  {
+    folder: "comic10",
+    pages: 1,
+    tags: [
+      "シリル・アシュリー",
+ 　　　"ピケ",
+　　　"トゥーレ",
+      "雪山組"
+    ]
+  }
+
+];
+
+images.reverse();
+comics.reverse();
+
+let displayedImages = [...images];
+
+let displayedComics = [...comics];
+
+function renderGallery() {
+
+  const gallery =
+    document.getElementById("gallery");
+
+  gallery.innerHTML = "";
+
+  for (let i = 0; i < displayedImages.length; i++) {
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      displayedImages[i].src;
+
+    img.loading = "lazy";
+
+    img.onclick =
+      () => openModal(i);
+
+    gallery.appendChild(img);
+
+  }
+
+}
+
+function renderComics() {
+
+  const gallery =
+    document.getElementById("comicGallery");
+
+  gallery.innerHTML = "";
+
+  for (let i = 0; i < displayedComics.length; i++) {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "comic-item";
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      `Gallery/${displayedComics[i].folder}/001.PNG`;
+
+    img.loading = "lazy";
+
+    img.onclick =
+      () => openComicModal(i);
+
+    item.appendChild(img);
+
+    gallery.appendChild(item);
+
+  }
+
+}
+
+function showAll() {
+
+  displayedImages =
+    [...images];
+
+  displayedComics =
+    [...comics];
+
+  document
+    .getElementById("illustrationTitle")
+    .style.display = "";
+
+  document
+    .getElementById("comicTitle")
+    .style.display = "";
+
+  renderGallery();
+
+  renderComics();
+
+}
+
+function filterWorks(tag) {
+
+  displayedImages =
+    images.filter(
+      work =>
+        work.tags.includes(tag)
+    );
+
+  displayedComics =
+    comics.filter(
+      work =>
+        work.tags.includes(tag)
+    );
+
+  document
+    .getElementById("illustrationTitle")
+    .style.display = "";
+
+  document
+    .getElementById("comicTitle")
+    .style.display = "";
+
+  renderGallery();
+
+  renderComics();
+
+}
+
+function filterType(type) {
+
+  if (type === "illustration") {
+
+    displayedImages =
+      [...images];
+
+    displayedComics =
+      [];
+
+    document
+      .getElementById("illustrationTitle")
+      .style.display = "";
+
+    document
+      .getElementById("comicTitle")
+      .style.display = "none";
+
+  }
+
+  if (type === "comic") {
+
+    displayedImages =
+      [];
+
+    displayedComics =
+      [...comics];
+
+    document
+      .getElementById("illustrationTitle")
+      .style.display = "none";
+
+    document
+      .getElementById("comicTitle")
+      .style.display = "";
+
+  }
+
+  renderGallery();
+
+  renderComics();
+
+}
+
+let currentIndex = 0;
+
+function openModal(index) {
+
+  currentIndex =
+    index;
+
+  updateImage();
+
+  document
+    .getElementById("modal")
+    .classList
+    .add("show");
+
+}
+
+function updateImage() {
+
+  document
+    .getElementById("modalImage")
+    .src =
+      displayedImages[currentIndex].src;
+
+  document
+    .getElementById("imageNumber")
+    .textContent =
+      (currentIndex + 1)
+      + " / "
+      + displayedImages.length;
+
+}
+
+function nextImage() {
+
+  if (displayedImages.length === 0) {
+    return;
+  }
+
+  currentIndex++;
+
+  if (
+    currentIndex >=
+    displayedImages.length
+  ) {
+
+    currentIndex = 0;
+
+  }
+
+  updateImage();
+
+}
+
+function previousImage() {
+
+  if (displayedImages.length === 0) {
+    return;
+  }
+
+  currentIndex--;
+
+  if (currentIndex < 0) {
+
+    currentIndex =
+      displayedImages.length - 1;
+
+  }
+
+  updateImage();
+
+}
+
+function closeModal() {
+
+  document
+    .getElementById("modal")
+    .classList
+    .remove("show");
+
+}
+
+let currentComicIndex = 0;
+
+function openComicModal(index) {
+
+  currentComicIndex =
+    index;
+
+  showComic();
+
+  document
+    .getElementById("comicModal")
+    .classList
+    .add("show");
+
+}
+
+function showComic() {
+
+  const comicPages =
+    document.getElementById("comicPages");
+
+  comicPages.innerHTML = "";
+
+  const comic =
+    displayedComics[currentComicIndex];
+
+  for (
+    let i = 1;
+    i <= comic.pages;
+    i++
+  ) {
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      `Gallery/${comic.folder}/${String(i).padStart(3, "0")}.PNG`;
+
+    img.loading = "lazy";
+
+    comicPages.appendChild(img);
+
+  }
+
+  document
+    .getElementById("comicModal")
+    .scrollTop = 0;
+
+}
+
+function nextComic() {
+
+  if (displayedComics.length === 0) {
+    return;
+  }
+
+  currentComicIndex++;
+
+  if (
+    currentComicIndex >=
+    displayedComics.length
+  ) {
+
+    currentComicIndex = 0;
+
+  }
+
+  showComic();
+
+}
+
+function previousComic() {
+
+  if (displayedComics.length === 0) {
+    return;
+  }
+
+  currentComicIndex--;
+
+  if (currentComicIndex < 0) {
+
+    currentComicIndex =
+      displayedComics.length - 1;
+
+  }
+
+  showComic();
+
+}
+
+function closeComicModal() {
+
+  document
+    .getElementById("comicModal")
+    .classList
+    .remove("show");
+
+}
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Escape") {
+
+      closeModal();
+
+      closeComicModal();
+
+    }
+
+    if (
+      document
+        .getElementById("modal")
+        .classList
+        .contains("show")
+    ) {
+
+      if (event.key === "ArrowRight") {
+        nextImage();
+      }
+
+      if (event.key === "ArrowLeft") {
+        previousImage();
+      }
+
+    }
+
+    if (
+      document
+        .getElementById("comicModal")
+        .classList
+        .contains("show")
+    ) {
+
+      if (event.key === "ArrowRight") {
+        nextComic();
+      }
+
+      if (event.key === "ArrowLeft") {
+        previousComic();
+      }
+
+    }
+
+  }
+);
+
+document
+  .getElementById("modal")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (event.target === this) {
+        closeModal();
+      }
+
+    }
+  );
+
+document
+  .getElementById("comicModal")
+  .addEventListener(
+    "click",
+    function(event) {
+
+      if (event.target === this) {
+        closeComicModal();
+      }
+
+    }
+  );
+
+showAll();
+
+</script>
+
+</body>
+
+</html>

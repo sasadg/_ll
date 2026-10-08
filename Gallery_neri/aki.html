@@ -36,16 +36,48 @@ body {
   font-size: 16px;
 }
 
+
 /* ====================
    無限ループ
 ==================== */
 
 .carousel-window {
+  position: relative;
   width: 100%;
   overflow: hidden;
   margin-top: 55px;
   cursor: grab;
   touch-action: pan-y;
+}
+
+/* 左右をふわっと薄くする */
+.carousel-window::before,
+.carousel-window::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.carousel-window::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #FFF3D5 0%,
+    rgba(255, 243, 213, 0) 100%
+  );
+}
+
+.carousel-window::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #FFF3D5 0%,
+    rgba(255, 243, 213, 0) 100%
+  );
 }
 
 .carousel-window.dragging {
@@ -84,7 +116,9 @@ body {
   will-change: transform;
 }
 
+
 /* ぷかぷか */
+
 .item:nth-child(1) .bottle {
   animation: float1 4.2s ease-in-out infinite;
 }
@@ -113,32 +147,45 @@ body {
   animation: float1 4.6s ease-in-out infinite;
 }
 
+
 @keyframes float1 {
+
   0%, 100% {
     transform: translate(0, 0) rotate(0deg);
   }
+
   50% {
     transform: translate(3px, -10px) rotate(0.6deg);
   }
+
 }
 
+
 @keyframes float2 {
+
   0%, 100% {
     transform: translate(0, -3px) rotate(0deg);
   }
+
   50% {
     transform: translate(-3px, 9px) rotate(-0.6deg);
   }
+
 }
 
+
 @keyframes float3 {
+
   0%, 100% {
     transform: translate(-2px, 2px) rotate(-0.3deg);
   }
+
   50% {
     transform: translate(2px, -8px) rotate(0.5deg);
   }
+
 }
+
 
 .title {
   margin-top: 4px;
@@ -146,6 +193,7 @@ body {
   color: #606487;
   white-space: nowrap;
 }
+
 
 /* ====================
    モーダル
@@ -195,6 +243,7 @@ body {
   object-fit: contain;
 }
 
+
 @media (max-width: 600px) {
 
   .page {
@@ -207,6 +256,12 @@ body {
 
   .carousel-window {
     margin-top: 45px;
+  }
+
+  /* スマホでは薄くなる範囲を短く */
+  .carousel-window::before,
+  .carousel-window::after {
+    width: 70px;
   }
 
   .item {
@@ -229,7 +284,9 @@ body {
   .title {
     font-size: 11px;
   }
+
 }
+
 </style>
 </head>
 
@@ -237,30 +294,60 @@ body {
 
 <div class="page">
 
-  <a class="back" href="neri.html">← 色を変える</a>
+  <a class="back" href="neri.html">
+    ← 色を変える
+  </a>
 
-  <div class="carousel-window" id="carouselWindow">
-    <div class="carousel-track" id="track"></div>
+  <div
+    class="carousel-window"
+    id="carouselWindow"
+  >
+
+    <div
+      class="carousel-track"
+      id="track"
+    ></div>
+
   </div>
 
 </div>
 
-<div class="modal" id="modal">
 
-  <div class="close" id="close">×</div>
+<div
+  class="modal"
+  id="modal"
+>
+
+  <div
+    class="close"
+    id="close"
+  >
+    ×
+  </div>
 
   <div class="single-area">
-    <img class="single" id="single" src="" alt="">
+
+    <img
+      class="single"
+      id="single"
+      src=""
+      alt=""
+    >
+
   </div>
 
 </div>
+
 
 <script>
 
 const folder = "aki-kobin";
+
 const bottle = "bin_aki.png";
 
+
 const titles = {
+
   "001": "紅葉",
   "002": "実り",
   "003": "食欲",
@@ -268,50 +355,105 @@ const titles = {
   "005": "スポーツ",
   "006": "芸術",
   "007": "睡眠"
+
 };
+
 
 const total = 7;
 
-const track = document.getElementById("track");
-const windowEl = document.getElementById("carouselWindow");
-const modal = document.getElementById("modal");
-const single = document.getElementById("single");
-const closeButton = document.getElementById("close");
+
+const track =
+  document.getElementById("track");
+
+const windowEl =
+  document.getElementById(
+    "carouselWindow"
+  );
+
+const modal =
+  document.getElementById("modal");
+
+const single =
+  document.getElementById("single");
+
+const closeButton =
+  document.getElementById("close");
+
 
 let works = [];
 
-for (let i = 1; i <= total; i++) {
-  const key = String(i).padStart(3, "0");
+
+for (
+  let i = 1;
+  i <= total;
+  i++
+) {
+
+  const key =
+    String(i).padStart(3, "0");
 
   works.push({
-    src: `${folder}/${key}.PNG`,
-    title: titles[key] || ""
+
+    src:
+      `${folder}/${key}.PNG`,
+
+    title:
+      titles[key] || ""
+
   });
+
 }
 
 
-/* 同じ7枚を何セットも並べる */
+/* ====================
+   同じ7枚を複製
+==================== */
+
 const copies = 9;
 
-for (let c = 0; c < copies; c++) {
 
-  works.forEach((work, index) => {
+for (
+  let c = 0;
+  c < copies;
+  c++
+) {
 
-    const item = document.createElement("div");
-    item.className = "item";
+  works.forEach(
+    (work, index) => {
 
-    item.innerHTML = `
-      <div class="bottle-wrap">
-        <img class="bottle" src="${bottle}" alt="">
-      </div>
-      <div class="title">${work.title}</div>
-    `;
+      const item =
+        document.createElement(
+          "div"
+        );
 
-    item.dataset.index = index;
+      item.className =
+        "item";
 
-    track.appendChild(item);
+      item.dataset.index =
+        index;
 
-  });
+      item.innerHTML = `
+
+        <div class="bottle-wrap">
+
+          <img
+            class="bottle"
+            src="${bottle}"
+            alt=""
+          >
+
+        </div>
+
+        <div class="title">
+          ${work.title}
+        </div>
+
+      `;
+
+      track.appendChild(item);
+
+    }
+  );
 
 }
 
@@ -321,35 +463,52 @@ for (let c = 0; c < copies; c++) {
 ==================== */
 
 let position = 0;
+
 let velocity = -0.25;
 
 let dragging = false;
+
 let startX = 0;
 let lastX = 0;
+
 let moved = false;
 
+
 const itemWidth = () =>
-  window.innerWidth <= 600 ? 125 : 170;
+  window.innerWidth <= 600
+    ? 125
+    : 170;
+
 
 const loopWidth = () =>
   itemWidth() * total;
 
 
-/* 真ん中のセット付近から開始 */
-position = -(loopWidth() * 4);
+position =
+  -(loopWidth() * 4);
 
 
-/* 位置を無限ループさせる */
+/* 無限ループ */
+
 function normalizePosition() {
 
-  const width = loopWidth();
+  const width =
+    loopWidth();
 
-  while (position < -(width * 5)) {
+  while (
+    position < -(width * 5)
+  ) {
+
     position += width;
+
   }
 
-  while (position > -(width * 3)) {
+  while (
+    position > -(width * 3)
+  ) {
+
     position -= width;
+
   }
 
 }
@@ -367,14 +526,17 @@ function render() {
 }
 
 
-/* 自動で左へ */
 function autoMove() {
 
   if (!dragging) {
+
     position += velocity;
+
   }
 
-  requestAnimationFrame(autoMove);
+  requestAnimationFrame(
+    autoMove
+  );
 
 }
 
@@ -386,108 +548,203 @@ function autoMove() {
 function pointerDown(x) {
 
   dragging = true;
+
   moved = false;
 
   startX = x;
   lastX = x;
 
-  windowEl.classList.add("dragging");
+  windowEl.classList.add(
+    "dragging"
+  );
+
 }
 
 
 function pointerMove(x) {
 
-  if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
 
-  const dx = x - lastX;
+  const dx =
+    x - lastX;
 
-  if (Math.abs(x - startX) > 8) {
+  if (
+    Math.abs(x - startX) > 8
+  ) {
+
     moved = true;
+
   }
 
   position += dx;
 
   lastX = x;
+
 }
 
 
 function pointerUp() {
 
-  if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
 
   dragging = false;
-  windowEl.classList.remove("dragging");
+
+  windowEl.classList.remove(
+    "dragging"
+  );
 
 }
 
 
-windowEl.addEventListener("pointerdown", e => {
-  pointerDown(e.clientX);
-});
+windowEl.addEventListener(
+  "pointerdown",
+  e => {
 
-windowEl.addEventListener("pointermove", e => {
-  if (dragging) {
-    pointerMove(e.clientX);
+    pointerDown(
+      e.clientX
+    );
+
   }
-});
-
-windowEl.addEventListener("pointerup", pointerUp);
-windowEl.addEventListener("pointercancel", pointerUp);
-windowEl.addEventListener("pointerleave", pointerUp);
+);
 
 
-/* タップしたときだけ画像を開く */
-track.addEventListener("click", e => {
+windowEl.addEventListener(
+  "pointermove",
+  e => {
 
-  if (moved) return;
+    if (dragging) {
 
-  const item = e.target.closest(".item");
+      pointerMove(
+        e.clientX
+      );
 
-  if (!item) return;
+    }
 
-  const index = Number(item.dataset.index);
-  const work = works[index];
+  }
+);
 
-  single.src = work.src;
-  modal.classList.add("open");
 
-});
+windowEl.addEventListener(
+  "pointerup",
+  pointerUp
+);
+
+
+windowEl.addEventListener(
+  "pointercancel",
+  pointerUp
+);
+
+
+windowEl.addEventListener(
+  "pointerleave",
+  pointerUp
+);
+
+
+/* ====================
+   タップ
+==================== */
+
+track.addEventListener(
+  "click",
+  e => {
+
+    if (moved) {
+      return;
+    }
+
+    const item =
+      e.target.closest(".item");
+
+    if (!item) {
+      return;
+    }
+
+    const index =
+      Number(item.dataset.index);
+
+    const work =
+      works[index];
+
+    single.src =
+      work.src;
+
+    modal.classList.add(
+      "open"
+    );
+
+  }
+);
 
 
 function closeModal() {
 
-  modal.classList.remove("open");
+  modal.classList.remove(
+    "open"
+  );
+
   single.src = "";
 
 }
 
 
-closeButton.addEventListener("click", e => {
-  e.stopPropagation();
-  closeModal();
-});
+closeButton.addEventListener(
+  "click",
+  e => {
 
+    e.stopPropagation();
 
-modal.addEventListener("click", e => {
-
-  if (e.target === single) return;
-  if (e.target === closeButton) return;
-
-  closeModal();
-
-});
-
-
-document.addEventListener("keydown", e => {
-
-  if (e.key === "Escape") {
     closeModal();
-  }
 
-});
+  }
+);
+
+
+modal.addEventListener(
+  "click",
+  e => {
+
+    if (
+      e.target === single
+    ) {
+      return;
+    }
+
+    if (
+      e.target === closeButton
+    ) {
+      return;
+    }
+
+    closeModal();
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  e => {
+
+    if (
+      e.key === "Escape"
+    ) {
+
+      closeModal();
+
+    }
+
+  }
+);
 
 
 render();
+
 autoMove();
 
 </script>

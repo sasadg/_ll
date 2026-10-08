@@ -29,6 +29,23 @@ body {
 
   font-family: "Hina Mincho", serif;
 
+  overflow-x: hidden;
+
+}
+
+
+/* ====================
+   ページ
+==================== */
+
+.page {
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding-top: 40px;
+
 }
 
 
@@ -38,24 +55,25 @@ body {
 
 .back {
 
-  position: fixed;
+  display: block;
 
-  top: 20px;
-  left: 25px;
+  width: 90vw;
 
-  z-index: 20;
+  max-width: 850px;
+
+  margin: 0 auto;
 
   color: #886F58;
 
   text-decoration: none;
 
-  font-size: 18px;
+  font-size: 16px;
 
 }
 
 
 /* ====================
-   カルーセル
+   無限ループ
 ==================== */
 
 .carousel-window {
@@ -66,7 +84,7 @@ body {
 
   overflow: hidden;
 
-  padding-top: 75px;
+  margin-top: 55px;
 
   cursor: grab;
 
@@ -129,10 +147,6 @@ body {
 }
 
 
-/* ====================
-   トラック
-==================== */
-
 .carousel-track {
 
   display: flex;
@@ -146,10 +160,6 @@ body {
 }
 
 
-/* ====================
-   小瓶
-==================== */
-
 .item {
 
   flex: 0 0 170px;
@@ -158,7 +168,11 @@ body {
 
   text-align: center;
 
+  cursor: pointer;
+
   user-select: none;
+
+  -webkit-user-select: none;
 
 }
 
@@ -171,9 +185,9 @@ body {
 
   display: flex;
 
-  align-items: center;
-
   justify-content: center;
+
+  align-items: center;
 
 }
 
@@ -186,7 +200,9 @@ body {
 
   object-fit: contain;
 
-  cursor: pointer;
+  pointer-events: none;
+
+  will-change: transform;
 
 }
 
@@ -330,9 +346,9 @@ body {
 
 .title {
 
-  margin-top: 8px;
+  margin-top: 4px;
 
-  font-size: 16px;
+  font-size: 12px;
 
   line-height: 1.7;
 
@@ -449,20 +465,23 @@ body {
 
 @media (max-width: 600px) {
 
+  .page {
+
+    padding-top: 25px;
+
+  }
+
+
   .back {
 
-    top: 14px;
-
-    left: 16px;
-
-    font-size: 16px;
+    width: 90vw;
 
   }
 
 
   .carousel-window {
 
-    padding-top: 65px;
+    margin-top: 45px;
 
   }
 
@@ -479,7 +498,7 @@ body {
 
   .item {
 
-    flex: 0 0 125px;
+    flex-basis: 125px;
 
     width: 125px;
 
@@ -510,7 +529,7 @@ body {
 
   .title {
 
-    font-size: 14px;
+    font-size: 11px;
 
   }
 
@@ -524,8 +543,6 @@ body {
 <body>
 
 
-<!-- 戻る -->
-
 <div class="page">
 
   <a
@@ -536,19 +553,17 @@ body {
   </a>
 
 
-<!-- ====================
-     カルーセル
-==================== -->
-
-<div
-  class="carousel-window"
-  id="carouselWindow"
->
-
   <div
-    class="carousel-track"
-    id="carouselTrack"
-  ></div>
+    class="carousel-window"
+    id="carouselWindow"
+  >
+
+    <div
+      class="carousel-track"
+      id="carouselTrack"
+    ></div>
+
+  </div>
 
 </div>
 
@@ -564,6 +579,7 @@ body {
     <p>
       BOOTHの商品ページへ移動します。
     </p>
+
 
     <div class="notice">
 
@@ -584,6 +600,7 @@ body {
         戻る
       </button>
 
+
       <button id="confirmBtn">
         BOOTHへ
       </button>
@@ -596,6 +613,7 @@ body {
 
 
 <script>
+
 
 /* ====================
    作品
@@ -722,7 +740,9 @@ for (
       `;
 
 
-      track.appendChild(item);
+      track.appendChild(
+        item
+      );
 
     }
   );
@@ -737,17 +757,19 @@ for (
 let position = 0;
 
 
+/* amberと同じ速度 */
+
 const velocity =
-  -0.55;
+  -0.25;
 
 
-let dragging = false;
+let dragging =
+  false;
 
 
 let startX = 0;
 
 let lastX = 0;
-
 
 let moved = false;
 
@@ -935,7 +957,9 @@ function pointerMove(x) {
   }
 
 
-  position += dx;
+  position +=
+    dx;
+
 
   lastX = x;
 
@@ -1001,6 +1025,15 @@ windowEl.addEventListener(
 
 windowEl.addEventListener(
   "pointercancel",
+  pointerUp
+);
+
+
+/* amberと同じく、
+   カーソルが外れたら終了 */
+
+windowEl.addEventListener(
+  "pointerleave",
   pointerUp
 );
 

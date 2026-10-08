@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -5,17 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>渦の小瓶</title>
 
-<style>        
+<style>
 * {
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: #E4E5EE;
-  color: #E4E5EE;
+  color: #606487;
   font-family: "Hina Mincho", serif;
+  overflow-x: hidden;
 }
 
 .back {
@@ -28,31 +31,110 @@ html, body {
   z-index: 10;
 }
 
-.gallery {
-  margin-top: 80px;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 45px 5px;
-  justify-items: center;
+
+/* ====================
+   無限ループ
+==================== */
+
+.carousel-window {
+  width: 100%;
+  overflow: hidden;
+  padding-top: 75px;
+  cursor: grab;
+  touch-action: pan-y;
 }
 
-.bottle-link {
-  text-decoration: none;
-  color: #606487;
+.carousel-window.dragging {
+  cursor: grabbing;
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  will-change: transform;
+}
+
+.item {
+  flex: 0 0 170px;
+  width: 170px;
   text-align: center;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bottle-wrap {
+  width: 170px;
+  height: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .bottle {
   width: 135px;
   height: 170px;
   object-fit: contain;
-  transition: transform 0.25s;
+  pointer-events: none;
+  will-change: transform;
 }
 
-.bottle:hover {
-  transform: scale(1.05);
+
+/* ぷかぷか */
+
+.item:nth-child(1) .bottle {
+  animation: float1 4.2s ease-in-out infinite;
+}
+
+.item:nth-child(2) .bottle {
+  animation: float2 4.7s ease-in-out infinite;
+}
+
+.item:nth-child(3) .bottle {
+  animation: float3 4.4s ease-in-out infinite;
+}
+
+.item:nth-child(4) .bottle {
+  animation: float1 5s ease-in-out infinite;
+}
+
+.item:nth-child(5) .bottle {
+  animation: float2 4.5s ease-in-out infinite;
+}
+
+.item:nth-child(6) .bottle {
+  animation: float3 4.8s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(3px, -10px) rotate(0.6deg);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, -3px) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(-3px, 9px) rotate(-0.6deg);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translate(-2px, 2px) rotate(-0.3deg);
+  }
+
+  50% {
+    transform: translate(2px, -8px) rotate(0.5deg);
+  }
 }
 
 .title {
@@ -60,8 +142,13 @@ html, body {
   font-size: 12px;
   color: #606487;
   line-height: 1.5;
+  white-space: nowrap;
 }
 
+
+/* ====================
+   購入確認モーダル
+==================== */
 
 #noticeModal {
   display: none;
@@ -137,13 +224,20 @@ html, body {
 }
 
 
-
 @media (max-width: 600px) {
 
-  .gallery {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px 0;
-    padding: 0 5px;
+  .carousel-window {
+    padding-top: 70px;
+  }
+
+  .item {
+    flex-basis: 125px;
+    width: 125px;
+  }
+
+  .bottle-wrap {
+    width: 125px;
+    height: 155px;
   }
 
   .bottle {
@@ -154,7 +248,6 @@ html, body {
   }
 
   .title {
-    margin-top: 4px;
     font-size: 11px;
   }
 
@@ -181,37 +274,8 @@ html, body {
 <a href="neri.html" class="back">← 戻る</a>
 
 
-<div class="gallery">
-
-  <!-- ぶらぶらシリモニ -->
-  <a
-    href="https://sasadg.booth.pm/items/7975838"
-    class="bottle-link"
-  >
-    <img src="bin_uzu.png" class="bottle">
-    <div class="title">ぶらぶらシリモニ</div>
-  </a>
-
-
-  <!-- 足元ぐるぐる人外ズ シリモニ -->
-  <a
-    href="ここにBOOTHのURL"
-    class="bottle-link"
-  >
-    <img src="bin_uzu.png" class="bottle">
-    <div class="title">足元ぐるぐる人外ズ　シリモニ</div>
-  </a>
-
-
-  <!-- 足元ぐるぐる人外ズ 雪山組 -->
-  <a
-    href="ここにBOOTHのURL"
-    class="bottle-link"
-  >
-    <img src="bin_uzu.png" class="bottle">
-    <div class="title">足元ぐるぐる人外ズ　雪山組</div>
-  </a>
-
+<div class="carousel-window" id="carouselWindow">
+  <div class="carousel-track" id="track"></div>
 </div>
 
 
@@ -222,9 +286,11 @@ html, body {
     <h2>⚠️ 購入前にご確認ください</h2>
 
 
-    <!-- 日本語 -->
     <div class="language">
-      <div class="language-title">◆ 商品について</div>
+
+      <div class="language-title">
+        ◆ 商品について
+      </div>
 
       <p>
         ・複数回に分けてのご注文も含め、おひとり様2個までとなります。<br>
@@ -233,12 +299,15 @@ html, body {
         ・転売目的のご購入は禁止しております。<br>
         ・在庫がなくなり次第、販売終了となります。
       </p>
+
     </div>
 
 
-    <!-- English -->
     <div class="language">
-      <div class="language-title">◆ Please read before purchasing</div>
+
+      <div class="language-title">
+        ◆ Please read before purchasing
+      </div>
 
       <p>
         ・Limit: 2 items per person, including multiple separate orders.<br>
@@ -247,12 +316,15 @@ html, body {
         ・Purchases for resale are prohibited.<br>
         ・Sales will end when stock runs out.
       </p>
+
     </div>
 
 
-    <!-- 中文 -->
     <div class="language">
-      <div class="language-title">◆ 购买前请确认</div>
+
+      <div class="language-title">
+        ◆ 购买前请确认
+      </div>
 
       <p>
         ・每人最多购买2件，包括分多次下单的情况。<br>
@@ -261,12 +333,15 @@ html, body {
         ・禁止以转卖为目的购买。<br>
         ・售罄后将结束销售。
       </p>
+
     </div>
 
 
-    <!-- 한국어 -->
     <div class="language">
-      <div class="language-title">◆ 구매 전 확인해 주세요</div>
+
+      <div class="language-title">
+        ◆ 구매 전 확인해 주세요
+      </div>
 
       <p>
         ・여러 번 나누어 주문한 경우를 포함하여, 1인당 최대 2개까지 구매 가능합니다.<br>
@@ -275,6 +350,7 @@ html, body {
         ・재판매를 목적으로 한 구매는 금지됩니다.<br>
         ・재고 소진 시 판매가 종료됩니다.
       </p>
+
     </div>
 
 
@@ -299,74 +375,289 @@ html, body {
     </div>
 
   </div>
+
 </div>
 
 
 <script>
 
-const noticeModal = document.getElementById("noticeModal");
-const confirmButton = document.getElementById("confirmButton");
-const cancelButton = document.getElementById("cancelButton");
+const works = [
+
+  {
+    url: "https://sasadg.booth.pm/items/7975838",
+    title: "ぶらぶらシリモニ"
+  },
+
+  {
+    url: "ここにBOOTHのURL",
+    title: "足元ぐるぐる人外ズ　シリモニ"
+  },
+
+  {
+    url: "ここにBOOTHのURL",
+    title: "足元ぐるぐる人外ズ　雪山組"
+  }
+
+];
+
+const bottle = "bin_uzu.png";
+
+const track =
+  document.getElementById("track");
+
+const windowEl =
+  document.getElementById("carouselWindow");
+
+
+/* ====================
+   3つを大量に複製
+==================== */
+
+const copies = 9;
+
+for (let c = 0; c < copies; c++) {
+
+  works.forEach((work, index) => {
+
+    const item =
+      document.createElement("div");
+
+    item.className = "item";
+
+    item.dataset.index = index;
+
+    item.innerHTML = `
+      <div class="bottle-wrap">
+        <img
+          src="${bottle}"
+          class="bottle"
+          alt=""
+        >
+      </div>
+
+      <div class="title">
+        ${work.title}
+      </div>
+    `;
+
+    track.appendChild(item);
+
+  });
+
+}
+
+
+/* ====================
+   無限スクロール
+==================== */
+
+let position = 0;
+
+const velocity = -0.25;
+
+let dragging = false;
+let startX = 0;
+let lastX = 0;
+let moved = false;
+
+const itemWidth = () =>
+  window.innerWidth <= 600 ? 125 : 170;
+
+const loopWidth = () =>
+  itemWidth() * works.length;
+
+
+/* 真ん中付近から開始 */
+
+position = -(loopWidth() * 4);
+
+
+function normalizePosition() {
+
+  const width = loopWidth();
+
+  while (position < -(width * 5)) {
+    position += width;
+  }
+
+  while (position > -(width * 3)) {
+    position -= width;
+  }
+
+}
+
+
+function render() {
+
+  normalizePosition();
+
+  track.style.transform =
+    `translate3d(${position}px, 0, 0)`;
+
+  requestAnimationFrame(render);
+
+}
+
+
+function autoMove() {
+
+  if (!dragging) {
+    position += velocity;
+  }
+
+  requestAnimationFrame(autoMove);
+
+}
+
+
+/* ====================
+   ドラッグ
+==================== */
+
+function pointerDown(x) {
+
+  dragging = true;
+  moved = false;
+
+  startX = x;
+  lastX = x;
+
+  windowEl.classList.add("dragging");
+
+}
+
+
+function pointerMove(x) {
+
+  if (!dragging) return;
+
+  const dx = x - lastX;
+
+  if (Math.abs(x - startX) > 8) {
+    moved = true;
+  }
+
+  position += dx;
+
+  lastX = x;
+
+}
+
+
+function pointerUp() {
+
+  dragging = false;
+
+  windowEl.classList.remove("dragging");
+
+}
+
+
+windowEl.addEventListener("pointerdown", e => {
+  pointerDown(e.clientX);
+});
+
+windowEl.addEventListener("pointermove", e => {
+
+  if (dragging) {
+    pointerMove(e.clientX);
+  }
+
+});
+
+windowEl.addEventListener("pointerup", pointerUp);
+windowEl.addEventListener("pointercancel", pointerUp);
+windowEl.addEventListener("pointerleave", pointerUp);
+
+
+/* ====================
+   購入確認
+==================== */
+
+const noticeModal =
+  document.getElementById("noticeModal");
+
+const confirmButton =
+  document.getElementById("confirmButton");
+
+const cancelButton =
+  document.getElementById("cancelButton");
 
 let destinationUrl = "";
 
 
-document.querySelectorAll(".bottle-link").forEach(link => {
+track.addEventListener("click", e => {
 
-  link.addEventListener("click", function(event) {
+  if (moved) return;
 
-    event.preventDefault();
+  const item =
+    e.target.closest(".item");
 
-    destinationUrl = this.href;
+  if (!item) return;
 
-    noticeModal.style.display = "flex";
+  const index =
+    Number(item.dataset.index);
 
-  });
+  destinationUrl =
+    works[index].url;
+
+  noticeModal.style.display =
+    "flex";
 
 });
 
 
-confirmButton.addEventListener("click", function() {
+confirmButton.addEventListener("click", () => {
 
   if (destinationUrl) {
-    window.location.href = destinationUrl;
+    window.location.href =
+      destinationUrl;
   }
 
 });
 
 
-cancelButton.addEventListener("click", function() {
+function cancelPurchase() {
 
   destinationUrl = "";
-  noticeModal.style.display = "none";
 
-});
+  noticeModal.style.display =
+    "none";
 
-
-noticeModal.addEventListener("click", function(event) {
-
-  if (event.target === noticeModal) {
-
-    destinationUrl = "";
-    noticeModal.style.display = "none";
-
-  }
-
-});
+}
 
 
-document.addEventListener("keydown", function(event) {
+cancelButton.addEventListener(
+  "click",
+  cancelPurchase
+);
 
-  if (event.key === "Escape") {
 
-    destinationUrl = "";
-    noticeModal.style.display = "none";
+noticeModal.addEventListener(
+  "click",
+  e => {
+
+    if (e.target === noticeModal) {
+      cancelPurchase();
+    }
 
   }
+);
 
-});
+
+document.addEventListener(
+  "keydown",
+  e => {
+
+    if (e.key === "Escape") {
+      cancelPurchase();
+    }
+
+  }
+);
 
 </script>
 
 </body>
 </html>
+```

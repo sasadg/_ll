@@ -38,16 +38,16 @@ body {
   gap: 45px 5px;
 }
 
+.item {
+  text-align: center;
+  cursor: pointer;
+}
+
 .bottle {
   width: 135px;
   height: 170px;
   object-fit: contain;
   transition: transform 0.25s;
-}
-
-.item {
-  text-align: center;
-  cursor: pointer;
 }
 
 .item:hover .bottle {
@@ -122,10 +122,6 @@ body {
     font-size: 11px;
   }
 
-  .title {
-    font-size: 14px;
-  }
-
   .single-area {
     min-height: 100vh;
   }
@@ -198,48 +194,29 @@ let works = [];
 
 let current = 0;
 
-function loadIllustration(number) {
+
+
+function addImage(number) {
 
   const key =
     String(number).padStart(3, "0");
 
-  const src =
-    `${folder}/${key}.PNG`;
+  works.push({
 
-  const test =
-    new Image();
+    type: "image",
 
-  test.onload = function() {
+    src: `${folder}/${key}.PNG`,
 
-    works.push({
+    title:
+      titles[key] || ""
 
-      type: "image",
+  });
 
-      src: src,
-
-      title:
-        titles[key] || ""
-
-    });
-
-    addGalleryItem(
-      works.length - 1
-    );
-
-    loadIllustration(
-      number + 1
-    );
-
-  };
-
-  test.onerror = function() {
-
-    return;
-
-  };
-
-  test.src = src;
+  addGalleryItem(
+    works.length - 1
+  );
 }
+
 
 function addGalleryItem(index) {
 
@@ -278,6 +255,7 @@ function addGalleryItem(index) {
   gallery.appendChild(item);
 }
 
+
 function openWork(index) {
 
   current = index;
@@ -297,6 +275,7 @@ function openWork(index) {
   modal.scrollTop = 0;
 }
 
+
 function closeModal() {
 
   modal.classList.remove(
@@ -308,6 +287,7 @@ function closeModal() {
 
 }
 
+
 closeButton.addEventListener(
   "click",
   function(e) {
@@ -318,6 +298,7 @@ closeButton.addEventListener(
 
   }
 );
+
 
 modal.addEventListener(
   "click",
@@ -344,6 +325,8 @@ modal.addEventListener(
   }
 );
 
+
+
 document.addEventListener(
   "keydown",
   function(e) {
@@ -358,7 +341,9 @@ document.addEventListener(
 
     }
 
-    if (e.key === "Escape") {
+    if (
+      e.key === "Escape"
+    ) {
 
       closeModal();
 
@@ -367,7 +352,14 @@ document.addEventListener(
   }
 );
 
-loadIllustration(1);
+
+addImage(1);
+addImage(2);
+addImage(3);
+addImage(4);
+addImage(5);
+addImage(6);
+addImage(7);
 
 </script>
 

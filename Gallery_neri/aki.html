@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -15,50 +16,141 @@ body {
   margin: 0;
   padding: 0;
   background: #E4E5EE;
-  color: #E4E5EE;
+  color: #606487;
   font-family: "Hina Mincho", serif;
+  overflow-x: hidden;
 }
 
 .page {
-  width: 90vw;
-  max-width: 850px;
-  margin: 40px auto;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 40px;
 }
 
 .back {
+  display: block;
+  width: 90vw;
+  max-width: 850px;
+  margin: 0 auto;
   color: #606487;
   text-decoration: none;
   font-size: 16px;
 }
 
-.gallery {
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 45px 5px;
+/* ====================
+   無限ループ
+==================== */
+
+.carousel-window {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 55px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.carousel-window.dragging {
+  cursor: grabbing;
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  will-change: transform;
 }
 
 .item {
+  flex: 0 0 170px;
+  width: 170px;
   text-align: center;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bottle-wrap {
+  width: 170px;
+  height: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .bottle {
   width: 135px;
   height: 170px;
   object-fit: contain;
-  transition: transform 0.25s;
+  pointer-events: none;
+  will-change: transform;
 }
 
-.item:hover .bottle {
-  transform: scale(1.04);
+/* ぷかぷか */
+.item:nth-child(1) .bottle {
+  animation: float1 4.2s ease-in-out infinite;
+}
+
+.item:nth-child(2) .bottle {
+  animation: float2 4.7s ease-in-out infinite;
+}
+
+.item:nth-child(3) .bottle {
+  animation: float3 4.4s ease-in-out infinite;
+}
+
+.item:nth-child(4) .bottle {
+  animation: float1 5s ease-in-out infinite;
+}
+
+.item:nth-child(5) .bottle {
+  animation: float2 4.5s ease-in-out infinite;
+}
+
+.item:nth-child(6) .bottle {
+  animation: float3 4.8s ease-in-out infinite;
+}
+
+.item:nth-child(7) .bottle {
+  animation: float1 4.6s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(3px, -10px) rotate(0.6deg);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, -3px) rotate(0deg);
+  }
+  50% {
+    transform: translate(-3px, 9px) rotate(-0.6deg);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translate(-2px, 2px) rotate(-0.3deg);
+  }
+  50% {
+    transform: translate(2px, -8px) rotate(0.5deg);
+  }
 }
 
 .title {
   margin-top: 4px;
   font-size: 12px;
   color: #606487;
+  white-space: nowrap;
 }
+
+/* ====================
+   モーダル
+==================== */
 
 .modal {
   position: fixed;
@@ -106,9 +198,26 @@ body {
 
 @media (max-width: 600px) {
 
-  .gallery {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 30px 0px;
+  .page {
+    padding-top: 25px;
+  }
+
+  .back {
+    width: 90vw;
+  }
+
+  .carousel-window {
+    margin-top: 45px;
+  }
+
+  .item {
+    flex-basis: 125px;
+    width: 125px;
+  }
+
+  .bottle-wrap {
+    width: 125px;
+    height: 155px;
   }
 
   .bottle {
@@ -121,15 +230,6 @@ body {
   .title {
     font-size: 11px;
   }
-
-  .single-area {
-    min-height: 100vh;
-  }
-
-  .single {
-    max-width: 100vw;
-    max-height: 100vh;
-  }
 }
 </style>
 </head>
@@ -140,7 +240,9 @@ body {
 
   <a class="back" href="neri.html">← 色を変える</a>
 
-  <div class="gallery" id="gallery"></div>
+  <div class="carousel-window" id="carouselWindow">
+    <div class="carousel-track" id="track"></div>
+  </div>
 
 </div>
 
@@ -148,15 +250,8 @@ body {
 
   <div class="close" id="close">×</div>
 
-  <div class="single-area" id="singleArea">
-
-    <img
-      class="single"
-      id="single"
-      src=""
-      alt=""
-    >
-
+  <div class="single-area">
+    <img class="single" id="single" src="" alt="">
   </div>
 
 </div>
@@ -167,7 +262,6 @@ const folder = "aki-kobin";
 const bottle = "bin_aki.png";
 
 const titles = {
-
   "001": "紅葉の秋",
   "002": "実りの秋",
   "003": "食欲の秋",
@@ -175,196 +269,230 @@ const titles = {
   "005": "スポーツの秋",
   "006": "芸術の秋",
   "007": "紅葉の秋"
-
 };
 
-const gallery =
-  document.getElementById("gallery");
+const total = 7;
 
-const modal =
-  document.getElementById("modal");
-
-const closeButton =
-  document.getElementById("close");
-
-const single =
-  document.getElementById("single");
+const track = document.getElementById("track");
+const windowEl = document.getElementById("carouselWindow");
+const modal = document.getElementById("modal");
+const single = document.getElementById("single");
+const closeButton = document.getElementById("close");
 
 let works = [];
 
-let current = 0;
-
-
-function addImage(number) {
-
-  const key =
-    String(number).padStart(3, "0");
-
-  const src =
-    `${folder}/${key}.PNG`;
+for (let i = 1; i <= total; i++) {
+  const key = String(i).padStart(3, "0");
 
   works.push({
+    src: `${folder}/${key}.PNG`,
+    title: titles[key] || ""
+  });
+}
 
-    type: "image",
 
-    src: src,
+/* 同じ7枚を何セットも並べる */
+const copies = 9;
 
-    title:
-      titles[key] || ""
+for (let c = 0; c < copies; c++) {
+
+  works.forEach((work, index) => {
+
+    const item = document.createElement("div");
+    item.className = "item";
+
+    item.innerHTML = `
+      <div class="bottle-wrap">
+        <img class="bottle" src="${bottle}" alt="">
+      </div>
+      <div class="title">${work.title}</div>
+    `;
+
+    item.dataset.index = index;
+
+    track.appendChild(item);
 
   });
 
-  addGalleryItem(
-    works.length - 1
-  );
 }
 
 
+/* ====================
+   ドラッグ・自動移動
+==================== */
 
-function addGalleryItem(index) {
+let position = 0;
+let velocity = -0.25;
 
-  const work =
-    works[index];
+let dragging = false;
+let startX = 0;
+let lastX = 0;
+let moved = false;
 
-  const item =
-    document.createElement("div");
+const itemWidth = () =>
+  window.innerWidth <= 600 ? 125 : 170;
 
-  item.className =
-    "item";
+const loopWidth = () =>
+  itemWidth() * total;
 
-  item.innerHTML = `
 
-    <img
-      class="bottle"
-      src="${bottle}"
-      alt=""
-    >
+/* 真ん中のセット付近から開始 */
+position = -(loopWidth() * 4);
 
-    <div class="title">
-      ${work.title}
-    </div>
 
-  `;
+/* 位置を無限ループさせる */
+function normalizePosition() {
 
-  item.addEventListener(
-    "click",
-    function() {
+  const width = loopWidth();
 
-      openWork(index);
+  while (position < -(width * 5)) {
+    position += width;
+  }
 
-    }
-  );
+  while (position > -(width * 3)) {
+    position -= width;
+  }
 
-  gallery.appendChild(item);
 }
 
 
-function openWork(index) {
+function render() {
 
-  current = index;
+  normalizePosition();
 
-  const work =
-    works[current];
+  track.style.transform =
+    `translate3d(${position}px, 0, 0)`;
 
-  single.src = "";
+  requestAnimationFrame(render);
 
-  single.src =
-    work.src;
-
-  modal.classList.add(
-    "open"
-  );
-
-  modal.scrollTop = 0;
 }
+
+
+/* 自動で左へ */
+function autoMove() {
+
+  if (!dragging) {
+    position += velocity;
+  }
+
+  requestAnimationFrame(autoMove);
+
+}
+
+
+/* ====================
+   タッチ・マウス
+==================== */
+
+function pointerDown(x) {
+
+  dragging = true;
+  moved = false;
+
+  startX = x;
+  lastX = x;
+
+  windowEl.classList.add("dragging");
+}
+
+
+function pointerMove(x) {
+
+  if (!dragging) return;
+
+  const dx = x - lastX;
+
+  if (Math.abs(x - startX) > 8) {
+    moved = true;
+  }
+
+  position += dx;
+
+  lastX = x;
+}
+
+
+function pointerUp() {
+
+  if (!dragging) return;
+
+  dragging = false;
+  windowEl.classList.remove("dragging");
+
+}
+
+
+windowEl.addEventListener("pointerdown", e => {
+  pointerDown(e.clientX);
+});
+
+windowEl.addEventListener("pointermove", e => {
+  if (dragging) {
+    pointerMove(e.clientX);
+  }
+});
+
+windowEl.addEventListener("pointerup", pointerUp);
+windowEl.addEventListener("pointercancel", pointerUp);
+windowEl.addEventListener("pointerleave", pointerUp);
+
+
+/* タップしたときだけ画像を開く */
+track.addEventListener("click", e => {
+
+  if (moved) return;
+
+  const item = e.target.closest(".item");
+
+  if (!item) return;
+
+  const index = Number(item.dataset.index);
+  const work = works[index];
+
+  single.src = work.src;
+  modal.classList.add("open");
+
+});
 
 
 function closeModal() {
 
-  modal.classList.remove(
-    "open"
-  );
-
-  single.src =
-    "";
+  modal.classList.remove("open");
+  single.src = "";
 
 }
 
 
-closeButton.addEventListener(
-  "click",
-  function(e) {
+closeButton.addEventListener("click", e => {
+  e.stopPropagation();
+  closeModal();
+});
 
-    e.stopPropagation();
 
+modal.addEventListener("click", e => {
+
+  if (e.target === single) return;
+  if (e.target === closeButton) return;
+
+  closeModal();
+
+});
+
+
+document.addEventListener("keydown", e => {
+
+  if (e.key === "Escape") {
     closeModal();
-
   }
-);
+
+});
 
 
-modal.addEventListener(
-  "click",
-  function(e) {
-
-    if (
-      e.target === single
-    ) {
-
-      return;
-
-    }
-
-    if (
-      e.target === closeButton
-    ) {
-
-      return;
-
-    }
-
-    closeModal();
-
-  }
-);
-
-
-
-document.addEventListener(
-  "keydown",
-  function(e) {
-
-    if (
-      !modal.classList.contains(
-        "open"
-      )
-    ) {
-
-      return;
-
-    }
-
-    if (
-      e.key === "Escape"
-    ) {
-
-      closeModal();
-
-    }
-
-  }
-);
-
-
-addImage(1);
-addImage(2);
-addImage(3);
-addImage(4);
-addImage(5);
-addImage(6);
-addImage(7);
+render();
+autoMove();
 
 </script>
 
 </body>
 </html>
+```

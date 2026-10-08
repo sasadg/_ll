@@ -213,7 +213,7 @@ body {
 
 <script>
 
-const folder = "白薔薇の小瓶";
+const folder = "shirobara-kobin";
 const bottle = "bin_shirobara.png";
 
 const titles = {
@@ -248,6 +248,7 @@ const comic =
 let works = [];
 
 let current = 0;
+
 
 
 function addImage() {
@@ -327,6 +328,7 @@ function addGalleryItem(index) {
 
 
 
+
 function openWork(index) {
 
   current = index;
@@ -376,16 +378,15 @@ function openWork(index) {
 }
 
 
+
 function loadComic(folder) {
 
   const pages = [
 
     "001.PNG",
-
     "002.PNG"
 
   ];
-
 
   pages.forEach(
     function(file) {
@@ -408,6 +409,7 @@ function loadComic(folder) {
 }
 
 
+
 function closeModal() {
 
   modal.classList.remove(
@@ -419,6 +421,7 @@ function closeModal() {
 
   comic.innerHTML =
     "";
+
 }
 
 
@@ -434,6 +437,8 @@ closeButton.addEventListener(
 );
 
 
+
+
 modal.addEventListener(
   "click",
   function(e) {
@@ -446,7 +451,6 @@ modal.addEventListener(
 
     }
 
-
     if (
       e.target.tagName === "IMG" &&
       comic.contains(e.target)
@@ -456,7 +460,6 @@ modal.addEventListener(
 
     }
 
-
     if (
       e.target === closeButton
     ) {
@@ -465,11 +468,11 @@ modal.addEventListener(
 
     }
 
-
     closeModal();
 
   }
 );
+
 
 
 document.addEventListener(
@@ -486,7 +489,6 @@ document.addEventListener(
 
     }
 
-
     if (
       e.key === "Escape"
     ) {
@@ -497,6 +499,7 @@ document.addEventListener(
 
   }
 );
+
 
 
 addImage();

@@ -14,28 +14,29 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: #F8F6F0;
+  background: #E4E5EE;
   color: #606487;
   font-family: "Hina Mincho", serif;
-  overflow-x: hidden;
 }
 
+/* 戻る */
 .back {
   position: fixed;
   top: 20px;
-  left: 20px;
+  left: 25px;
+  z-index: 20;
   color: #606487;
   text-decoration: none;
-  font-size: 16px;
-  z-index: 10;
+  font-size: 18px;
 }
 
 
 /* ====================
-   無限ループ
+   カルーセル
 ==================== */
 
 .carousel-window {
+  position: relative;
   width: 100%;
   overflow: hidden;
   padding-top: 75px;
@@ -43,9 +44,43 @@ body {
   touch-action: pan-y;
 }
 
+
+/* 左右をふわっと薄くする */
+
+.carousel-window::before,
+.carousel-window::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.carousel-window::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #E4E5EE 0%,
+    rgba(228, 229, 238, 0) 100%
+  );
+}
+
+.carousel-window::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #E4E5EE 0%,
+    rgba(228, 229, 238, 0) 100%
+  );
+}
+
+
 .carousel-window.dragging {
   cursor: grabbing;
 }
+
 
 .carousel-track {
   display: flex;
@@ -54,29 +89,31 @@ body {
   will-change: transform;
 }
 
+
 .item {
   flex: 0 0 170px;
   width: 170px;
   text-align: center;
-  cursor: pointer;
   user-select: none;
-  -webkit-user-select: none;
 }
+
+
+/* 小瓶 */
 
 .bottle-wrap {
   width: 170px;
   height: 190px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
+
 
 .bottle {
   width: 135px;
   height: 170px;
   object-fit: contain;
-  pointer-events: none;
-  will-change: transform;
+  cursor: pointer;
 }
 
 
@@ -85,65 +122,93 @@ body {
 ==================== */
 
 .item:nth-child(1) .bottle {
-  animation: float1 4.2s ease-in-out infinite;
+  animation:
+    float1 4.2s ease-in-out infinite;
 }
 
 .item:nth-child(2) .bottle {
-  animation: float2 4.7s ease-in-out infinite;
+  animation:
+    float2 4.7s ease-in-out infinite;
 }
 
 .item:nth-child(3) .bottle {
-  animation: float3 4.4s ease-in-out infinite;
+  animation:
+    float3 4.4s ease-in-out infinite;
 }
 
 .item:nth-child(4) .bottle {
-  animation: float1 5s ease-in-out infinite;
+  animation:
+    float1 5s ease-in-out infinite;
 }
 
 .item:nth-child(5) .bottle {
-  animation: float2 4.5s ease-in-out infinite;
+  animation:
+    float2 4.5s ease-in-out infinite;
 }
 
 .item:nth-child(6) .bottle {
-  animation: float3 4.8s ease-in-out infinite;
+  animation:
+    float3 4.8s ease-in-out infinite;
 }
+
 
 @keyframes float1 {
+
   0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
+    transform:
+      translate(0, 0)
+      rotate(0deg);
   }
 
   50% {
-    transform: translate(3px, -10px) rotate(0.6deg);
+    transform:
+      translate(3px, -10px)
+      rotate(0.6deg);
   }
+
 }
+
 
 @keyframes float2 {
+
   0%, 100% {
-    transform: translate(0, -3px) rotate(0deg);
+    transform:
+      translate(0, -3px)
+      rotate(0deg);
   }
 
   50% {
-    transform: translate(-3px, 9px) rotate(-0.6deg);
+    transform:
+      translate(-3px, 9px)
+      rotate(-0.6deg);
   }
+
 }
+
 
 @keyframes float3 {
+
   0%, 100% {
-    transform: translate(-2px, 2px) rotate(-0.3deg);
+    transform:
+      translate(-2px, 2px)
+      rotate(-0.3deg);
   }
 
   50% {
-    transform: translate(2px, -8px) rotate(0.5deg);
+    transform:
+      translate(2px, -8px)
+      rotate(0.5deg);
   }
+
 }
 
+
+/* タイトル */
+
 .title {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #606487;
-  line-height: 1.5;
-  white-space: nowrap;
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 
@@ -155,232 +220,168 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
   z-index: 100;
+  background: rgba(40, 42, 60, 0.35);
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.notice-box {
-  width: min(520px, 100%);
-  max-height: 85vh;
-  overflow-y: auto;
 
+.modal-box {
+  width: min(420px, 90vw);
   background: #E4E5EE;
-  color: #606487;
-
-  padding: 28px 24px 24px;
-  border-radius: 10px;
-
-  text-align: left;
-  line-height: 1.7;
-  font-size: 13px;
-}
-
-.notice-box h2 {
-  margin: 0 0 18px;
+  padding: 28px 25px;
   text-align: center;
-  font-size: 18px;
-  font-weight: normal;
+  color: #606487;
+  box-shadow:
+    0 8px 30px
+    rgba(50, 50, 70, 0.15);
 }
 
-.notice-box p {
+
+.modal-box p {
   margin: 0 0 18px;
+  line-height: 1.8;
 }
 
-.notice-box .language {
-  margin-top: 22px;
+
+.modal-box .notice {
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 20px;
 }
 
-.notice-box .language-title {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
 
-.notice-buttons {
+.modal-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 12px;
 }
 
-.notice-buttons button {
-  border: none;
-  padding: 9px 22px;
-  border-radius: 5px;
+
+.modal-buttons button {
+  border: 1px solid #606487;
+  background: transparent;
+  color: #606487;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
+  padding: 7px 22px;
   cursor: pointer;
 }
 
-.cancel-button {
-  background: #ffffff;
-  color: #606487;
+
+.modal-buttons button:hover {
+  background:
+    rgba(96, 100, 135, 0.08);
 }
 
-.confirm-button {
-  background: #606487;
-  color: white;
-}
 
+/* ====================
+   スマホ
+==================== */
 
 @media (max-width: 600px) {
 
-  .carousel-window {
-    padding-top: 70px;
+  .back {
+    top: 14px;
+    left: 16px;
+    font-size: 16px;
   }
 
+
+  .carousel-window {
+    padding-top: 65px;
+  }
+
+
+  /* スマホでは薄くなる範囲を短く */
+
+  .carousel-window::before,
+  .carousel-window::after {
+    width: 70px;
+  }
+
+
   .item {
-    flex-basis: 125px;
+    flex: 0 0 125px;
     width: 125px;
   }
+
 
   .bottle-wrap {
     width: 125px;
     height: 155px;
   }
 
+
   .bottle {
     width: 30vw;
     height: 38vw;
-    max-width: 115px;
-    max-height: 145px;
+    max-width: 125px;
+    max-height: 155px;
   }
+
 
   .title {
-    font-size: 11px;
+    font-size: 14px;
   }
 
-  .notice-box {
-    padding: 24px 18px 20px;
-    font-size: 12px;
-  }
-
-  .notice-box h2 {
-    font-size: 17px;
-  }
-
-  .notice-buttons button {
-    font-size: 13px;
-    padding: 8px 18px;
-  }
 }
+
 </style>
 </head>
 
 
 <body>
 
-<a href="neri.html" class="back">← 戻る</a>
+
+<a
+  href="neri.html"
+  class="back"
+>
+  ← 戻る
+</a>
 
 
-<div class="carousel-window" id="carouselWindow">
+<div
+  class="carousel-window"
+  id="carouselWindow"
+>
 
-  <div class="carousel-track" id="track"></div>
+  <div
+    class="carousel-track"
+    id="carouselTrack"
+  ></div>
 
 </div>
 
 
+<!-- 購入確認 -->
+
 <div id="noticeModal">
 
-  <div class="notice-box">
+  <div class="modal-box">
 
-    <h2>⚠️ 購入前にご確認ください</h2>
+    <p>
+      BOOTHの商品ページへ移動します。
+    </p>
 
-
-    <!-- 日本語 -->
-
-    <div class="language">
-
-      <div class="language-title">
-        ◆ 商品について
-      </div>
-
-      <p>
-        ・複数回に分けてのご注文も含め、おひとり様2個までとなります。<br>
-        ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
-        ・発送はネコポスで行います。<br>
-        ・転売目的のご購入は禁止しております。<br>
-        ・在庫がなくなり次第、販売終了となります。
-      </p>
-
+    <div class="notice">
+      この作品はBOOTHで販売しています。<br>
+      You will be redirected to BOOTH.<br>
+      将跳转至 BOOTH。<br>
+      BOOTH 상품 페이지로 이동합니다.
     </div>
 
+    <div class="modal-buttons">
 
-    <!-- English -->
-
-    <div class="language">
-
-      <div class="language-title">
-        ◆ Please read before purchasing
-      </div>
-
-      <p>
-        ・Limit: 2 items per person, including multiple separate orders.<br>
-        ※If you purchase 3 or more items, all of your orders from LUMI. will be refunded.<br>
-        ・Orders will be shipped via Nekopos.<br>
-        ・Purchases for resale are prohibited.<br>
-        ・Sales will end when stock runs out.
-      </p>
-
-    </div>
-
-
-    <!-- 中文 -->
-
-    <div class="language">
-
-      <div class="language-title">
-        ◆ 购买前请确认
-      </div>
-
-      <p>
-        ・每人最多购买2件，包括分多次下单的情况。<br>
-        ※如果购买3件或以上，您在LUMI.购买的所有订单都将被退款。<br>
-        ・商品将通过Nekopos寄送。<br>
-        ・禁止以转卖为目的购买。<br>
-        ・售罄后将结束销售。
-      </p>
-
-    </div>
-
-
-    <!-- 한국어 -->
-
-    <div class="language">
-
-      <div class="language-title">
-        ◆ 구매 전 확인해 주세요
-      </div>
-
-      <p>
-        ・여러 번 나누어 주문한 경우를 포함하여, 1인당 최대 2개까지 구매 가능합니다.<br>
-        ※3개 이상 구매하신 경우, LUMI.에서 구매하신 모든 주문이 환불됩니다.<br>
-        ・상품은 네코포스로 배송됩니다.<br>
-        ・재판매를 목적으로 한 구매는 금지됩니다.<br>
-        ・재고 소진 시 판매가 종료됩니다.
-      </p>
-
-    </div>
-
-
-    <div class="notice-buttons">
-
-      <button
-        type="button"
-        class="cancel-button"
-        id="cancelButton"
-      >
+      <button id="cancelBtn">
         戻る
       </button>
 
-      <button
-        type="button"
-        class="confirm-button"
-        id="confirmButton"
-      >
-        確認しました
+      <button id="confirmBtn">
+        BOOTHへ
       </button>
 
     </div>
@@ -392,70 +393,123 @@ body {
 
 <script>
 
+
 const works = [
 
   {
-    url: "https://sasadg.booth.pm/items/7975838",
-    title: "宙ぶらりん<br>シリモニ"
+    url:
+      "https://sasadg.booth.pm/items/7975838",
+
+    title:
+      "宙ぶらりん<br>シリモニ"
   },
 
   {
-    url: "ここにBOOTHのURL",
-    title: "足元ぐるぐる人外ズ<br>シリモニ"
+    url:
+      "ここにBOOTHのURL",
+
+    title:
+      "足元ぐるぐる人外ズ<br>シリモニ"
   },
 
   {
-    url: "ここにBOOTHのURL",
-    title: "足元ぐるぐる人外ズ<br>雪山組"
+    url:
+      "ここにBOOTHのURL",
+
+    title:
+      "足元ぐるぐる人外ズ<br>雪山組"
   }
 
 ];
 
-const bottle = "bin_uzu.png";
+
+const bottle =
+  "bin_uzu.png";
+
 
 const track =
-  document.getElementById("track");
+  document.getElementById(
+    "carouselTrack"
+  );
+
 
 const windowEl =
-  document.getElementById("carouselWindow");
+  document.getElementById(
+    "carouselWindow"
+  );
+
+
+const noticeModal =
+  document.getElementById(
+    "noticeModal"
+  );
+
+
+const cancelBtn =
+  document.getElementById(
+    "cancelBtn"
+  );
+
+
+const confirmBtn =
+  document.getElementById(
+    "confirmBtn"
+  );
 
 
 /* ====================
-   3つを大量に複製
+   3作品を大量に複製
 ==================== */
 
-const copies = 9;
+const repeatCount = 9;
 
-for (let c = 0; c < copies; c++) {
 
-  works.forEach((work, index) => {
+for (
+  let r = 0;
+  r < repeatCount;
+  r++
+) {
 
-    const item =
-      document.createElement("div");
+  works.forEach(
+    (work, index) => {
 
-    item.className = "item";
+      const item =
+        document.createElement(
+          "div"
+        );
 
-    item.dataset.index = index;
 
-    item.innerHTML = `
-      <div class="bottle-wrap">
+      item.className =
+        "item";
 
-        <img
-          src="${bottle}"
-          class="bottle"
-          alt=""
-        >
 
-      </div>
+      item.dataset.index =
+        index;
 
-      <div class="title">
-        ${work.title}
-      </div>
-    `;
 
-    track.appendChild(item);
+      item.innerHTML = `
 
-  });
+        <div class="bottle-wrap">
+
+          <img
+            src="${bottle}"
+            class="bottle"
+            draggable="false"
+          >
+
+        </div>
+
+        <div class="title">
+          ${work.title}
+        </div>
+
+      `;
+
+
+      track.appendChild(item);
+
+    }
+  );
 
 }
 
@@ -466,36 +520,50 @@ for (let c = 0; c < copies; c++) {
 
 let position = 0;
 
-const velocity = -0.55;
+
+const velocity =
+  -0.55;
+
 
 let dragging = false;
+
 
 let startX = 0;
 let lastX = 0;
 
+
 let moved = false;
+
 
 let cycleWidth = 0;
 
 
-/* ====================
-   実際の3個分の幅を取得
-==================== */
+/* 3個分の実際の幅 */
 
 function updateCycleWidth() {
 
   const items =
-    track.querySelectorAll(".item");
+    track.querySelectorAll(
+      ".item"
+    );
 
-  if (items.length < 4) {
+
+  if (
+    items.length < 4
+  ) {
     return;
   }
 
+
   const first =
-    items[0].getBoundingClientRect();
+    items[0]
+      .getBoundingClientRect();
+
 
   const fourth =
-    items[3].getBoundingClientRect();
+    items[3]
+      .getBoundingClientRect();
+
 
   cycleWidth =
     fourth.left - first.left;
@@ -503,9 +571,7 @@ function updateCycleWidth() {
 }
 
 
-/* ====================
-   初期位置
-==================== */
+/* 初期位置 */
 
 function setInitialPosition() {
 
@@ -517,9 +583,7 @@ function setInitialPosition() {
 }
 
 
-/* ====================
-   無限ループ処理
-==================== */
+/* 無限ループ */
 
 function normalizePosition() {
 
@@ -527,60 +591,74 @@ function normalizePosition() {
     return;
   }
 
+
   while (
-    position <= -cycleWidth * 5
+    position <=
+    -cycleWidth * 5
   ) {
 
-    position += cycleWidth;
+    position +=
+      cycleWidth;
 
   }
 
+
   while (
-    position >= -cycleWidth * 3
+    position >=
+    -cycleWidth * 3
   ) {
 
-    position -= cycleWidth;
+    position -=
+      cycleWidth;
 
   }
 
 }
 
 
-/* ====================
-   表示
-==================== */
+/* 表示 */
 
 function render() {
 
   normalizePosition();
 
-  track.style.transform =
-    `translate3d(${position}px, 0, 0)`;
 
-  requestAnimationFrame(render);
+  track.style.transform =
+    `translate3d(
+      ${position}px,
+      0,
+      0
+    )`;
+
+
+  requestAnimationFrame(
+    render
+  );
 
 }
 
 
-/* ====================
-   自動で左へ流す
-==================== */
+/* 自動移動 */
 
 function autoMove() {
 
   if (!dragging) {
 
-    position += velocity;
+    position +=
+      velocity;
 
   }
 
-  requestAnimationFrame(autoMove);
+
+  requestAnimationFrame(
+    autoMove
+  );
 
 }
 
 
 /* ====================
-   ドラッグ開始
+   ドラッグ
 ==================== */
 
 function pointerDown(x) {
@@ -590,7 +668,6 @@ function pointerDown(x) {
   moved = false;
 
   startX = x;
-
   lastX = x;
 
   windowEl.classList.add(
@@ -600,26 +677,27 @@ function pointerDown(x) {
 }
 
 
-/* ====================
-   ドラッグ中
-==================== */
-
 function pointerMove(x) {
 
   if (!dragging) {
     return;
   }
 
+
   const dx =
     x - lastX;
 
+
   if (
-    Math.abs(x - startX) > 8
+    Math.abs(
+      x - startX
+    ) > 8
   ) {
 
     moved = true;
 
   }
+
 
   position += dx;
 
@@ -628,17 +706,15 @@ function pointerMove(x) {
 }
 
 
-/* ====================
-   ドラッグ終了
-==================== */
-
 function pointerUp() {
 
   if (!dragging) {
     return;
   }
 
+
   dragging = false;
+
 
   windowEl.classList.remove(
     "dragging"
@@ -651,7 +727,9 @@ windowEl.addEventListener(
   "pointerdown",
   e => {
 
-    pointerDown(e.clientX);
+    pointerDown(
+      e.clientX
+    );
 
   }
 );
@@ -686,25 +764,11 @@ windowEl.addEventListener(
 
 
 /* ====================
-   購入確認
+   クリック
 ==================== */
 
-const noticeModal =
-  document.getElementById(
-    "noticeModal"
-  );
-
-const confirmButton =
-  document.getElementById(
-    "confirmButton"
-  );
-
-const cancelButton =
-  document.getElementById(
-    "cancelButton"
-  );
-
-let destinationUrl = "";
+let destinationUrl =
+  "";
 
 
 track.addEventListener(
@@ -719,20 +783,27 @@ track.addEventListener(
 
     }
 
+
     const item =
-      e.target.closest(".item");
+      e.target.closest(
+        ".item"
+      );
+
 
     if (!item) {
       return;
     }
+
 
     const index =
       Number(
         item.dataset.index
       );
 
+
     destinationUrl =
       works[index].url;
+
 
     noticeModal.style.display =
       "flex";
@@ -741,11 +812,9 @@ track.addEventListener(
 );
 
 
-/* ====================
-   購入ページへ
-==================== */
+/* BOOTHへ */
 
-confirmButton.addEventListener(
+confirmBtn.addEventListener(
   "click",
   () => {
 
@@ -760,35 +829,38 @@ confirmButton.addEventListener(
 );
 
 
-/* ====================
-   キャンセル
-==================== */
+/* 戻る */
 
-function cancelPurchase() {
-
-  destinationUrl = "";
-
-  noticeModal.style.display =
-    "none";
-
-}
-
-
-cancelButton.addEventListener(
+cancelBtn.addEventListener(
   "click",
-  cancelPurchase
+  () => {
+
+    destinationUrl =
+      "";
+
+    noticeModal.style.display =
+      "none";
+
+  }
 );
 
+
+/* モーダル外クリック */
 
 noticeModal.addEventListener(
   "click",
   e => {
 
     if (
-      e.target === noticeModal
+      e.target ===
+      noticeModal
     ) {
 
-      cancelPurchase();
+      destinationUrl =
+        "";
+
+      noticeModal.style.display =
+        "none";
 
     }
 
@@ -796,17 +868,21 @@ noticeModal.addEventListener(
 );
 
 
-/* ====================
-   ESCで閉じる
-==================== */
+/* ESC */
 
 document.addEventListener(
   "keydown",
   e => {
 
-    if (e.key === "Escape") {
+    if (
+      e.key === "Escape"
+    ) {
 
-      cancelPurchase();
+      destinationUrl =
+        "";
+
+      noticeModal.style.display =
+        "none";
 
     }
 
@@ -832,9 +908,7 @@ window.addEventListener(
 );
 
 
-/* ====================
-   画面サイズ変更
-==================== */
+/* 画面サイズ変更 */
 
 window.addEventListener(
   "resize",

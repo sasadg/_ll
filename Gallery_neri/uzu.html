@@ -80,7 +80,9 @@ body {
 }
 
 
-/* ぷかぷか */
+/* ====================
+   ぷかぷか
+==================== */
 
 .item:nth-child(1) .bottle {
   animation: float1 4.2s ease-in-out infinite;
@@ -274,7 +276,9 @@ body {
 
 
 <div class="carousel-window" id="carouselWindow">
+
   <div class="carousel-track" id="track"></div>
+
 </div>
 
 
@@ -284,6 +288,8 @@ body {
 
     <h2>⚠️ 購入前にご確認ください</h2>
 
+
+    <!-- 日本語 -->
 
     <div class="language">
 
@@ -302,6 +308,8 @@ body {
     </div>
 
 
+    <!-- English -->
+
     <div class="language">
 
       <div class="language-title">
@@ -319,6 +327,8 @@ body {
     </div>
 
 
+    <!-- 中文 -->
+
     <div class="language">
 
       <div class="language-title">
@@ -335,6 +345,8 @@ body {
 
     </div>
 
+
+    <!-- 한국어 -->
 
     <div class="language">
 
@@ -384,17 +396,17 @@ const works = [
 
   {
     url: "https://sasadg.booth.pm/items/7975838",
-    title: "宙ぶらりん〈br〉シリモニ"
+    title: "宙ぶらりん<br>シリモニ"
   },
 
   {
     url: "ここにBOOTHのURL",
-    title: "足元ぐるぐる人外ズ〈br〉シリモニ"
+    title: "足元ぐるぐる人外ズ<br>シリモニ"
   },
 
   {
     url: "ここにBOOTHのURL",
-    title: "足元ぐるぐる人外ズ〈br〉雪山組"
+    title: "足元ぐるぐる人外ズ<br>雪山組"
   }
 
 ];
@@ -427,11 +439,13 @@ for (let c = 0; c < copies; c++) {
 
     item.innerHTML = `
       <div class="bottle-wrap">
+
         <img
           src="${bottle}"
           class="bottle"
           alt=""
         >
+
       </div>
 
       <div class="title">
@@ -452,39 +466,89 @@ for (let c = 0; c < copies; c++) {
 
 let position = 0;
 
-const velocity = -0.8;
+const velocity = -0.55;
 
 let dragging = false;
+
 let startX = 0;
 let lastX = 0;
+
 let moved = false;
 
-const itemWidth = () =>
-  window.innerWidth <= 600 ? 125 : 170;
-
-const loopWidth = () =>
-  itemWidth() * works.length;
+let cycleWidth = 0;
 
 
-/* 真ん中付近から開始 */
+/* ====================
+   実際の3個分の幅を取得
+==================== */
 
-position = -(loopWidth() * 4);
+function updateCycleWidth() {
 
+  const items =
+    track.querySelectorAll(".item");
+
+  if (items.length < 4) {
+    return;
+  }
+
+  const first =
+    items[0].getBoundingClientRect();
+
+  const fourth =
+    items[3].getBoundingClientRect();
+
+  cycleWidth =
+    fourth.left - first.left;
+
+}
+
+
+/* ====================
+   初期位置
+==================== */
+
+function setInitialPosition() {
+
+  updateCycleWidth();
+
+  position =
+    -cycleWidth * 4;
+
+}
+
+
+/* ====================
+   無限ループ処理
+==================== */
 
 function normalizePosition() {
 
-  const width = loopWidth();
-
-  while (position < -(width * 5)) {
-    position += width;
+  if (!cycleWidth) {
+    return;
   }
 
-  while (position > -(width * 3)) {
-    position -= width;
+  while (
+    position <= -cycleWidth * 5
+  ) {
+
+    position += cycleWidth;
+
+  }
+
+  while (
+    position >= -cycleWidth * 3
+  ) {
+
+    position -= cycleWidth;
+
   }
 
 }
 
+
+/* ====================
+   表示
+==================== */
 
 function render() {
 
@@ -498,10 +562,16 @@ function render() {
 }
 
 
+/* ====================
+   自動で左へ流す
+==================== */
+
 function autoMove() {
 
   if (!dragging) {
+
     position += velocity;
+
   }
 
   requestAnimationFrame(autoMove);
@@ -510,30 +580,45 @@ function autoMove() {
 
 
 /* ====================
-   ドラッグ
+   ドラッグ開始
 ==================== */
 
 function pointerDown(x) {
 
   dragging = true;
+
   moved = false;
 
   startX = x;
+
   lastX = x;
 
-  windowEl.classList.add("dragging");
+  windowEl.classList.add(
+    "dragging"
+  );
 
 }
 
 
+/* ====================
+   ドラッグ中
+==================== */
+
 function pointerMove(x) {
 
-  if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
 
-  const dx = x - lastX;
+  const dx =
+    x - lastX;
 
-  if (Math.abs(x - startX) > 8) {
+  if (
+    Math.abs(x - startX) > 8
+  ) {
+
     moved = true;
+
   }
 
   position += dx;
@@ -543,30 +628,61 @@ function pointerMove(x) {
 }
 
 
+/* ====================
+   ドラッグ終了
+==================== */
+
 function pointerUp() {
+
+  if (!dragging) {
+    return;
+  }
 
   dragging = false;
 
-  windowEl.classList.remove("dragging");
+  windowEl.classList.remove(
+    "dragging"
+  );
 
 }
 
 
-windowEl.addEventListener("pointerdown", e => {
-  pointerDown(e.clientX);
-});
+windowEl.addEventListener(
+  "pointerdown",
+  e => {
 
-windowEl.addEventListener("pointermove", e => {
+    pointerDown(e.clientX);
 
-  if (dragging) {
-    pointerMove(e.clientX);
   }
+);
 
-});
 
-windowEl.addEventListener("pointerup", pointerUp);
-windowEl.addEventListener("pointercancel", pointerUp);
-windowEl.addEventListener("pointerleave", pointerUp);
+windowEl.addEventListener(
+  "pointermove",
+  e => {
+
+    if (dragging) {
+
+      pointerMove(
+        e.clientX
+      );
+
+    }
+
+  }
+);
+
+
+windowEl.addEventListener(
+  "pointerup",
+  pointerUp
+);
+
+
+windowEl.addEventListener(
+  "pointercancel",
+  pointerUp
+);
 
 
 /* ====================
@@ -574,47 +690,79 @@ windowEl.addEventListener("pointerleave", pointerUp);
 ==================== */
 
 const noticeModal =
-  document.getElementById("noticeModal");
+  document.getElementById(
+    "noticeModal"
+  );
 
 const confirmButton =
-  document.getElementById("confirmButton");
+  document.getElementById(
+    "confirmButton"
+  );
 
 const cancelButton =
-  document.getElementById("cancelButton");
+  document.getElementById(
+    "cancelButton"
+  );
 
 let destinationUrl = "";
 
 
-track.addEventListener("click", e => {
+track.addEventListener(
+  "click",
+  e => {
 
-  if (moved) return;
+    if (moved) {
 
-  const item =
-    e.target.closest(".item");
+      moved = false;
 
-  if (!item) return;
+      return;
 
-  const index =
-    Number(item.dataset.index);
+    }
 
-  destinationUrl =
-    works[index].url;
+    const item =
+      e.target.closest(".item");
 
-  noticeModal.style.display =
-    "flex";
+    if (!item) {
+      return;
+    }
 
-});
+    const index =
+      Number(
+        item.dataset.index
+      );
 
+    destinationUrl =
+      works[index].url;
 
-confirmButton.addEventListener("click", () => {
+    noticeModal.style.display =
+      "flex";
 
-  if (destinationUrl) {
-    window.location.href =
-      destinationUrl;
   }
+);
 
-});
 
+/* ====================
+   購入ページへ
+==================== */
+
+confirmButton.addEventListener(
+  "click",
+  () => {
+
+    if (destinationUrl) {
+
+      window.location.href =
+        destinationUrl;
+
+    }
+
+  }
+);
+
+
+/* ====================
+   キャンセル
+==================== */
 
 function cancelPurchase() {
 
@@ -636,21 +784,63 @@ noticeModal.addEventListener(
   "click",
   e => {
 
-    if (e.target === noticeModal) {
+    if (
+      e.target === noticeModal
+    ) {
+
       cancelPurchase();
+
     }
 
   }
 );
 
 
+/* ====================
+   ESCで閉じる
+==================== */
+
 document.addEventListener(
   "keydown",
   e => {
 
     if (e.key === "Escape") {
+
       cancelPurchase();
+
     }
+
+  }
+);
+
+
+/* ====================
+   開始
+==================== */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    setInitialPosition();
+
+    render();
+
+    autoMove();
+
+  }
+);
+
+
+/* ====================
+   画面サイズ変更
+==================== */
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    updateCycleWidth();
 
   }
 );

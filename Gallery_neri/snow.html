@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -382,79 +383,111 @@ body {
 }
 
 
-.modal-box {
+.notice-box {
 
-  width: min(420px, 90vw);
+  width: min(520px, 100%);
+
+  max-height: 85vh;
+
+  overflow-y: auto;
 
   background: #F8F6F0;
 
-  padding: 28px 25px;
-
-  text-align: center;
-
   color: #886F58;
 
-  box-shadow:
-    0 8px 30px
-    rgba(50, 50, 70, 0.15);
+  padding: 28px 24px 24px;
+
+  border-radius: 10px;
+
+  text-align: left;
+
+  line-height: 1.7;
+
+  font-size: 13px;
 
 }
 
 
-.modal-box p {
+.notice-box h2 {
 
   margin: 0 0 18px;
 
-  line-height: 1.8;
+  text-align: center;
+
+  font-size: 18px;
+
+  font-weight: normal;
 
 }
 
 
-.modal-box .notice {
+.notice-box p {
 
-  font-size: 14px;
-
-  line-height: 1.8;
-
-  margin-bottom: 20px;
+  margin: 0 0 18px;
 
 }
 
 
-.modal-buttons {
+.notice-box .language {
+
+  margin-top: 22px;
+
+}
+
+
+.notice-box .language-title {
+
+  font-weight: bold;
+
+  margin-bottom: 5px;
+
+}
+
+
+.notice-buttons {
 
   display: flex;
 
   justify-content: center;
 
-  gap: 12px;
+  gap: 10px;
+
+  margin-top: 24px;
 
 }
 
 
-.modal-buttons button {
+.notice-buttons button {
 
-  border: 1px solid #886F58;
+  border: none;
 
-  background: transparent;
+  padding: 9px 22px;
 
-  color: #886F58;
+  border-radius: 5px;
 
   font-family: inherit;
 
-  font-size: 15px;
-
-  padding: 7px 22px;
+  font-size: 14px;
 
   cursor: pointer;
 
 }
 
 
-.modal-buttons button:hover {
+.cancel-button {
 
-  background:
-    rgba(136, 111, 88, 0.08);
+  background: #ffffff;
+
+  color: #886F58;
+
+}
+
+
+.confirm-button {
+
+  background: #886F58;
+
+  color: white;
 
 }
 
@@ -485,8 +518,6 @@ body {
 
   }
 
-
-  /* スマホでは薄くなる範囲を短く */
 
   .carousel-window::before,
   .carousel-window::after {
@@ -530,6 +561,31 @@ body {
   .title {
 
     font-size: 11px;
+
+  }
+
+
+  .notice-box {
+
+    padding: 24px 18px 20px;
+
+    font-size: 12px;
+
+  }
+
+
+  .notice-box h2 {
+
+    font-size: 17px;
+
+  }
+
+
+  .notice-buttons button {
+
+    font-size: 13px;
+
+    padding: 8px 18px;
 
   }
 
@@ -649,6 +705,7 @@ body {
   </div>
 </div>
 
+
 <script>
 
 /* ====================
@@ -714,13 +771,13 @@ const noticeModal =
 
 const cancelBtn =
   document.getElementById(
-    "cancelBtn"
+    "cancelButton"
   );
 
 
 const confirmBtn =
   document.getElementById(
-    "confirmBtn"
+    "confirmButton"
   );
 
 
@@ -792,8 +849,6 @@ for (
 
 let position = 0;
 
-
-/* amberと同じ速度 */
 
 const velocity =
   -0.25;
@@ -1065,9 +1120,6 @@ windowEl.addEventListener(
 );
 
 
-/* amberと同じく、
-   カーソルが外れたら終了 */
-
 windowEl.addEventListener(
   "pointerleave",
   pointerUp
@@ -1250,3 +1302,4 @@ window.addEventListener(
 
 </body>
 </html>
+```

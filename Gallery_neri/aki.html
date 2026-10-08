@@ -163,7 +163,7 @@ body {
 
 <script>
 
-const folder = "秋の小瓶";
+const folder = "aki-kobin";
 const bottle = "bin_aki.png";
 
 const titles = {
@@ -195,14 +195,13 @@ let works = [];
 let current = 0;
 
 
-
 function addImage(number) {
 
   const key =
     String(number).padStart(3, "0");
 
   const src =
-    "秋の小瓶/" + key + ".PNG";
+    `${folder}/${key}.PNG`;
 
   works.push({
 
@@ -219,6 +218,7 @@ function addImage(number) {
     works.length - 1
   );
 }
+
 
 
 function addGalleryItem(index) {

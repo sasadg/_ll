@@ -50,7 +50,9 @@ body {
   touch-action: pan-y;
 }
 
+
 /* 左右をふわっと薄くする */
+
 .carousel-window::before,
 .carousel-window::after {
   content: "";
@@ -80,9 +82,11 @@ body {
   );
 }
 
+
 .carousel-window.dragging {
   cursor: grabbing;
 }
+
 
 .carousel-track {
   display: flex;
@@ -90,6 +94,7 @@ body {
   align-items: flex-start;
   will-change: transform;
 }
+
 
 .item {
   flex: 0 0 170px;
@@ -100,6 +105,7 @@ body {
   -webkit-user-select: none;
 }
 
+
 .bottle-wrap {
   width: 170px;
   height: 190px;
@@ -107,6 +113,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 
 .bottle {
   width: 135px;
@@ -117,7 +124,9 @@ body {
 }
 
 
-/* ぷかぷか */
+/* ====================
+   ぷかぷか
+==================== */
 
 .item:nth-child(1) .bottle {
   animation: float1 4.2s ease-in-out infinite;
@@ -135,16 +144,9 @@ body {
   animation: float1 5s ease-in-out infinite;
 }
 
-.item:nth-child(5) .bottle {
-  animation: float2 4.5s ease-in-out infinite;
-}
-
-.item:nth-child(6) .bottle {
-  animation: float3 4.8s ease-in-out infinite;
-}
-
 
 @keyframes float1 {
+
   0%, 100% {
     transform: translate(0, 0) rotate(0deg);
   }
@@ -152,10 +154,12 @@ body {
   50% {
     transform: translate(3px, -10px) rotate(0.6deg);
   }
+
 }
 
 
 @keyframes float2 {
+
   0%, 100% {
     transform: translate(0, -3px) rotate(0deg);
   }
@@ -163,10 +167,12 @@ body {
   50% {
     transform: translate(-3px, 9px) rotate(-0.6deg);
   }
+
 }
 
 
 @keyframes float3 {
+
   0%, 100% {
     transform: translate(-2px, 2px) rotate(-0.3deg);
   }
@@ -174,6 +180,7 @@ body {
   50% {
     transform: translate(2px, -8px) rotate(0.5deg);
   }
+
 }
 
 
@@ -205,6 +212,7 @@ body {
   display: block;
 }
 
+
 .close {
   position: fixed;
   top: 10px;
@@ -216,6 +224,9 @@ body {
   user-select: none;
 }
 
+
+/* 1枚絵 */
+
 .single-area {
   width: 100vw;
   min-height: 100vh;
@@ -224,12 +235,36 @@ body {
   align-items: center;
 }
 
+
 .single {
   display: block;
   max-width: 100vw;
   max-height: 100vh;
   width: auto;
   height: auto;
+  object-fit: contain;
+}
+
+
+/* 漫画 */
+
+.comic-area {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 70px 20px 40px;
+}
+
+
+.comic-page {
+  display: block;
+  max-width: 900px;
+  width: auto;
+  max-height: 90vh;
   object-fit: contain;
 }
 
@@ -252,21 +287,24 @@ body {
     margin-top: 45px;
   }
 
-  /* スマホでは薄くなる範囲を短く */
+
   .carousel-window::before,
   .carousel-window::after {
     width: 70px;
   }
+
 
   .item {
     flex-basis: 125px;
     width: 125px;
   }
 
+
   .bottle-wrap {
     width: 125px;
     height: 155px;
   }
+
 
   .bottle {
     width: 30vw;
@@ -275,14 +313,28 @@ body {
     max-height: 145px;
   }
 
+
   .title {
     font-size: 11px;
+  }
+
+
+  .comic-area {
+    padding: 60px 10px 30px;
+    gap: 12px;
+  }
+
+
+  .comic-page {
+    max-width: 100%;
+    max-height: none;
   }
 
 }
 
 </style>
 </head>
+
 
 <body>
 
@@ -291,6 +343,7 @@ body {
   <a class="back" href="neri.html">
     ← 色を変える
   </a>
+
 
   <div
     class="carousel-window"
@@ -307,7 +360,9 @@ body {
 </div>
 
 
-<!-- 拡大表示 -->
+<!-- ====================
+     拡大表示
+==================== -->
 
 <div
   class="modal"
@@ -321,11 +376,41 @@ body {
     ×
   </div>
 
-  <div class="single-area">
+
+  <!-- 1枚絵 -->
+
+  <div
+    class="single-area"
+    id="singleArea"
+  >
 
     <img
       class="single"
       id="single"
+      src=""
+      alt=""
+    >
+
+  </div>
+
+
+  <!-- 漫画 -->
+
+  <div
+    class="comic-area"
+    id="comicArea"
+  >
+
+    <img
+      class="comic-page"
+      id="comicPage1"
+      src=""
+      alt=""
+    >
+
+    <img
+      class="comic-page"
+      id="comicPage2"
       src=""
       alt=""
     >
@@ -337,68 +422,95 @@ body {
 
 <script>
 
+
+/* ====================
+   作品
+==================== */
+
 const folder = "azure";
 
 const bottle = "bin_azure.png";
 
 
-const titles = {
+const works = [
 
-  "001": "水のきらめき",
-  "002": "水の記憶",
-  "003": "水のゆらめき"
+  {
+    type: "image",
 
-};
+    src:
+      `${folder}/001.PNG`,
 
+    title:
+      "たからもの"
 
-const total = 3;
+  },
+
+  {
+    type: "comic",
+
+    pages: [
+
+      `${folder}/comic01/001.PNG`,
+      `${folder}/comic01/002.PNG`
+
+    ],
+
+    title:
+      "ほんのり視力が悪い故"
+
+  }
+
+];
 
 
 const track =
   document.getElementById("track");
+
 
 const windowEl =
   document.getElementById(
     "carouselWindow"
   );
 
+
 const modal =
   document.getElementById("modal");
 
+
+const singleArea =
+  document.getElementById(
+    "singleArea"
+  );
+
+
 const single =
   document.getElementById("single");
+
+
+const comicArea =
+  document.getElementById(
+    "comicArea"
+  );
+
+
+const comicPage1 =
+  document.getElementById(
+    "comicPage1"
+  );
+
+
+const comicPage2 =
+  document.getElementById(
+    "comicPage2"
+  );
+
 
 const closeButton =
   document.getElementById("close");
 
 
-let works = [];
-
-
-for (
-  let i = 1;
-  i <= total;
-  i++
-) {
-
-  const key =
-    String(i).padStart(3, "0");
-
-  works.push({
-
-    src:
-      `${folder}/${key}.PNG`,
-
-    title:
-      titles[key] || ""
-
-  });
-
-}
-
-
 /* ====================
-   3枚を大量に複製
+   2作品を大量に複製
 ==================== */
 
 const copies = 9;
@@ -418,11 +530,14 @@ for (
           "div"
         );
 
+
       item.className =
         "item";
 
+
       item.dataset.index =
         index;
+
 
       item.innerHTML = `
 
@@ -441,6 +556,7 @@ for (
         </div>
 
       `;
+
 
       track.appendChild(item);
 
@@ -468,25 +584,33 @@ let moved = false;
 let cycleWidth = 0;
 
 
-/* 実際の3個分の幅を取得 */
+/* 実際の2個分の幅 */
 
 function updateCycleWidth() {
 
   const items =
-    track.querySelectorAll(".item");
+    track.querySelectorAll(
+      ".item"
+    );
 
-  if (items.length < 4) {
+
+  if (
+    items.length < 3
+  ) {
     return;
   }
+
 
   const first =
     items[0].getBoundingClientRect();
 
-  const fourth =
-    items[3].getBoundingClientRect();
+
+  const third =
+    items[2].getBoundingClientRect();
+
 
   cycleWidth =
-    fourth.left - first.left;
+    third.left - first.left;
 
 }
 
@@ -511,19 +635,25 @@ function normalizePosition() {
     return;
   }
 
+
   while (
-    position <= -cycleWidth * 5
+    position <=
+    -cycleWidth * 5
   ) {
 
-    position += cycleWidth;
+    position +=
+      cycleWidth;
 
   }
 
+
   while (
-    position >= -cycleWidth * 3
+    position >=
+    -cycleWidth * 3
   ) {
 
-    position -= cycleWidth;
+    position -=
+      cycleWidth;
 
   }
 
@@ -536,10 +666,18 @@ function render() {
 
   normalizePosition();
 
-  track.style.transform =
-    `translate3d(${position}px, 0, 0)`;
 
-  requestAnimationFrame(render);
+  track.style.transform =
+    `translate3d(
+      ${position}px,
+      0,
+      0
+    )`;
+
+
+  requestAnimationFrame(
+    render
+  );
 
 }
 
@@ -550,9 +688,11 @@ function autoMove() {
 
   if (!dragging) {
 
-    position += velocity;
+    position +=
+      velocity;
 
   }
+
 
   requestAnimationFrame(
     autoMove
@@ -572,7 +712,9 @@ function pointerDown(x) {
   moved = false;
 
   startX = x;
+
   lastX = x;
+
 
   windowEl.classList.add(
     "dragging"
@@ -587,16 +729,21 @@ function pointerMove(x) {
     return;
   }
 
+
   const dx =
     x - lastX;
 
+
   if (
-    Math.abs(x - startX) > 8
+    Math.abs(
+      x - startX
+    ) > 8
   ) {
 
     moved = true;
 
   }
+
 
   position += dx;
 
@@ -611,7 +758,9 @@ function pointerUp() {
     return;
   }
 
+
   dragging = false;
+
 
   windowEl.classList.remove(
     "dragging"
@@ -667,7 +816,7 @@ windowEl.addEventListener(
 
 
 /* ====================
-   タップで拡大
+   タップ
 ==================== */
 
 track.addEventListener(
@@ -682,21 +831,66 @@ track.addEventListener(
 
     }
 
+
     const item =
-      e.target.closest(".item");
+      e.target.closest(
+        ".item"
+      );
+
 
     if (!item) {
       return;
     }
 
+
     const index =
-      Number(item.dataset.index);
+      Number(
+        item.dataset.index
+      );
+
 
     const work =
       works[index];
 
-    single.src =
-      work.src;
+
+    /* 1枚絵 */
+
+    if (
+      work.type === "image"
+    ) {
+
+      single.src =
+        work.src;
+
+      singleArea.style.display =
+        "flex";
+
+      comicArea.style.display =
+        "none";
+
+    }
+
+
+    /* 漫画 */
+
+    else if (
+      work.type === "comic"
+    ) {
+
+      comicPage1.src =
+        work.pages[0];
+
+      comicPage2.src =
+        work.pages[1];
+
+      singleArea.style.display =
+        "none";
+
+      comicArea.style.display =
+        "flex";
+
+    }
+
 
     modal.classList.add(
       "open"
@@ -716,7 +910,12 @@ function closeModal() {
     "open"
   );
 
+
   single.src = "";
+
+  comicPage1.src = "";
+
+  comicPage2.src = "";
 
 }
 
@@ -738,22 +937,36 @@ modal.addEventListener(
   e => {
 
     if (
-      e.target === single
+      e.target ===
+      single ||
+      e.target ===
+      comicPage1 ||
+      e.target ===
+      comicPage2
     ) {
+
       return;
+
     }
 
+
     if (
-      e.target === closeButton
+      e.target ===
+      closeButton
     ) {
+
       return;
+
     }
+
 
     closeModal();
 
   }
 );
 
+
+/* ESC */
 
 document.addEventListener(
   "keydown",

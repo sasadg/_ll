@@ -146,6 +146,7 @@ body {
   .title {
     font-size: 11px;
   }
+
   .single-area {
     min-height: 100vh;
   }
@@ -248,86 +249,44 @@ let works = [];
 
 let current = 0;
 
-function loadIllustration(number) {
 
-  const key =
-    String(number).padStart(3, "0");
+function addImage() {
 
-  const src =
-    `${folder}/${key}.PNG`;
+  works.push({
 
-  const test =
-    new Image();
+    type: "image",
 
-  test.onload = function() {
+    src: `${folder}/001.PNG`,
 
-    works.push({
+    title: titles["001"]
 
-      type: "image",
+  });
 
-      src: src,
-
-      title:
-        titles[key] || ""
-
-    });
-
-    addGalleryItem(
-      works.length - 1
-    );
-
-    loadIllustration(
-      number + 1
-    );
-
-  };
-
-  test.onerror = function() {
-
-    addComic();
-
-  };
-
-  test.src = src;
+  addGalleryItem(
+    works.length - 1
+  );
 }
+
+
 
 function addComic() {
 
-  const firstPage =
-    `${folder}/comic01/001.PNG`;
+  works.push({
 
-  const test =
-    new Image();
+    type: "comic",
 
-  test.onload = function() {
+    title: titles["comic01"],
 
-    works.push({
+    folder: `${folder}/comic01/`
 
-      type: "comic",
+  });
 
-      title:
-        titles["comic01"],
-
-      folder:
-        `${folder}/comic01/`
-
-    });
-
-    addGalleryItem(
-      works.length - 1
-    );
-
-  };
-
-  test.onerror = function() {
-
-    return;
-
-  };
-
-  test.src =
-    firstPage;
+  addGalleryItem(
+    works.length - 1
+  );
 }
+
+
 
 function addGalleryItem(index) {
 
@@ -366,6 +325,8 @@ function addGalleryItem(index) {
   gallery.appendChild(item);
 }
 
+
+
 function openWork(index) {
 
   current = index;
@@ -383,6 +344,7 @@ function openWork(index) {
   comicArea.style.display =
     "none";
 
+
   if (work.type === "image") {
 
     singleArea.style.display =
@@ -393,14 +355,18 @@ function openWork(index) {
 
   }
 
+
   else if (work.type === "comic") {
 
     comicArea.style.display =
       "flex";
 
-    loadComic(work.folder);
+    loadComic(
+      work.folder
+    );
 
   }
+
 
   modal.classList.add(
     "open"
@@ -409,31 +375,38 @@ function openWork(index) {
   modal.scrollTop = 0;
 }
 
+
 function loadComic(folder) {
 
   const pages = [
+
     "001.PNG",
+
     "002.PNG"
+
   ];
 
-  pages.forEach(function(file) {
 
-    const img =
-      document.createElement("img");
+  pages.forEach(
+    function(file) {
 
-    img.src =
-      `${folder}${file}`;
+      const img =
+        document.createElement("img");
 
-    img.alt =
-      "";
+      img.src =
+        `${folder}${file}`;
 
-    comic.appendChild(
-      img
-    );
+      img.alt =
+        "";
 
-  });
+      comic.appendChild(
+        img
+      );
 
+    }
+  );
 }
+
 
 function closeModal() {
 
@@ -446,8 +419,8 @@ function closeModal() {
 
   comic.innerHTML =
     "";
-
 }
+
 
 closeButton.addEventListener(
   "click",
@@ -459,6 +432,7 @@ closeButton.addEventListener(
 
   }
 );
+
 
 modal.addEventListener(
   "click",
@@ -472,6 +446,7 @@ modal.addEventListener(
 
     }
 
+
     if (
       e.target.tagName === "IMG" &&
       comic.contains(e.target)
@@ -481,6 +456,7 @@ modal.addEventListener(
 
     }
 
+
     if (
       e.target === closeButton
     ) {
@@ -489,10 +465,12 @@ modal.addEventListener(
 
     }
 
+
     closeModal();
 
   }
 );
+
 
 document.addEventListener(
   "keydown",
@@ -508,7 +486,10 @@ document.addEventListener(
 
     }
 
-    if (e.key === "Escape") {
+
+    if (
+      e.key === "Escape"
+    ) {
 
       closeModal();
 
@@ -517,7 +498,10 @@ document.addEventListener(
   }
 );
 
-loadIllustration(1);
+
+addImage();
+
+addComic();
 
 </script>
 

@@ -568,52 +568,88 @@ body {
 </div>
 
 
-<!-- ====================
-     購入確認
-==================== -->
-
 <div id="noticeModal">
 
-  <div class="modal-box">
+  <div class="notice-box">
 
-    <p>
-      BOOTHの商品ページへ移動します。
-    </p>
+    <h2>⚠️ 購入前にご確認ください</h2>
 
+    <!-- 日本語 -->
+    <div class="language">
+      <div class="language-title">◆ 商品について</div>
 
-    <div class="notice">
-
-      この作品はBOOTHで販売しています。<br>
-
-      You will be redirected to BOOTH.<br>
-
-      将跳转至 BOOTH。<br>
-
-      BOOTH 상품 페이지로 이동합니다.
-
+      <p>
+        ・複数回に分けてのご注文も含め、おひとり様2個までとなります。<br>
+        ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
+        ・発送はネコポスで行います。<br>
+        ・転売目的のご購入は禁止しております。<br>
+        ・在庫がなくなり次第、販売終了となります。
+      </p>
     </div>
 
+    <!-- English -->
+    <div class="language">
+      <div class="language-title">◆ Please read before purchasing</div>
 
-    <div class="modal-buttons">
+      <p>
+        ・Limit: 2 items per person, including multiple separate orders.<br>
+        ※If you purchase 3 or more items, all of your orders from LUMI. will be refunded.<br>
+        ・Orders will be shipped via Nekopos.<br>
+        ・Purchases for resale are prohibited.<br>
+        ・Sales will end when stock runs out.
+      </p>
+    </div>
 
-      <button id="cancelBtn">
+    <!-- 中文 -->
+    <div class="language">
+      <div class="language-title">◆ 购买前请确认</div>
+
+      <p>
+        ・每人最多购买2件，包括分多次下单的情况。<br>
+        ※如果购买3件或以上，您在LUMI.购买的所有订单都将被退款。<br>
+        ・商品将通过Nekopos寄送。<br>
+        ・禁止以转卖为目的购买。<br>
+        ・售罄后将结束销售。
+      </p>
+    </div>
+
+    <!-- 한국어 -->
+    <div class="language">
+      <div class="language-title">◆ 구매 전 확인해 주세요</div>
+
+      <p>
+        ・여러 번 나누어 주문한 경우를 포함하여, 1인당 최대 2개까지 구매 가능합니다.<br>
+        ※3개 이상 구매하신 경우, LUMI.에서 구매하신 모든 주문이 환불됩니다.<br>
+        ・상품은 네코포스로 배송됩니다.<br>
+        ・재판매를 목적으로 한 구매는 금지됩니다.<br>
+        ・재고 소진 시 판매가 종료됩니다.
+      </p>
+    </div>
+
+    <div class="notice-buttons">
+
+      <button
+        type="button"
+        class="cancel-button"
+        id="cancelButton"
+      >
         戻る
       </button>
 
-
-      <button id="confirmBtn">
-        BOOTHへ
+      <button
+        type="button"
+        class="confirm-button"
+        id="confirmButton"
+      >
+        確認しました
       </button>
 
     </div>
 
   </div>
-
 </div>
 
-
 <script>
-
 
 /* ====================
    作品

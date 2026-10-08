@@ -1,33 +1,56 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>白の小瓶</title>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
 
+
 html,
 body {
+
   margin: 0;
   padding: 0;
+
   background: #F8F6F0;
   color: #886F58;
+
   font-family: "Hina Mincho", serif;
+
 }
 
-/* 戻る */
+
+/* ====================
+   戻る
+==================== */
+
 .back {
+
   position: fixed;
+
   top: 20px;
   left: 25px;
+
   z-index: 20;
+
   color: #886F58;
+
   text-decoration: none;
+
   font-size: 18px;
+
 }
 
 
@@ -36,12 +59,19 @@ body {
 ==================== */
 
 .carousel-window {
+
   position: relative;
+
   width: 100%;
+
   overflow: hidden;
+
   padding-top: 75px;
+
   cursor: grab;
+
   touch-action: pan-y;
+
 }
 
 
@@ -49,71 +79,115 @@ body {
 
 .carousel-window::before,
 .carousel-window::after {
+
   content: "";
+
   position: absolute;
+
   top: 0;
   bottom: 0;
+
   width: 180px;
+
   z-index: 5;
+
   pointer-events: none;
+
 }
 
+
 .carousel-window::before {
+
   left: 0;
+
   background: linear-gradient(
     to right,
     #F8F6F0 0%,
-    rgba(228, 229, 238, 0) 100%
+    rgba(248, 246, 240, 0) 100%
   );
+
 }
 
+
 .carousel-window::after {
+
   right: 0;
+
   background: linear-gradient(
     to left,
-    #FFE5A1 0%,
-    rgba(228, 229, 238, 0) 100%
+    #F8F6F0 0%,
+    rgba(248, 246, 240, 0) 100%
   );
+
 }
 
 
 .carousel-window.dragging {
+
   cursor: grabbing;
+
 }
 
+
+/* ====================
+   トラック
+==================== */
 
 .carousel-track {
+
   display: flex;
+
   width: max-content;
+
   align-items: flex-start;
+
   will-change: transform;
+
 }
 
+
+/* ====================
+   小瓶
+==================== */
 
 .item {
+
   flex: 0 0 170px;
+
   width: 170px;
+
   text-align: center;
+
   user-select: none;
+
 }
 
 
-/* 小瓶 */
-
 .bottle-wrap {
+
   width: 170px;
+
   height: 190px;
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
 }
 
 
 .bottle {
+
   width: 135px;
+
   height: 170px;
+
   object-fit: contain;
+
   cursor: pointer;
+
 }
 
 
@@ -122,93 +196,148 @@ body {
 ==================== */
 
 .item:nth-child(1) .bottle {
+
   animation:
     float1 4.2s ease-in-out infinite;
+
 }
+
 
 .item:nth-child(2) .bottle {
+
   animation:
     float2 4.7s ease-in-out infinite;
+
 }
+
 
 .item:nth-child(3) .bottle {
+
   animation:
     float3 4.4s ease-in-out infinite;
+
 }
+
 
 .item:nth-child(4) .bottle {
+
   animation:
     float1 5s ease-in-out infinite;
+
 }
+
 
 .item:nth-child(5) .bottle {
+
   animation:
     float2 4.5s ease-in-out infinite;
+
 }
+
 
 .item:nth-child(6) .bottle {
+
   animation:
     float3 4.8s ease-in-out infinite;
+
 }
 
+
+/* ====================
+   ふわふわ 1
+==================== */
 
 @keyframes float1 {
 
-  0%, 100% {
+  0%,
+  100% {
+
     transform:
       translate(0, 0)
       rotate(0deg);
+
   }
 
+
   50% {
+
     transform:
       translate(3px, -10px)
       rotate(0.6deg);
+
   }
 
 }
 
+
+/* ====================
+   ふわふわ 2
+==================== */
 
 @keyframes float2 {
 
-  0%, 100% {
+  0%,
+  100% {
+
     transform:
       translate(0, -3px)
       rotate(0deg);
+
   }
 
+
   50% {
+
     transform:
       translate(-3px, 9px)
       rotate(-0.6deg);
+
   }
 
 }
 
+
+/* ====================
+   ふわふわ 3
+==================== */
 
 @keyframes float3 {
 
-  0%, 100% {
+  0%,
+  100% {
+
     transform:
       translate(-2px, 2px)
       rotate(-0.3deg);
+
   }
 
+
   50% {
+
     transform:
       translate(2px, -8px)
       rotate(0.5deg);
+
   }
 
 }
 
 
-/* タイトル */
+/* ====================
+   タイトル
+==================== */
 
 .title {
+
   margin-top: 8px;
+
   font-size: 16px;
+
   line-height: 1.7;
+
+  color: #886F58;
+
 }
 
 
@@ -217,63 +346,100 @@ body {
 ==================== */
 
 #noticeModal {
+
   display: none;
+
   position: fixed;
+
   inset: 0;
+
   z-index: 100;
+
   background: rgba(40, 42, 60, 0.35);
+
   align-items: center;
+
   justify-content: center;
+
   padding: 20px;
+
 }
 
 
 .modal-box {
+
   width: min(420px, 90vw);
-  background: #E4E5EE;
+
+  background: #F8F6F0;
+
   padding: 28px 25px;
+
   text-align: center;
-  color: #606487;
+
+  color: #886F58;
+
   box-shadow:
     0 8px 30px
     rgba(50, 50, 70, 0.15);
+
 }
 
 
 .modal-box p {
+
   margin: 0 0 18px;
+
   line-height: 1.8;
+
 }
 
 
 .modal-box .notice {
+
   font-size: 14px;
+
   line-height: 1.8;
+
   margin-bottom: 20px;
+
 }
 
 
 .modal-buttons {
+
   display: flex;
+
   justify-content: center;
+
   gap: 12px;
+
 }
 
 
 .modal-buttons button {
-  border: 1px solid #606487;
+
+  border: 1px solid #886F58;
+
   background: transparent;
-  color: #606487;
+
+  color: #886F58;
+
   font-family: inherit;
+
   font-size: 15px;
+
   padding: 7px 22px;
+
   cursor: pointer;
+
 }
 
 
 .modal-buttons button:hover {
+
   background:
-    rgba(96, 100, 135, 0.08);
+    rgba(136, 111, 88, 0.08);
+
 }
 
 
@@ -284,14 +450,20 @@ body {
 @media (max-width: 600px) {
 
   .back {
+
     top: 14px;
+
     left: 16px;
+
     font-size: 16px;
+
   }
 
 
   .carousel-window {
+
     padding-top: 65px;
+
   }
 
 
@@ -299,42 +471,60 @@ body {
 
   .carousel-window::before,
   .carousel-window::after {
+
     width: 70px;
+
   }
 
 
   .item {
+
     flex: 0 0 125px;
+
     width: 125px;
+
   }
 
 
   .bottle-wrap {
+
     width: 125px;
+
     height: 155px;
+
   }
 
 
   .bottle {
+
     width: 30vw;
+
     height: 38vw;
+
     max-width: 125px;
+
     max-height: 155px;
+
   }
 
 
   .title {
+
     font-size: 14px;
+
   }
 
 }
 
 </style>
+
 </head>
 
 
 <body>
 
+
+<!-- 戻る -->
 
 <a
   href="neri.html"
@@ -343,6 +533,10 @@ body {
   ← 戻る
 </a>
 
+
+<!-- ====================
+     カルーセル
+==================== -->
 
 <div
   class="carousel-window"
@@ -357,7 +551,9 @@ body {
 </div>
 
 
-<!-- 購入確認 -->
+<!-- ====================
+     購入確認
+==================== -->
 
 <div id="noticeModal">
 
@@ -368,11 +564,17 @@ body {
     </p>
 
     <div class="notice">
+
       この作品はBOOTHで販売しています。<br>
+
       You will be redirected to BOOTH.<br>
+
       将跳转至 BOOTH。<br>
+
       BOOTH 상품 페이지로 이동합니다.
+
     </div>
+
 
     <div class="modal-buttons">
 
@@ -393,6 +595,9 @@ body {
 
 <script>
 
+/* ====================
+   作品
+==================== */
 
 const works = [
 
@@ -404,6 +609,7 @@ const works = [
       "宙ぶらりん<br>シリモニ"
   },
 
+
   {
     url:
       "ここにBOOTHのURL",
@@ -411,6 +617,7 @@ const works = [
     title:
       "足元ぐるぐる人外ズ<br>シリモニ"
   },
+
 
   {
     url:
@@ -422,6 +629,10 @@ const works = [
 
 ];
 
+
+/* ====================
+   小瓶画像
+==================== */
 
 const bottle =
   "bin_snow.png";
@@ -499,8 +710,11 @@ for (
 
         </div>
 
+
         <div class="title">
+
           ${work.title}
+
         </div>
 
       `;
@@ -529,6 +743,7 @@ let dragging = false;
 
 
 let startX = 0;
+
 let lastX = 0;
 
 
@@ -538,7 +753,9 @@ let moved = false;
 let cycleWidth = 0;
 
 
-/* 3個分の実際の幅 */
+/* ====================
+   3個分の実際の幅
+==================== */
 
 function updateCycleWidth() {
 
@@ -551,7 +768,9 @@ function updateCycleWidth() {
   if (
     items.length < 4
   ) {
+
     return;
+
   }
 
 
@@ -571,11 +790,14 @@ function updateCycleWidth() {
 }
 
 
-/* 初期位置 */
+/* ====================
+   初期位置
+==================== */
 
 function setInitialPosition() {
 
   updateCycleWidth();
+
 
   position =
     -cycleWidth * 4;
@@ -583,12 +805,16 @@ function setInitialPosition() {
 }
 
 
-/* 無限ループ */
+/* ====================
+   無限ループ
+==================== */
 
 function normalizePosition() {
 
   if (!cycleWidth) {
+
     return;
+
   }
 
 
@@ -616,7 +842,9 @@ function normalizePosition() {
 }
 
 
-/* 表示 */
+/* ====================
+   表示
+==================== */
 
 function render() {
 
@@ -638,7 +866,9 @@ function render() {
 }
 
 
-/* 自動移動 */
+/* ====================
+   自動移動
+==================== */
 
 function autoMove() {
 
@@ -668,7 +898,9 @@ function pointerDown(x) {
   moved = false;
 
   startX = x;
+
   lastX = x;
+
 
   windowEl.classList.add(
     "dragging"
@@ -680,7 +912,9 @@ function pointerDown(x) {
 function pointerMove(x) {
 
   if (!dragging) {
+
     return;
+
   }
 
 
@@ -709,7 +943,9 @@ function pointerMove(x) {
 function pointerUp() {
 
   if (!dragging) {
+
     return;
+
   }
 
 
@@ -722,6 +958,10 @@ function pointerUp() {
 
 }
 
+
+/* ====================
+   ポインター
+==================== */
 
 windowEl.addEventListener(
   "pointerdown",
@@ -791,7 +1031,9 @@ track.addEventListener(
 
 
     if (!item) {
+
       return;
+
     }
 
 
@@ -812,7 +1054,9 @@ track.addEventListener(
 );
 
 
-/* BOOTHへ */
+/* ====================
+   BOOTHへ
+==================== */
 
 confirmBtn.addEventListener(
   "click",
@@ -829,7 +1073,9 @@ confirmBtn.addEventListener(
 );
 
 
-/* 戻る */
+/* ====================
+   戻る
+==================== */
 
 cancelBtn.addEventListener(
   "click",
@@ -838,6 +1084,7 @@ cancelBtn.addEventListener(
     destinationUrl =
       "";
 
+
     noticeModal.style.display =
       "none";
 
@@ -845,7 +1092,9 @@ cancelBtn.addEventListener(
 );
 
 
-/* モーダル外クリック */
+/* ====================
+   モーダル外クリック
+==================== */
 
 noticeModal.addEventListener(
   "click",
@@ -859,6 +1108,7 @@ noticeModal.addEventListener(
       destinationUrl =
         "";
 
+
       noticeModal.style.display =
         "none";
 
@@ -868,7 +1118,9 @@ noticeModal.addEventListener(
 );
 
 
-/* ESC */
+/* ====================
+   ESC
+==================== */
 
 document.addEventListener(
   "keydown",
@@ -880,6 +1132,7 @@ document.addEventListener(
 
       destinationUrl =
         "";
+
 
       noticeModal.style.display =
         "none";
@@ -908,7 +1161,9 @@ window.addEventListener(
 );
 
 
-/* 画面サイズ変更 */
+/* ====================
+   画面サイズ変更
+==================== */
 
 window.addEventListener(
   "resize",
@@ -920,6 +1175,7 @@ window.addEventListener(
 );
 
 </script>
+
 
 </body>
 </html>

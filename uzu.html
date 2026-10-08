@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渦の小瓶</title>
+
+<style>        
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #E4E5EE;
+  color: #E4E5EE;
+  font-family: "Hina Mincho", serif;
+}
+
+.back {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: #606487;
+  text-decoration: none;
+  font-size: 16px;
+  z-index: 10;
+}
+
+.gallery {
+  margin-top: 80px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 45px 5px;
+  justify-items: center;
+}
+
+.bottle-link {
+  text-decoration: none;
+  color: #606487;
+  text-align: center;
+  cursor: pointer;
+}
+
+.bottle {
+  width: 135px;
+  height: 170px;
+  object-fit: contain;
+  transition: transform 0.25s;
+}
+
+.bottle:hover {
+  transform: scale(1.05);
+}
+
+.title {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #606487;
+  line-height: 1.5;
+}
+
+
+#noticeModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.notice-box {
+  width: min(520px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+
+  background: #E4E5EE;
+  color: #606487;
+
+  padding: 28px 24px 24px;
+  border-radius: 10px;
+
+  text-align: left;
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.notice-box h2 {
+  margin: 0 0 18px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.notice-box p {
+  margin: 0 0 18px;
+}
+
+.notice-box .language {
+  margin-top: 22px;
+}
+
+.notice-box .language-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notice-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.notice-buttons button {
+  border: none;
+  padding: 9px 22px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background: #ffffff;
+  color: #606487;
+}
+
+.confirm-button {
+  background: #606487;
+  color: white;
+}
+
+
+
+@media (max-width: 600px) {
+
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px 0;
+    padding: 0 5px;
+  }
+
+  .bottle {
+    width: 30vw;
+    height: 38vw;
+    max-width: 115px;
+    max-height: 145px;
+  }
+
+  .title {
+    margin-top: 4px;
+    font-size: 11px;
+  }
+
+  .notice-box {
+    padding: 24px 18px 20px;
+    font-size: 12px;
+  }
+
+  .notice-box h2 {
+    font-size: 17px;
+  }
+
+  .notice-buttons button {
+    font-size: 13px;
+    padding: 8px 18px;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<a href="neri.html" class="back">← 戻る</a>
+
+
+<div class="gallery">
+
+  <!-- ぶらぶらシリモニ -->
+  <a
+    href="https://sasadg.booth.pm/items/7975838"
+    class="bottle-link"
+  >
+    <img src="bin_uzu.png" class="bottle">
+    <div class="title">ぶらぶらシリモニ</div>
+  </a>
+
+
+  <!-- 足元ぐるぐる人外ズ シリモニ -->
+  <a
+    href="ここにBOOTHのURL"
+    class="bottle-link"
+  >
+    <img src="bin_uzu.png" class="bottle">
+    <div class="title">足元ぐるぐる人外ズ　シリモニ</div>
+  </a>
+
+
+  <!-- 足元ぐるぐる人外ズ 雪山組 -->
+  <a
+    href="ここにBOOTHのURL"
+    class="bottle-link"
+  >
+    <img src="bin_uzu.png" class="bottle">
+    <div class="title">足元ぐるぐる人外ズ　雪山組</div>
+  </a>
+
+</div>
+
+
+<div id="noticeModal">
+
+  <div class="notice-box">
+
+    <h2>⚠️ 購入前にご確認ください</h2>
+
+
+    <!-- 日本語 -->
+    <div class="language">
+      <div class="language-title">◆ 商品について</div>
+
+      <p>
+        ・複数回に分けてのご注文も含め、おひとり様2個までとなります。<br>
+        ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
+        ・発送はネコポスで行います。<br>
+        ・転売目的のご購入は禁止しております。<br>
+        ・在庫がなくなり次第、販売終了となります。
+      </p>
+    </div>
+
+
+    <!-- English -->
+    <div class="language">
+      <div class="language-title">◆ Please read before purchasing</div>
+
+      <p>
+        ・Limit: 2 items per person, including multiple separate orders.<br>
+        ※If you purchase 3 or more items, all of your orders from LUMI. will be refunded.<br>
+        ・Orders will be shipped via Nekopos.<br>
+        ・Purchases for resale are prohibited.<br>
+        ・Sales will end when stock runs out.
+      </p>
+    </div>
+
+
+    <!-- 中文 -->
+    <div class="language">
+      <div class="language-title">◆ 购买前请确认</div>
+
+      <p>
+        ・每人最多购买2件，包括分多次下单的情况。<br>
+        ※如果购买3件或以上，您在LUMI.购买的所有订单都将被退款。<br>
+        ・商品将通过Nekopos寄送。<br>
+        ・禁止以转卖为目的购买。<br>
+        ・售罄后将结束销售。
+      </p>
+    </div>
+
+
+    <!-- 한국어 -->
+    <div class="language">
+      <div class="language-title">◆ 구매 전 확인해 주세요</div>
+
+      <p>
+        ・여러 번 나누어 주문한 경우를 포함하여, 1인당 최대 2개까지 구매 가능합니다.<br>
+        ※3개 이상 구매하신 경우, LUMI.에서 구매하신 모든 주문이 환불됩니다.<br>
+        ・상품은 네코포스로 배송됩니다.<br>
+        ・재판매를 목적으로 한 구매는 금지됩니다.<br>
+        ・재고 소진 시 판매가 종료됩니다.
+      </p>
+    </div>
+
+
+    <div class="notice-buttons">
+
+      <button
+        type="button"
+        class="cancel-button"
+        id="cancelButton"
+      >
+        戻る
+      </button>
+
+      <button
+        type="button"
+        class="confirm-button"
+        id="confirmButton"
+      >
+        確認しました
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+
+const noticeModal = document.getElementById("noticeModal");
+const confirmButton = document.getElementById("confirmButton");
+const cancelButton = document.getElementById("cancelButton");
+
+let destinationUrl = "";
+
+
+document.querySelectorAll(".bottle-link").forEach(link => {
+
+  link.addEventListener("click", function(event) {
+
+    event.preventDefault();
+
+    destinationUrl = this.href;
+
+    noticeModal.style.display = "flex";
+
+  });
+
+});
+
+
+confirmButton.addEventListener("click", function() {
+
+  if (destinationUrl) {
+    window.location.href = destinationUrl;
+  }
+
+});
+
+
+cancelButton.addEventListener("click", function() {
+
+  destinationUrl = "";
+  noticeModal.style.display = "none";
+
+});
+
+
+noticeModal.addEventListener("click", function(event) {
+
+  if (event.target === noticeModal) {
+
+    destinationUrl = "";
+    noticeModal.style.display = "none";
+
+  }
+
+});
+
+
+document.addEventListener("keydown", function(event) {
+
+  if (event.key === "Escape") {
+
+    destinationUrl = "";
+    noticeModal.style.display = "none";
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>

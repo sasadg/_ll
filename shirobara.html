@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>白薔薇の小瓶</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #E4E5EE;
+  color: #E4E5EE;
+  font-family: "Hina Mincho", serif;
+}
+
+.page {
+  width: 90vw;
+  max-width: 850px;
+  margin: 40px auto;
+}
+
+.back {
+  color: #606487;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.gallery {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 45px 5px;
+}
+
+.item {
+  text-align: center;
+  cursor: pointer;
+}
+
+.bottle {
+  width: 135px;
+  height: 170px;
+  object-fit: contain;
+  transition: transform 0.25s;
+}
+
+.item:hover .bottle {
+  transform: scale(1.04);
+}
+
+.title {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #606487;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, .92);
+  display: none;
+  z-index: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.modal.open {
+  display: block;
+}
+
+.close {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  color: white;
+  font: 32px sans-serif;
+  cursor: pointer;
+  z-index: 30;
+  user-select: none;
+}
+
+.single-area {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.single {
+  display: block;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.comic-area {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 50px 0 40px;
+}
+
+.comic {
+  width: min(520px, 75vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.comic img {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px 0px;
+  }
+
+  .bottle {
+    width: 30vw;
+    height: 38vw;
+    max-width: 115px;
+    max-height: 145px;
+  }
+
+  .title {
+    font-size: 11px;
+  }
+  .single-area {
+    min-height: 100vh;
+  }
+
+  .single {
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+
+  .comic-area {
+    padding: 55px 0 30px;
+  }
+
+  .comic {
+    width: 78vw;
+    max-width: 500px;
+    gap: 12px;
+  }
+
+  .comic img {
+    width: 100%;
+    max-width: 500px;
+    max-height: 82vh;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <a class="back" href="neri.html">← 色を変える</a>
+
+  <div class="gallery" id="gallery"></div>
+
+</div>
+
+<div class="modal" id="modal">
+
+  <div class="close" id="close">×</div>
+
+  <div class="single-area" id="singleArea">
+
+    <img
+      class="single"
+      id="single"
+      src=""
+      alt=""
+    >
+
+  </div>
+
+  <div class="comic-area" id="comicArea">
+
+    <div
+      class="comic"
+      id="comic"
+    ></div>
+
+  </div>
+
+</div>
+
+<script>
+
+const folder = "白薔薇の小瓶";
+const bottle = "bin_shirobara.png";
+
+const titles = {
+
+  "001": "たからものを、小瓶につめて",
+
+  "comic01": "ほんのり視力が悪い故"
+
+};
+
+const gallery =
+  document.getElementById("gallery");
+
+const modal =
+  document.getElementById("modal");
+
+const closeButton =
+  document.getElementById("close");
+
+const singleArea =
+  document.getElementById("singleArea");
+
+const single =
+  document.getElementById("single");
+
+const comicArea =
+  document.getElementById("comicArea");
+
+const comic =
+  document.getElementById("comic");
+
+let works = [];
+
+let current = 0;
+
+function loadIllustration(number) {
+
+  const key =
+    String(number).padStart(3, "0");
+
+  const src =
+    `${folder}/${key}.PNG`;
+
+  const test =
+    new Image();
+
+  test.onload = function() {
+
+    works.push({
+
+      type: "image",
+
+      src: src,
+
+      title:
+        titles[key] || ""
+
+    });
+
+    addGalleryItem(
+      works.length - 1
+    );
+
+    loadIllustration(
+      number + 1
+    );
+
+  };
+
+  test.onerror = function() {
+
+    addComic();
+
+  };
+
+  test.src = src;
+}
+
+function addComic() {
+
+  const firstPage =
+    `${folder}/comic01/001.PNG`;
+
+  const test =
+    new Image();
+
+  test.onload = function() {
+
+    works.push({
+
+      type: "comic",
+
+      title:
+        titles["comic01"],
+
+      folder:
+        `${folder}/comic01/`
+
+    });
+
+    addGalleryItem(
+      works.length - 1
+    );
+
+  };
+
+  test.onerror = function() {
+
+    return;
+
+  };
+
+  test.src =
+    firstPage;
+}
+
+function addGalleryItem(index) {
+
+  const work =
+    works[index];
+
+  const item =
+    document.createElement("div");
+
+  item.className =
+    "item";
+
+  item.innerHTML = `
+
+    <img
+      class="bottle"
+      src="${bottle}"
+      alt=""
+    >
+
+    <div class="title">
+      ${work.title}
+    </div>
+
+  `;
+
+  item.addEventListener(
+    "click",
+    function() {
+
+      openWork(index);
+
+    }
+  );
+
+  gallery.appendChild(item);
+}
+
+function openWork(index) {
+
+  current = index;
+
+  const work =
+    works[current];
+
+  single.src = "";
+
+  comic.innerHTML = "";
+
+  singleArea.style.display =
+    "none";
+
+  comicArea.style.display =
+    "none";
+
+  if (work.type === "image") {
+
+    singleArea.style.display =
+      "flex";
+
+    single.src =
+      work.src;
+
+  }
+
+  else if (work.type === "comic") {
+
+    comicArea.style.display =
+      "flex";
+
+    loadComic(work.folder);
+
+  }
+
+  modal.classList.add(
+    "open"
+  );
+
+  modal.scrollTop = 0;
+}
+
+function loadComic(folder) {
+
+  const pages = [
+    "001.PNG",
+    "002.PNG"
+  ];
+
+  pages.forEach(function(file) {
+
+    const img =
+      document.createElement("img");
+
+    img.src =
+      `${folder}${file}`;
+
+    img.alt =
+      "";
+
+    comic.appendChild(
+      img
+    );
+
+  });
+
+}
+
+function closeModal() {
+
+  modal.classList.remove(
+    "open"
+  );
+
+  single.src =
+    "";
+
+  comic.innerHTML =
+    "";
+
+}
+
+closeButton.addEventListener(
+  "click",
+  function(e) {
+
+    e.stopPropagation();
+
+    closeModal();
+
+  }
+);
+
+modal.addEventListener(
+  "click",
+  function(e) {
+
+    if (
+      e.target === single
+    ) {
+
+      return;
+
+    }
+
+    if (
+      e.target.tagName === "IMG" &&
+      comic.contains(e.target)
+    ) {
+
+      return;
+
+    }
+
+    if (
+      e.target === closeButton
+    ) {
+
+      return;
+
+    }
+
+    closeModal();
+
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  function(e) {
+
+    if (
+      !modal.classList.contains(
+        "open"
+      )
+    ) {
+
+      return;
+
+    }
+
+    if (e.key === "Escape") {
+
+      closeModal();
+
+    }
+
+  }
+);
+
+loadIllustration(1);
+
+</script>
+
+</body>
+</html>

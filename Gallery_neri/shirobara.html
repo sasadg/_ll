@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>水の小瓶</title>
+<title>白の小瓶</title>
 
 <style>
 * {
@@ -14,34 +14,63 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: #CFEFF6;
+  background: #F8F6F0;
   color: #606487;
   font-family: "Hina Mincho", serif;
   overflow-x: hidden;
 }
 
-.page {
-  width: 100%;
-  min-height: 100vh;
-  padding-top: 40px;
-}
-
 .back {
-  display: block;
-  width: 90vw;
-  max-width: 850px;
-  margin: 0 auto;
+  position: fixed;
+  top: 20px;
+  left: 20px;
   color: #606487;
   text-decoration: none;
   font-size: 16px;
+  z-index: 10;
 }
 
+/* ====================
+   無限ループ
+==================== */
+
 .carousel-window {
+  position: relative;
   width: 100%;
   overflow: hidden;
-  margin-top: 55px;
+  padding-top: 75px;
   cursor: grab;
   touch-action: pan-y;
+}
+
+/* 左右をふわっと薄くする */
+.carousel-window::before,
+.carousel-window::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.carousel-window::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #F8F6F0 0%,
+    rgba(248, 246, 240, 0) 100%
+  );
+}
+
+.carousel-window::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #F8F6F0 0%,
+    rgba(248, 246, 240, 0) 100%
+  );
 }
 
 .carousel-window.dragging {
@@ -80,6 +109,7 @@ body {
   will-change: transform;
 }
 
+/* ぷかぷか */
 .item:nth-child(1) .bottle {
   animation: float1 4.2s ease-in-out infinite;
 }
@@ -96,10 +126,19 @@ body {
   animation: float1 5s ease-in-out infinite;
 }
 
+.item:nth-child(5) .bottle {
+  animation: float2 4.5s ease-in-out infinite;
+}
+
+.item:nth-child(6) .bottle {
+  animation: float3 4.8s ease-in-out infinite;
+}
+
 @keyframes float1 {
   0%, 100% {
     transform: translate(0, 0) rotate(0deg);
   }
+
   50% {
     transform: translate(3px, -10px) rotate(0.6deg);
   }
@@ -109,6 +148,7 @@ body {
   0%, 100% {
     transform: translate(0, -3px) rotate(0deg);
   }
+
   50% {
     transform: translate(-3px, 9px) rotate(-0.6deg);
   }
@@ -118,6 +158,7 @@ body {
   0%, 100% {
     transform: translate(-2px, 2px) rotate(-0.3deg);
   }
+
   50% {
     transform: translate(2px, -8px) rotate(0.5deg);
   }
@@ -127,96 +168,99 @@ body {
   margin-top: 4px;
   font-size: 12px;
   color: #606487;
+  line-height: 1.5;
   white-space: nowrap;
 }
 
 
 /* ====================
-   モーダル
+   購入確認モーダル
 ==================== */
 
-.modal {
+#noticeModal {
+  display: none;
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, .92);
-  display: none;
-  z-index: 10;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.modal.open {
-  display: block;
-}
-
-.close {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  color: white;
-  font: 32px sans-serif;
-  cursor: pointer;
-  z-index: 30;
-  user-select: none;
-}
-
-.single-area {
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
   align-items: center;
-}
-
-.single {
-  display: block;
-  max-width: 100vw;
-  max-height: 100vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-.comic-area {
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
   justify-content: center;
-  padding: 50px 0 40px;
+  padding: 20px;
 }
 
-.comic {
-  width: min(520px, 75vw);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.comic img {
-  display: block;
-  width: 100%;
-  max-width: 520px;
+.notice-box {
+  width: min(520px, 100%);
   max-height: 85vh;
-  height: auto;
-  object-fit: contain;
+  overflow-y: auto;
+
+  background: #E4E5EE;
+  color: #606487;
+
+  padding: 28px 24px 24px;
+  border-radius: 10px;
+
+  text-align: left;
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.notice-box h2 {
+  margin: 0 0 18px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.notice-box p {
+  margin: 0 0 18px;
+}
+
+.notice-box .language {
+  margin-top: 22px;
+}
+
+.notice-box .language-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notice-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.notice-buttons button {
+  border: none;
+  padding: 9px 22px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background: #ffffff;
+  color: #606487;
+}
+
+.confirm-button {
+  background: #606487;
+  color: white;
 }
 
 
 @media (max-width: 600px) {
 
-  .page {
-    padding-top: 25px;
-  }
-
-  .back {
-    width: 90vw;
-  }
-
   .carousel-window {
-    margin-top: 45px;
+    padding-top: 70px;
+  }
+
+  /* スマホでは薄くなる範囲を短く */
+  .carousel-window::before,
+  .carousel-window::after {
+    width: 70px;
   }
 
   .item {
@@ -240,20 +284,18 @@ body {
     font-size: 11px;
   }
 
-  .comic-area {
-    padding: 55px 0 30px;
+  .notice-box {
+    padding: 24px 18px 20px;
+    font-size: 12px;
   }
 
-  .comic {
-    width: 78vw;
-    max-width: 500px;
-    gap: 12px;
+  .notice-box h2 {
+    font-size: 17px;
   }
 
-  .comic img {
-    width: 100%;
-    max-width: 500px;
-    max-height: 82vh;
+  .notice-buttons button {
+    font-size: 13px;
+    padding: 8px 18px;
   }
 }
 </style>
@@ -261,35 +303,116 @@ body {
 
 <body>
 
-<div class="page">
+<a href="neri.html" class="back">← 戻る</a>
 
-  <a class="back" href="neri.html">← 色を変える</a>
+<div class="carousel-window" id="carouselWindow">
 
-  <div class="carousel-window" id="carouselWindow">
-    <div class="carousel-track" id="track"></div>
-  </div>
+  <div class="carousel-track" id="track"></div>
 
 </div>
 
 
-<div class="modal" id="modal">
+<div id="noticeModal">
 
-  <div class="close" id="close">×</div>
+  <div class="notice-box">
 
-  <div class="single-area" id="singleArea">
+    <h2>⚠️ 購入前にご確認ください</h2>
 
-    <img
-      class="single"
-      id="single"
-      src=""
-      alt=""
-    >
+    <!-- 日本語 -->
 
-  </div>
+    <div class="language">
 
-  <div class="comic-area" id="comicArea">
+      <div class="language-title">
+        ◆ 商品について
+      </div>
 
-    <div class="comic" id="comic"></div>
+      <p>
+        ・複数回に分けてのご注文も含め、おひとり様2個までとなります。<br>
+        ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
+        ・発送はネコポスで行います。<br>
+        ・転売目的のご購入は禁止しております。<br>
+        ・在庫がなくなり次第、販売終了となります。
+      </p>
+
+    </div>
+
+
+    <!-- English -->
+
+    <div class="language">
+
+      <div class="language-title">
+        ◆ Please read before purchasing
+      </div>
+
+      <p>
+        ・Limit: 2 items per person, including multiple separate orders.<br>
+        ※If you purchase 3 or more items, all of your orders from LUMI. will be refunded.<br>
+        ・Orders will be shipped via Nekopos.<br>
+        ・Purchases for resale are prohibited.<br>
+        ・Sales will end when stock runs out.
+      </p>
+
+    </div>
+
+
+    <!-- 中文 -->
+
+    <div class="language">
+
+      <div class="language-title">
+        ◆ 购买前请确认
+      </div>
+
+      <p>
+        ・每人最多购买2件，包括分多次下单的情况。<br>
+        ※如果购买3件或以上，您在LUMI.购买的所有订单都将被退款。<br>
+        ・商品将通过Nekopos寄送。<br>
+        ・禁止以转卖为目的购买。<br>
+        ・售罄后将结束销售。
+      </p>
+
+    </div>
+
+
+    <!-- 한국어 -->
+
+    <div class="language">
+
+      <div class="language-title">
+        ◆ 구매 전 확인해 주세요
+      </div>
+
+      <p>
+        ・여러 번 나누어 주문한 경우를 포함하여, 1인당 최대 2개까지 구매 가능합니다.<br>
+        ※3개 이상 구매하신 경우, LUMI.에서 구매하신 모든 주문이 환불됩니다.<br>
+        ・상품은 네코포스로 배송됩니다.<br>
+        ・재판매를 목적으로 한 구매는 금지됩니다.<br>
+        ・재고 소진 시 판매가 종료됩니다.
+      </p>
+
+    </div>
+
+
+    <div class="notice-buttons">
+
+      <button
+        type="button"
+        class="cancel-button"
+        id="cancelButton"
+      >
+        戻る
+      </button>
+
+      <button
+        type="button"
+        class="confirm-button"
+        id="confirmButton"
+      >
+        確認しました
+      </button>
+
+    </div>
 
   </div>
 
@@ -298,41 +421,37 @@ body {
 
 <script>
 
-const folder = "shirobara-kobin";
-const bottle = "bin_shirobara.png";
-
 const works = [
 
   {
-    type: "image",
-    src: `${folder}/001.PNG`,
-    title: "たからもの"
+    url: "https://sasadg.booth.pm/items/7975838",
+    title: "宙ぶらりん<br>シリモニ"
   },
 
   {
-    type: "comic",
-    folder: `${folder}/comic01/`,
-    title: "ほんのり視力が悪い故"
+    url: "ここにBOOTHのURL",
+    title: "足元ぐるぐる人外ズ<br>シリモニ"
+  },
+
+  {
+    url: "ここにBOOTHのURL",
+    title: "足元ぐるぐる人外ズ<br>雪山組"
   }
 
 ];
 
 
-const track = document.getElementById("track");
-const windowEl = document.getElementById("carouselWindow");
+const bottle = "bin_uzu.png";
 
-const modal = document.getElementById("modal");
-const closeButton = document.getElementById("close");
+const track =
+  document.getElementById("track");
 
-const singleArea = document.getElementById("singleArea");
-const single = document.getElementById("single");
-
-const comicArea = document.getElementById("comicArea");
-const comic = document.getElementById("comic");
+const windowEl =
+  document.getElementById("carouselWindow");
 
 
 /* ====================
-   画像を複製
+   3つを大量に複製
 ==================== */
 
 const copies = 9;
@@ -341,7 +460,8 @@ for (let c = 0; c < copies; c++) {
 
   works.forEach((work, index) => {
 
-    const item = document.createElement("div");
+    const item =
+      document.createElement("div");
 
     item.className = "item";
 
@@ -349,9 +469,18 @@ for (let c = 0; c < copies; c++) {
 
     item.innerHTML = `
       <div class="bottle-wrap">
-        <img class="bottle" src="${bottle}" alt="">
+
+        <img
+          src="${bottle}"
+          class="bottle"
+          alt=""
+        >
+
       </div>
-      <div class="title">${work.title}</div>
+
+      <div class="title">
+        ${work.title}
+      </div>
     `;
 
     track.appendChild(item);
@@ -366,36 +495,82 @@ for (let c = 0; c < copies; c++) {
 ==================== */
 
 let position = 0;
-let velocity = -0.25;
+
+const velocity = -0.55;
 
 let dragging = false;
+
 let startX = 0;
 let lastX = 0;
+
 let moved = false;
 
-const itemWidth = () =>
-  window.innerWidth <= 600 ? 125 : 170;
+let cycleWidth = 0;
 
-const loopWidth = () =>
-  itemWidth() * works.length;
 
-position = -(loopWidth() * 4);
+/* 実際の3個分の幅を取得 */
 
+function updateCycleWidth() {
+
+  const items =
+    track.querySelectorAll(".item");
+
+  if (items.length < 4) {
+    return;
+  }
+
+  const first =
+    items[0].getBoundingClientRect();
+
+  const fourth =
+    items[3].getBoundingClientRect();
+
+  cycleWidth =
+    fourth.left - first.left;
+
+}
+
+
+/* 初期位置 */
+
+function setInitialPosition() {
+
+  updateCycleWidth();
+
+  position =
+    -cycleWidth * 4;
+
+}
+
+
+/* 無限ループ処理 */
 
 function normalizePosition() {
 
-  const width = loopWidth();
-
-  while (position < -(width * 5)) {
-    position += width;
+  if (!cycleWidth) {
+    return;
   }
 
-  while (position > -(width * 3)) {
-    position -= width;
+  while (
+    position <= -cycleWidth * 5
+  ) {
+
+    position += cycleWidth;
+
+  }
+
+  while (
+    position >= -cycleWidth * 3
+  ) {
+
+    position -= cycleWidth;
+
   }
 
 }
 
+
+/* 表示 */
 
 function render() {
 
@@ -409,10 +584,14 @@ function render() {
 }
 
 
+/* 自動で左へ流す */
+
 function autoMove() {
 
   if (!dragging) {
+
     position += velocity;
+
   }
 
   requestAnimationFrame(autoMove);
@@ -427,24 +606,34 @@ function autoMove() {
 function pointerDown(x) {
 
   dragging = true;
+
   moved = false;
 
   startX = x;
   lastX = x;
 
-  windowEl.classList.add("dragging");
+  windowEl.classList.add(
+    "dragging"
+  );
 
 }
 
 
 function pointerMove(x) {
 
-  if (!dragging) return;
+  if (!dragging) {
+    return;
+  }
 
-  const dx = x - lastX;
+  const dx =
+    x - lastX;
 
-  if (Math.abs(x - startX) > 8) {
+  if (
+    Math.abs(x - startX) > 8
+  ) {
+
     moved = true;
+
   }
 
   position += dx;
@@ -456,145 +645,206 @@ function pointerMove(x) {
 
 function pointerUp() {
 
-  if (!dragging) return;
-
-  dragging = false;
-  windowEl.classList.remove("dragging");
-
-}
-
-
-windowEl.addEventListener("pointerdown", e => {
-  pointerDown(e.clientX);
-});
-
-windowEl.addEventListener("pointermove", e => {
-
-  if (dragging) {
-    pointerMove(e.clientX);
-  }
-
-});
-
-windowEl.addEventListener("pointerup", pointerUp);
-windowEl.addEventListener("pointercancel", pointerUp);
-windowEl.addEventListener("pointerleave", pointerUp);
-
-
-/* ====================
-   タップ
-==================== */
-
-track.addEventListener("click", e => {
-
-  if (moved) return;
-
-  const item = e.target.closest(".item");
-
-  if (!item) return;
-
-  const index = Number(item.dataset.index);
-  openWork(index);
-
-});
-
-
-function openWork(index) {
-
-  const work = works[index];
-
-  single.src = "";
-  comic.innerHTML = "";
-
-  singleArea.style.display = "none";
-  comicArea.style.display = "none";
-
-
-  if (work.type === "image") {
-
-    singleArea.style.display = "flex";
-
-    single.src = work.src;
-
-  }
-
-
-  if (work.type === "comic") {
-
-    comicArea.style.display = "flex";
-
-    const pages = [
-      "001.PNG",
-      "002.PNG"
-    ];
-
-    pages.forEach(file => {
-
-      const img = document.createElement("img");
-
-      img.src = `${work.folder}${file}`;
-      img.alt = "";
-
-      comic.appendChild(img);
-
-    });
-
-  }
-
-  modal.classList.add("open");
-  modal.scrollTop = 0;
-
-}
-
-
-function closeModal() {
-
-  modal.classList.remove("open");
-
-  single.src = "";
-  comic.innerHTML = "";
-
-}
-
-
-closeButton.addEventListener("click", e => {
-
-  e.stopPropagation();
-
-  closeModal();
-
-});
-
-
-modal.addEventListener("click", e => {
-
-  if (e.target === single) return;
-
-  if (
-    e.target.tagName === "IMG" &&
-    comic.contains(e.target)
-  ) {
+  if (!dragging) {
     return;
   }
 
-  if (e.target === closeButton) return;
+  dragging = false;
 
-  closeModal();
+  windowEl.classList.remove(
+    "dragging"
+  );
 
-});
+}
 
 
-document.addEventListener("keydown", e => {
+windowEl.addEventListener(
+  "pointerdown",
+  e => {
 
-  if (e.key === "Escape") {
-    closeModal();
+    pointerDown(e.clientX);
+
   }
+);
 
-});
+
+windowEl.addEventListener(
+  "pointermove",
+  e => {
+
+    if (dragging) {
+
+      pointerMove(
+        e.clientX
+      );
+
+    }
+
+  }
+);
 
 
-render();
-autoMove();
+windowEl.addEventListener(
+  "pointerup",
+  pointerUp
+);
+
+
+windowEl.addEventListener(
+  "pointercancel",
+  pointerUp
+);
+
+
+/* ====================
+   購入確認
+==================== */
+
+const noticeModal =
+  document.getElementById(
+    "noticeModal"
+  );
+
+const confirmButton =
+  document.getElementById(
+    "confirmButton"
+  );
+
+const cancelButton =
+  document.getElementById(
+    "cancelButton"
+  );
+
+let destinationUrl = "";
+
+
+track.addEventListener(
+  "click",
+  e => {
+
+    if (moved) {
+
+      moved = false;
+
+      return;
+
+    }
+
+    const item =
+      e.target.closest(".item");
+
+    if (!item) {
+      return;
+    }
+
+    const index =
+      Number(
+        item.dataset.index
+      );
+
+    destinationUrl =
+      works[index].url;
+
+    noticeModal.style.display =
+      "flex";
+
+  }
+);
+
+
+/* 購入ページへ */
+
+confirmButton.addEventListener(
+  "click",
+  () => {
+
+    if (destinationUrl) {
+
+      window.location.href =
+        destinationUrl;
+
+    }
+
+  }
+);
+
+
+/* キャンセル */
+
+function cancelPurchase() {
+
+  destinationUrl = "";
+
+  noticeModal.style.display =
+    "none";
+
+}
+
+
+cancelButton.addEventListener(
+  "click",
+  cancelPurchase
+);
+
+
+noticeModal.addEventListener(
+  "click",
+  e => {
+
+    if (
+      e.target === noticeModal
+    ) {
+
+      cancelPurchase();
+
+    }
+
+  }
+);
+
+
+/* ESCで閉じる */
+
+document.addEventListener(
+  "keydown",
+  e => {
+
+    if (e.key === "Escape") {
+
+      cancelPurchase();
+
+    }
+
+  }
+);
+
+
+/* 開始 */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    setInitialPosition();
+
+    render();
+
+    autoMove();
+
+  }
+);
+
+
+/* 画面サイズ変更 */
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    updateCycleWidth();
+
+  }
+);
 
 </script>
 

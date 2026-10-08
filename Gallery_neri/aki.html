@@ -201,11 +201,14 @@ function addImage(number) {
   const key =
     String(number).padStart(3, "0");
 
+  const src =
+    "秋の小瓶/" + key + ".PNG";
+
   works.push({
 
     type: "image",
 
-    src: `${folder}/${key}.PNG`,
+    src: src,
 
     title:
       titles[key] || ""

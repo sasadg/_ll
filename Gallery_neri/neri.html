@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -28,6 +29,7 @@ body {
   gap: 70px;
 }
 
+/* 丸全体 */
 .circle-link {
   text-decoration: none;
   color: #333;
@@ -35,10 +37,40 @@ body {
   width: 180px;
 }
 
+/* ぷかぷかする部分 */
 .circle {
   width: 180px;
   height: 180px;
   position: relative;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* 丸ごとに少しタイミングをずらす */
+.circle-link:nth-child(2) .circle {
+  animation-delay: -1.3s;
+}
+
+.circle-link:nth-child(3) .circle {
+  animation-delay: -2.6s;
+}
+
+/* ふわっと浮く */
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate(3px, -7px) rotate(0.5deg);
+  }
+
+  50% {
+    transform: translate(0, -12px) rotate(0deg);
+  }
+
+  75% {
+    transform: translate(-3px, -6px) rotate(-0.5deg);
+  }
 }
 
 .circle img {
@@ -48,15 +80,16 @@ body {
   transition: transform 0.3s ease;
 }
 
+/* ホバー時 */
+.circle-link:hover .circle img {
+  transform: scale(1.05);
+}
+
 .circle-title {
   margin-top: 12px;
   font-size: 18px;
   opacity: 0;
   transition: opacity 0.3s ease;
-}
-
-.circle-link:hover .circle img {
-  transform: scale(1.05);
 }
 
 .circle-link:hover .circle-title {
@@ -121,3 +154,4 @@ body {
 
 </body>
 </html>
+```

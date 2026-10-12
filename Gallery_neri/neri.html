@@ -10,115 +10,445 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
-  min-height: 100vh;
-  background: #fff;
+  padding: 0;
+  overflow-x: hidden;
   font-family: "Hina Mincho", serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-.container {
-  width: min(850px, 90vw);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 70px;
+body {
+  background: #F8F6F0;
 }
 
-/* 丸全体 */
-.circle-link {
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 35px 0 70px;
+}
+
+.back {
+  display: block;
+  width: 90vw;
+  max-width: 850px;
+  margin: 0 auto;
+  color: #886F58;
   text-decoration: none;
-  color: #333;
+  font-size: 16px;
+}
+
+.bottle-section {
+  width: 100%;
+  padding: 0 0 65px;
+  overflow: hidden;
+}
+
+.section-heading {
+  margin: 0;
+  padding: 0 20px;
   text-align: center;
-  width: 180px;
+  font-size: 19px;
+  font-weight: normal;
+  letter-spacing: 0.12em;
 }
 
-/* ぷかぷかする部分 */
-.circle {
-  width: 180px;
-  height: 180px;
+.orange-section {
+  background: #FFE6DA;
+  color: #A06453;
+}
+
+.water-section {
+  background: #CFEFF6;
+  color: #606487;
+}
+
+.white-section {
+  background: #F8F6F0;
+  color: #886F58;
+}
+
+.carousel-window {
   position: relative;
-  animation: float 4s ease-in-out infinite;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 35px;
+  cursor: grab;
+  touch-action: pan-y;
 }
 
-/* 丸ごとに少しタイミングをずらす */
-.circle-link:nth-child(2) .circle {
-  animation-delay: -1.3s;
+.carousel-window.dragging {
+  cursor: grabbing;
 }
 
-.circle-link:nth-child(3) .circle {
-  animation-delay: -2.6s;
+.carousel-window::before,
+.carousel-window::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 180px;
+  z-index: 5;
+  pointer-events: none;
 }
 
-/* ふわっと浮く */
-@keyframes float {
+.orange-section .carousel-window::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #FFE6DA 0%,
+    rgba(255,230,218,0) 100%
+  );
+}
+
+.orange-section .carousel-window::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #FFE6DA 0%,
+    rgba(255,230,218,0) 100%
+  );
+}
+
+.white-section .carousel-window::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #F8F6F0 0%,
+    rgba(248,246,240,0) 100%
+  );
+}
+
+.white-section .carousel-window::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #F8F6F0 0%,
+    rgba(248,246,240,0) 100%
+  );
+}
+
+.water-section .carousel-window::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    #CFEFF6 0%,
+    rgba(207,239,246,0) 100%
+  );
+}
+
+.water-section .carousel-window::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    #CFEFF6 0%,
+    rgba(207,239,246,0) 100%
+  );
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  will-change: transform;
+}
+
+.item {
+  flex: 0 0 170px;
+  width: 170px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottle-wrap {
+  width: 170px;
+  height: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottle {
+  width: 135px;
+  height: 170px;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}
+
+.item:nth-child(3n + 1) .bottle {
+  animation: float1 4.2s ease-in-out infinite;
+}
+
+.item:nth-child(3n + 2) .bottle {
+  animation: float2 4.7s ease-in-out infinite;
+}
+
+.item:nth-child(3n) .bottle {
+  animation: float3 4.4s ease-in-out infinite;
+}
+
+@keyframes float1 {
   0%, 100% {
     transform: translate(0, 0) rotate(0deg);
   }
-
-  25% {
-    transform: translate(3px, -7px) rotate(0.5deg);
-  }
-
   50% {
-    transform: translate(0, -12px) rotate(0deg);
-  }
-
-  75% {
-    transform: translate(-3px, -6px) rotate(-0.5deg);
+    transform: translate(3px, -10px) rotate(0.6deg);
   }
 }
 
-.circle img {
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, -3px) rotate(0deg);
+  }
+  50% {
+    transform: translate(-3px, 9px) rotate(-0.6deg);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translate(-2px, 2px) rotate(-0.3deg);
+  }
+  50% {
+    transform: translate(2px, -8px) rotate(0.5deg);
+  }
+}
+
+.title {
+  margin-top: 4px;
+  padding: 0 3px;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+.orange-section .title {
+  color: #A06453;
+}
+
+.water-section .title {
+  color: #606487;
+}
+
+.white-section .title {
+  color: #886F58;
+}
+
+/* 拡大表示 */
+
+.art-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
   width: 100%;
   height: 100%;
+  background: rgba(0, 0, 0, .92);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.art-modal.open {
+  display: block;
+}
+
+.close {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  color: white;
+  font: 32px sans-serif;
+  cursor: pointer;
+  z-index: 60;
+  user-select: none;
+}
+
+.single-area {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.single {
+  display: block;
+  max-width: 100%;
+  max-height: 100vh;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  transition: transform 0.3s ease;
 }
 
-/* ホバー時 */
-.circle-link:hover .circle img {
-  transform: scale(1.05);
+.comic-area {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 70px 20px 40px;
 }
 
-.circle-title {
-  margin-top: 12px;
+.comic-page {
+  display: block;
+  max-width: 900px;
+  width: auto;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+/* 購入確認モーダル */
+
+#noticeModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(40, 42, 60, .35);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.notice-box {
+  width: min(520px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #F8F6F0;
+  color: #886F58;
+  padding: 28px 24px 24px;
+  border-radius: 10px;
+  text-align: left;
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.notice-box h2 {
+  margin: 0 0 18px;
+  text-align: center;
   font-size: 18px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  font-weight: normal;
 }
 
-.circle-link:hover .circle-title {
-  opacity: 1;
+.notice-box p {
+  margin: 0 0 18px;
 }
+
+.notice-box .language {
+  margin-top: 22px;
+}
+
+.notice-box .language-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notice-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.notice-buttons button {
+  border: none;
+  padding: 9px 22px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background: #fff;
+  color: #886F58;
+}
+
+.confirm-button {
+  background: #886F58;
+  color: white;
+}
+
+/* スマホ */
 
 @media (max-width: 600px) {
-  .container {
-    width: 90vw;
-    gap: 10px;
-    justify-content: space-between;
+  .page {
+    padding-top: 25px;
+    padding-bottom: 35px;
   }
 
-  .circle-link {
-    width: 28vw;
-    max-width: 130px;
+  .bottle-section {
+    padding-bottom: 45px;
   }
 
-  .circle {
-    width: 28vw;
-    height: 28vw;
-    max-width: 130px;
-    max-height: 130px;
+  .section-heading {
+    font-size: 17px;
   }
 
-  .circle-title {
-    margin-top: 8px;
-    font-size: 15px;
-    opacity: 1;
-    white-space: nowrap;
+  .carousel-window {
+    margin-top: 28px;
+  }
+
+  .carousel-window::before,
+  .carousel-window::after {
+    width: 70px;
+  }
+
+  .item {
+    flex-basis: 125px;
+    width: 125px;
+  }
+
+  .bottle-wrap {
+    width: 125px;
+    height: 155px;
+  }
+
+  .bottle {
+    width: 30vw;
+    height: 38vw;
+    max-width: 125px;
+    max-height: 155px;
+  }
+
+  .title {
+    font-size: 11px;
+  }
+
+  .comic-area {
+    padding: 60px 10px 30px;
+    gap: 12px;
+  }
+
+  .comic-page {
+    max-width: 100%;
+    max-height: none;
+  }
+
+  .notice-box {
+    padding: 24px 18px 20px;
+    font-size: 12px;
+  }
+
+  .notice-box h2 {
+    font-size: 17px;
+  }
+
+  .notice-buttons button {
+    font-size: 13px;
+    padding: 8px 18px;
   }
 }
 </style>
@@ -126,30 +456,437 @@ body {
 
 <body>
 
-<div class="container">
+<div class="page">
 
-  <a class="circle-link" href="amber.html">
-    <div class="circle">
-      <img src="maru_amber.png" alt="橙の小瓶">
-    </div>
-    <div class="circle-title">橙の小瓶</div>
-  </a>
+  <a class="back" href="neri.html">← 色を変える</a>
 
-  <a class="circle-link" href="azure.html">
-    <div class="circle">
-      <img src="maru_azure.png" alt="水の小瓶">
+  <section class="bottle-section orange-section">
+    <h2 class="section-heading">橙の小瓶</h2>
+    <div class="carousel-window">
+      <div class="carousel-track" id="orangeTrack"></div>
     </div>
-    <div class="circle-title">水の小瓶</div>
-  </a>
+  </section>
 
-  <a class="circle-link" href="snow.html">
-    <div class="circle">
-      <img src="maru_snow.png" alt="白の小瓶">
+  <section class="bottle-section water-section">
+    <h2 class="section-heading">水の小瓶</h2>
+    <div class="carousel-window">
+      <div class="carousel-track" id="waterTrack"></div>
     </div>
-    <div class="circle-title">白の小瓶</div>
-  </a>
+  </section>
+
+  <section class="bottle-section white-section">
+    <h2 class="section-heading">白の小瓶</h2>
+    <div class="carousel-window">
+      <div class="carousel-track" id="whiteTrack"></div>
+    </div>
+  </section>
 
 </div>
+
+<div class="art-modal" id="artModal">
+  <div class="close" id="artClose">×</div>
+
+  <div class="single-area" id="singleArea">
+    <img class="single" id="single" src="" alt="">
+  </div>
+
+  <div class="comic-area" id="comicArea">
+    <img class="comic-page" id="comicPage1" src="" alt="">
+    <img class="comic-page" id="comicPage2" src="" alt="">
+  </div>
+</div>
+
+<div id="noticeModal">
+  <div class="notice-box">
+
+    <h2>⚠️ 購入前にご確認ください</h2>
+
+    <div class="language">
+      <div class="language-title">◆ 商品について</div>
+      <p>
+        ・複数回に分けてのご注文も含め、おひとり様2個までとなります。<br>
+        ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
+        ・発送はネコポスで行います。<br>
+        ・転売目的のご購入は禁止しております。<br>
+        ・在庫がなくなり次第、販売終了となります。
+      </p>
+    </div>
+
+    <div class="language">
+      <div class="language-title">◆ Please read before purchasing</div>
+      <p>
+        ・Limit: 2 items per person, including multiple separate orders.<br>
+        ※If you purchase 3 or more items, all of your orders from LUMI. will be refunded.<br>
+        ・Orders will be shipped via Nekopos.<br>
+        ・Purchases for resale are prohibited.<br>
+        ・Sales will end when stock runs out.
+      </p>
+    </div>
+
+    <div class="language">
+      <div class="language-title">◆ 购买前请确认</div>
+      <p>
+        ・每人最多购买2件，包括分多次下单的情况。<br>
+        ※如果购买3件或以上，您在LUMI.购买的所有订单都将被退款。<br>
+        ・商品将通过Nekopos寄送。<br>
+        ・禁止以转卖为目的购买。<br>
+        ・售罄后将结束销售。
+      </p>
+    </div>
+
+    <div class="language">
+      <div class="language-title">◆ 구매 전 확인해 주세요</div>
+      <p>
+        ・여러 번 나누어 주문한 경우를 포함하여, 1인당 최대 2개까지 구매 가능합니다.<br>
+        ※3개 이상 구매하신 경우, LUMI.에서 구매하신 모든 주문이 환불됩니다.<br>
+        ・상품은 네코포스로 배송됩니다.<br>
+        ・재판매를 목적으로 한 구매는 금지됩니다.<br>
+        ・재고 소진 시 판매가 종료됩니다.
+      </p>
+    </div>
+
+    <div class="notice-buttons">
+      <button type="button" class="cancel-button" id="cancelButton">
+        戻る
+      </button>
+      <button type="button" class="confirm-button" id="confirmButton">
+        確認しました
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+/* 橙の小瓶 */
+
+const orangeWorks = [
+  { src: "amber-kobin/001.PNG", title: "紅葉" },
+  { src: "amber-kobin/002.PNG", title: "実り" },
+  { src: "amber-kobin/003.PNG", title: "食欲" },
+  { src: "amber-kobin/004.PNG", title: "読書" },
+  { src: "amber-kobin/005.PNG", title: "スポーツ" },
+  { src: "amber-kobin/006.PNG", title: "芸術" },
+  { src: "amber-kobin/007.PNG", title: "睡眠" }
+].map(work => ({
+  ...work,
+  type: "image",
+  bottle: "bin_amber.png"
+}));
+
+/* 水の小瓶 */
+
+const waterWorks = [
+  {
+    type: "image",
+    src: "azure-kobin/001.PNG",
+    title: "たからもの",
+    bottle: "bin_azure.png"
+  },
+  {
+    type: "comic",
+    pages: [
+      "azure-kobin/comic01/001.PNG",
+      "azure-kobin/comic01/002.PNG"
+    ],
+    title: "ほんのり視力が悪い故",
+    bottle: "bin_azure.png"
+  }
+];
+
+/* 白の小瓶 */
+
+const whiteWorks = [
+  {
+    type: "booth",
+    url: "https://sasadg.booth.pm/items/7975838",
+    title: "宙ぶらりん<br>シリモニ",
+    bottle: "bin_snow1.png"
+  },
+  {
+    type: "booth",
+    url: "https://sasadg.booth.pm/items/8957919",
+    title: "足元ぐるぐる人外ズ<br>シリモニ",
+    bottle: "bin_snow2.png"
+  },
+  {
+    type: "booth",
+    url: "https://sasadg.booth.pm/items/8957943",
+    title: "足元ぐるぐる人外ズ<br>雪山組",
+    bottle: "bin_snow3.png"
+  }
+];
+
+/* カルーセル */
+
+function createCarousel(trackId, works) {
+  const track = document.getElementById(trackId);
+  const windowEl = track.parentElement;
+
+  for (let c = 0; c < 9; c++) {
+    works.forEach((work, index) => {
+      const item = document.createElement("div");
+      item.className = "item";
+      item.dataset.index = index;
+
+      const wrap = document.createElement("div");
+      wrap.className = "bottle-wrap";
+
+      const bottle = document.createElement("img");
+      bottle.className = "bottle";
+      bottle.src = work.bottle;
+      bottle.alt = "";
+      bottle.draggable = false;
+
+      wrap.appendChild(bottle);
+
+      const title = document.createElement("div");
+      title.className = "title";
+      title.innerHTML = work.title;
+
+      item.appendChild(wrap);
+      item.appendChild(title);
+      track.appendChild(item);
+    });
+  }
+
+  let position = 0;
+  const velocity = -0.25;
+
+  let dragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let moved = false;
+  let cycleWidth = 0;
+
+  function updateCycleWidth() {
+    const items = track.querySelectorAll(".item");
+
+    if (items.length <= works.length) return;
+
+    const first = items[0].getBoundingClientRect();
+    const next = items[works.length].getBoundingClientRect();
+
+    cycleWidth = next.left - first.left;
+  }
+
+  function setInitialPosition() {
+    updateCycleWidth();
+
+    if (cycleWidth) {
+      position = -cycleWidth * 4;
+    }
+  }
+
+  function normalizePosition() {
+    if (!cycleWidth) return;
+
+    while (position <= -cycleWidth * 5) {
+      position += cycleWidth;
+    }
+
+    while (position >= -cycleWidth * 3) {
+      position -= cycleWidth;
+    }
+  }
+
+  function render() {
+    normalizePosition();
+
+    track.style.transform =
+      `translate3d(${position}px, 0, 0)`;
+
+    requestAnimationFrame(render);
+  }
+
+  function autoMove() {
+    if (!dragging) position += velocity;
+    requestAnimationFrame(autoMove);
+  }
+
+  function pointerDown(x) {
+    dragging = true;
+    moved = false;
+    startX = x;
+    lastX = x;
+    windowEl.classList.add("dragging");
+  }
+
+  function pointerMove(x) {
+    if (!dragging) return;
+
+    const dx = x - lastX;
+
+    if (Math.abs(x - startX) > 8) {
+      moved = true;
+    }
+
+    position += dx;
+    lastX = x;
+  }
+
+  function pointerUp() {
+    if (!dragging) return;
+
+    dragging = false;
+    windowEl.classList.remove("dragging");
+  }
+
+  windowEl.addEventListener("pointerdown", e => {
+    pointerDown(e.clientX);
+  });
+
+  windowEl.addEventListener("pointermove", e => {
+    if (dragging) pointerMove(e.clientX);
+  });
+
+  windowEl.addEventListener("pointerup", pointerUp);
+  windowEl.addEventListener("pointercancel", pointerUp);
+  windowEl.addEventListener("pointerleave", pointerUp);
+
+  track.addEventListener("click", e => {
+    if (moved) {
+      moved = false;
+      return;
+    }
+
+    const item = e.target.closest(".item");
+    if (!item) return;
+
+    const work = works[Number(item.dataset.index)];
+
+    if (work.type === "booth") {
+      openNotice(work.url);
+    } else {
+      openArtwork(work);
+    }
+  });
+
+  return {
+    start() {
+      setInitialPosition();
+      render();
+      autoMove();
+    },
+    resize() {
+      updateCycleWidth();
+    }
+  };
+}
+
+/* イラスト・漫画の拡大 */
+
+const artModal = document.getElementById("artModal");
+const artClose = document.getElementById("artClose");
+const singleArea = document.getElementById("singleArea");
+const single = document.getElementById("single");
+const comicArea = document.getElementById("comicArea");
+const comicPage1 = document.getElementById("comicPage1");
+const comicPage2 = document.getElementById("comicPage2");
+
+function openArtwork(work) {
+  if (work.type === "image") {
+    single.src = work.src;
+    singleArea.style.display = "flex";
+    comicArea.style.display = "none";
+  } else if (work.type === "comic") {
+    comicPage1.src = work.pages[0];
+    comicPage2.src = work.pages[1];
+    singleArea.style.display = "none";
+    comicArea.style.display = "flex";
+  }
+
+  artModal.classList.add("open");
+}
+
+function closeArtwork() {
+  artModal.classList.remove("open");
+  single.src = "";
+  comicPage1.src = "";
+  comicPage2.src = "";
+}
+
+artClose.addEventListener("click", e => {
+  e.stopPropagation();
+  closeArtwork();
+});
+
+artModal.addEventListener("click", e => {
+  if (
+    e.target === single ||
+    e.target === comicPage1 ||
+    e.target === comicPage2 ||
+    e.target === artClose
+  ) return;
+
+  closeArtwork();
+});
+
+/* BOOTH購入確認 */
+
+const noticeModal = document.getElementById("noticeModal");
+const cancelButton = document.getElementById("cancelButton");
+const confirmButton = document.getElementById("confirmButton");
+
+let destinationUrl = "";
+
+function openNotice(url) {
+  destinationUrl = url;
+  noticeModal.style.display = "flex";
+}
+
+function closeNotice() {
+  destinationUrl = "";
+  noticeModal.style.display = "none";
+}
+
+cancelButton.addEventListener("click", closeNotice);
+
+noticeModal.addEventListener("click", e => {
+  if (e.target === noticeModal) closeNotice();
+});
+
+confirmButton.addEventListener("click", () => {
+  if (destinationUrl) {
+    window.location.href = destinationUrl;
+  }
+});
+
+/* ESCで閉じる */
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    closeArtwork();
+    closeNotice();
+  }
+});
+
+/* 開始 */
+
+const orangeCarousel = createCarousel("orangeTrack", orangeWorks);
+const waterCarousel = createCarousel("waterTrack", waterWorks);
+const whiteCarousel = createCarousel("whiteTrack", whiteWorks);
+
+function startCarousels() {
+  orangeCarousel.start();
+  waterCarousel.start();
+  whiteCarousel.start();
+}
+
+if (document.readyState === "complete") {
+  startCarousels();
+} else {
+  window.addEventListener("load", startCarousels, { once: true });
+}
+
+window.addEventListener("resize", () => {
+  orangeCarousel.resize();
+  waterCarousel.resize();
+  whiteCarousel.resize();
+});
+
+</script>
 
 </body>
 </html>

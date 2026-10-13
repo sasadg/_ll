@@ -33,7 +33,6 @@ a {
 
 .page {
   --background-space: 40px;
-
   width: 100%;
   min-height: 100vh;
   padding: var(--background-space) 0;
@@ -135,8 +134,6 @@ a {
 .carousel-window.dragging {
   cursor: grabbing;
 }
-
-/* フェード部分に載せる画像 */
 
 .fade-image {
   position: absolute;
@@ -392,7 +389,6 @@ a {
     --background-space: 20px;
     padding-bottom: 100px;
   }
-}
 
   .back {
     font-size: 14px;
@@ -615,56 +611,60 @@ function fitPageToBackground() {
   const isMobile = window.innerWidth <= 600;
   const space = isMobile ? 20 : 40;
 
-  page.style.minHeight = "100vh";
+  /* いったん高さの指定を解除して、コンテンツ本来の高さを測る */
+  page.style.minHeight = "0px";
 
-  const contentHeight = Math.max(
+  const pageHeight = Math.max(
     page.scrollHeight,
     window.innerHeight
   );
 
-  const targetHeight = contentHeight;
-
   pageBackground.style.top = space + "px";
 
   if (isMobile) {
+    /*
+      スマホでは背景画像の高さをページ全体に合わせる。
+      幅は元画像の縦横比から計算する。
+    */
+
+    const targetHeight = Math.max(
+      pageHeight - space * 2,
+      1
+    );
+
     const backgroundWidth =
       targetHeight *
       pageBackground.naturalWidth /
       pageBackground.naturalHeight;
 
+    pageBackground.style.height = targetHeight + "px";
     pageBackground.style.width = backgroundWidth + "px";
     pageBackground.style.maxWidth = "none";
     pageBackground.style.left = "50%";
     pageBackground.style.transform = "translateX(-50%)";
 
-    page.style.minHeight = targetHeight + space + "px";
+    page.style.minHeight = pageHeight + "px";
+
   } else {
+    /* パソコンでは画面幅に合わせる */
+
+    pageBackground.style.width = "100%";
+    pageBackground.style.height = "auto";
+    pageBackground.style.maxWidth = "none";
+    pageBackground.style.left = "0";
+    pageBackground.style.transform = "none";
+
     const backgroundHeight =
       window.innerWidth *
       pageBackground.naturalHeight /
       pageBackground.naturalWidth;
 
-    pageBackground.style.width = "100%";
-    pageBackground.style.maxWidth = "none";
-    pageBackground.style.left = "0";
-    pageBackground.style.transform = "none";
-
     page.style.minHeight = Math.max(
-      contentHeight,
+      pageHeight,
       backgroundHeight + space * 2
     ) + "px";
-
-if (pageBackground.complete) {
-  fitPageToBackground();
-} else {
-  pageBackground.addEventListener(
-    "load",
-    fitPageToBackground,
-    { once: true }
-  );
+  }
 }
-
-window.addEventListener("resize", fitPageToBackground);
 
 /* 橙の小瓶 */
 
@@ -981,6 +981,11 @@ function startCarousels() {
   orangeCarousel.start();
   waterCarousel.start();
   whiteCarousel.start();
+
+  /* 小瓶とタイトルが配置された後に背景の高さを計算 */
+  requestAnimationFrame(() => {
+    fitPageToBackground();
+  });
 }
 
 if (document.readyState === "complete") {
@@ -989,7 +994,18 @@ if (document.readyState === "complete") {
   window.addEventListener("load", startCarousels, { once: true });
 }
 
+/* 背景画像の読み込み後にも高さを調整 */
+
+if (pageBackground.complete && pageBackground.naturalWidth) {
+  fitPageToBackground();
+} else {
+  pageBackground.addEventListener("load", fitPageToBackground, {
+    once: true
+  });
+}
+
 window.addEventListener("resize", () => {
+  fitPageToBackground();
   orangeCarousel.resize();
   waterCarousel.resize();
   whiteCarousel.resize();

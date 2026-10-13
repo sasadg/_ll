@@ -32,17 +32,20 @@ a {
 }
 
 .page {
+  --background-space: 40px;
+
   width: 100%;
   min-height: 100vh;
-  padding: 22px 0 80px;
+  padding: var(--background-space) 0;
   position: relative;
   background: #B8D9FF;
 }
 
-/* 背景画像：縦横比を維持して表示 */
+/* 背景画像：縦横比を維持 */
+
 .page-background {
   position: absolute;
-  top: 0;
+  top: var(--background-space);
   left: 0;
   display: block;
   width: 100%;
@@ -52,7 +55,8 @@ a {
   user-select: none;
 }
 
-/* 背景画像より手前にコンテンツを配置 */
+/* コンテンツを背景画像より手前に配置 */
+
 .page > :not(.page-background) {
   position: relative;
   z-index: 1;
@@ -111,18 +115,19 @@ a {
   cursor: grab;
   touch-action: pan-y;
 
+  /* PC版：左右260pxのフェードアウト */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
-    black 180px,
-    black calc(100% - 180px),
+    black 260px,
+    black calc(100% - 260px),
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
-    black 180px,
-    black calc(100% - 180px),
+    black 260px,
+    black calc(100% - 260px),
     transparent 100%
   );
 }
@@ -137,7 +142,7 @@ a {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 180px;
+  width: 260px;
   z-index: 6;
   pointer-events: none;
   background-repeat: no-repeat;
@@ -384,8 +389,7 @@ a {
 
 @media (max-width: 600px) {
   .page {
-    padding-top: 12px;
-    padding-bottom: 60px;
+    --background-space: 20px;
   }
 
   .back {
@@ -596,7 +600,7 @@ a {
 </div>
 
 <script>
-/* 背景画像の高さにページを合わせる */
+/* 背景画像の高さと上下の余白を調整 */
 
 const page = document.getElementById("page");
 const pageBackground = document.getElementById("pageBackground");
@@ -606,9 +610,15 @@ function fitPageToBackground() {
     return;
   }
 
-  const backgroundHeight = pageBackground.getBoundingClientRect().height;
+  const space = window.innerWidth <= 600 ? 20 : 40;
+  const backgroundHeight =
+    window.innerWidth * pageBackground.naturalHeight /
+    pageBackground.naturalWidth;
 
-  page.style.minHeight = backgroundHeight + "px";
+  pageBackground.style.top = space + "px";
+
+  /* 背景の上と下に同じ余白を確保 */
+  page.style.minHeight = backgroundHeight + space * 2 + "px";
 }
 
 if (pageBackground.complete) {

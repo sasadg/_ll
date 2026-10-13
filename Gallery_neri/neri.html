@@ -24,12 +24,7 @@ html, body {
 }
 
 body {
-  background: linear-gradient(
-    to bottom,
-    #B8D9FF 0%,
-    #D5E7FF 45%,
-    #B8D9FF 100%
-  );
+  background: #B8D9FF;
 }
 
 a {
@@ -41,23 +36,12 @@ a {
   min-height: 100vh;
   padding: 22px 0 0;
   position: relative;
-}
 
-.character {
-  display: block;
-  width: 100%;
-  height: auto;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.character-top {
-  margin-bottom: 20px;
-}
-
-.character-bottom {
-  margin-top: 28px;
+  /* 背景と上下のキャラクターをまとめた画像 */
+  background-image: url("background.png");
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .back {
@@ -88,12 +72,14 @@ a {
   margin-top: 12px;
 }
 
+/* 英語タイトル：以前の約1.5倍 */
+
 .section-heading {
   margin: 0;
   padding: 0 12px;
   text-align: center;
   font-family: "Sacramento", cursive;
-  font-size: clamp(19px, 2.5vw, 30px);
+  font-size: clamp(28px, 3.75vw, 45px);
   line-height: 1.15;
   font-weight: normal;
   letter-spacing: .015em;
@@ -110,35 +96,55 @@ a {
   margin-top: 0;
   cursor: grab;
   touch-action: pan-y;
+
+  /* 左右の端で瓶を透明にする */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 180px,
+    black calc(100% - 180px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 180px,
+    black calc(100% - 180px),
+    transparent 100%
+  );
 }
 
 .carousel-window.dragging {
   cursor: grabbing;
 }
 
-.carousel-window::before,
-.carousel-window::after {
-  content: "";
+/* フェード部分に載せる画像 */
+
+.fade-image {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 180px;
-  z-index: 5;
+  z-index: 6;
   pointer-events: none;
-  background: linear-gradient(
-    to right,
-    #B8D9FF 0%,
-    rgba(184,217,255,0) 100%
-  );
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-.carousel-window::before {
+.fade-image-left {
   left: 0;
+
+  /* 左側に載せたい画像 */
+  background-image: url("fade-left.png");
 }
 
-.carousel-window::after {
+.fade-image-right {
   right: 0;
-  transform: scaleX(-1);
+
+  /* 右側に載せたい画像 */
+  background-image: url("fade-right.png");
 }
 
 .carousel-track {
@@ -373,14 +379,6 @@ a {
     padding-top: 12px;
   }
 
-  .character-top {
-    margin-bottom: 12px;
-  }
-
-  .character-bottom {
-    margin-top: 18px;
-  }
-
   .back {
     font-size: 14px;
   }
@@ -398,12 +396,29 @@ a {
     padding-bottom: 6px;
   }
 
+  /* スマホも以前の約1.5倍 */
   .section-heading {
-    font-size: 16px;
+    font-size: 24px;
   }
 
-  .carousel-window::before,
-  .carousel-window::after {
+  .carousel-window {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 70px,
+      black calc(100% - 70px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 70px,
+      black calc(100% - 70px),
+      transparent 100%
+    );
+  }
+
+  .fade-image {
     width: 70px;
   }
 
@@ -462,11 +477,11 @@ a {
 
   <a class="back" href="../1.html">▶既存イラストを見る</a>
 
-  <img class="character character-top" src="character_top.png" alt="">
-
   <section class="bottle-section orange-section">
     <h2 class="section-heading">Orange Bottle</h2>
     <div class="carousel-window">
+      <div class="fade-image fade-image-left"></div>
+      <div class="fade-image fade-image-right"></div>
       <div class="carousel-track" id="orangeTrack"></div>
     </div>
   </section>
@@ -474,6 +489,8 @@ a {
   <section class="bottle-section water-section">
     <h2 class="section-heading">Sky-blue Bottle</h2>
     <div class="carousel-window">
+      <div class="fade-image fade-image-left"></div>
+      <div class="fade-image fade-image-right"></div>
       <div class="carousel-track" id="waterTrack"></div>
     </div>
   </section>
@@ -481,11 +498,11 @@ a {
   <section class="bottle-section white-section">
     <h2 class="section-heading">White Bottle</h2>
     <div class="carousel-window">
+      <div class="fade-image fade-image-left"></div>
+      <div class="fade-image fade-image-right"></div>
       <div class="carousel-track" id="whiteTrack"></div>
     </div>
   </section>
-
-  <img class="character character-bottom" src="character_bottom.png" alt="">
 
 </div>
 

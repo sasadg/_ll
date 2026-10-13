@@ -41,7 +41,7 @@ a {
   background: #B8D9FF;
 }
 
-/* 背景画像：縦横比を維持 */
+/* 背景画像 */
 
 .page-background {
   position: absolute;
@@ -115,7 +115,6 @@ a {
   cursor: grab;
   touch-action: pan-y;
 
-  /* PC版：左右260pxのフェードアウト */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
@@ -600,7 +599,7 @@ a {
 </div>
 
 <script>
-/* 背景画像の高さと上下の余白を調整 */
+/* 背景画像をページ全体に合わせる */
 
 const page = document.getElementById("page");
 const pageBackground = document.getElementById("pageBackground");
@@ -610,21 +609,69 @@ function fitPageToBackground() {
     return;
   }
 
-  const space = window.innerWidth <= 600 ? 20 : 40;
-  const backgroundHeight =
-    window.innerWidth * pageBackground.naturalHeight /
-    pageBackground.naturalWidth;
+  const isMobile = window.innerWidth <= 600;
+  const space = isMobile ? 20 : 40;
+
+  /* 以前の最小高さをリセットして、コンテンツ本来の高さを測る */
+  page.style.minHeight = "100vh";
+
+  const contentHeight = Math.max(
+    page.scrollHeight,
+    window.innerHeight
+  );
 
   pageBackground.style.top = space + "px";
 
-  /* 背景の上と下に同じ余白を確保 */
-  page.style.minHeight = backgroundHeight + space * 2 + "px";
+  if (isMobile) {
+    /* スマホ　*/
+
+    const targetHeight = Math.max(
+      window.innerHeight - space * 2,
+      contentHeight - space * 2
+    );
+
+    const backgroundWidth =
+      targetHeight *
+      pageBackground.naturalWidth /
+      pageBackground.naturalHeight;
+
+    pageBackground.style.width = backgroundWidth + "px";
+    pageBackground.style.maxWidth = "none";
+    pageBackground.style.left = "50%";
+    pageBackground.style.transform = "translateX(-50%)";
+
+    page.style.minHeight =
+      Math.max(contentHeight, targetHeight + space * 2) + "px";
+
+  } else {
+    /*　パソコン　*/
+
+    const backgroundHeight =
+      window.innerWidth *
+      pageBackground.naturalHeight /
+      pageBackground.naturalWidth;
+
+    pageBackground.style.width = "100%";
+    pageBackground.style.maxWidth = "none";
+    pageBackground.style.left = "0";
+    pageBackground.style.transform = "none";
+
+    page.style.minHeight =
+      Math.max(
+        contentHeight,
+        backgroundHeight + space * 2
+      ) + "px";
+  }
 }
 
 if (pageBackground.complete) {
   fitPageToBackground();
 } else {
-  pageBackground.addEventListener("load", fitPageToBackground, { once: true });
+  pageBackground.addEventListener(
+    "load",
+    fitPageToBackground,
+    { once: true }
+  );
 }
 
 window.addEventListener("resize", fitPageToBackground);

@@ -36,7 +36,7 @@ a {
   width: 100%;
   min-height: 100vh;
   padding: var(--background-space) 0;
-  padding-bottom: calc(var(--background-space) + 100px);
+  padding-bottom: var(--background-space);
   position: relative;
   background: #B8D9FF;
 }
@@ -62,11 +62,14 @@ a {
   z-index: 1;
 }
 
+/* 既存イラストへのリンク：パソコンでは左端 */
+
 .back {
   display: block;
-  width: 90vw;
-  max-width: 850px;
-  margin: 0 auto 12px;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 12px;
+  padding: 0;
   color: white;
   text-decoration: none;
   font-size: 16px;
@@ -391,6 +394,9 @@ a {
   }
 
   .back {
+    width: 90vw;
+    max-width: 850px;
+    margin: 0 auto 12px;
     font-size: 14px;
   }
 
@@ -611,7 +617,7 @@ function fitPageToBackground() {
   const isMobile = window.innerWidth <= 600;
   const space = isMobile ? 20 : 40;
 
-  /* いったん高さの指定を解除して、コンテンツ本来の高さを測る */
+  /* 以前の高さ指定を解除して、コンテンツ本来の高さを測る */
   page.style.minHeight = "0px";
 
   const pageHeight = Math.max(
@@ -622,10 +628,7 @@ function fitPageToBackground() {
   pageBackground.style.top = space + "px";
 
   if (isMobile) {
-    /*
-      スマホでは背景画像の高さをページ全体に合わせる。
-      幅は元画像の縦横比から計算する。
-    */
+    /* スマホではページ全体の高さに背景を合わせる */
 
     const targetHeight = Math.max(
       pageHeight - space * 2,
@@ -646,7 +649,7 @@ function fitPageToBackground() {
     page.style.minHeight = pageHeight + "px";
 
   } else {
-    /* パソコンでは画面幅に合わせる */
+    /* パソコンでは背景を画面幅に合わせる */
 
     pageBackground.style.width = "100%";
     pageBackground.style.height = "auto";
@@ -997,9 +1000,11 @@ if (document.readyState === "complete") {
 /* 背景画像の読み込み後にも高さを調整 */
 
 if (pageBackground.complete && pageBackground.naturalWidth) {
-  fitPageToBackground();
+  requestAnimationFrame(fitPageToBackground);
 } else {
-  pageBackground.addEventListener("load", fitPageToBackground, {
+  pageBackground.addEventListener("load", () => {
+    requestAnimationFrame(fitPageToBackground);
+  }, {
     once: true
   });
 }

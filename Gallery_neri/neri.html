@@ -34,14 +34,28 @@ a {
 .page {
   width: 100%;
   min-height: 100vh;
-  padding: 22px 0 0;
+  padding: 22px 0 80px;
   position: relative;
+  background: #B8D9FF;
+}
 
-  /* 背景と上下のキャラクターをまとめた画像 */
-  background-image: url("background.png");
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-size: 100% auto;
+/* 背景画像：縦横比を維持して表示 */
+.page-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 背景画像より手前にコンテンツを配置 */
+.page > :not(.page-background) {
+  position: relative;
+  z-index: 1;
 }
 
 .back {
@@ -72,7 +86,7 @@ a {
   margin-top: 12px;
 }
 
-/* 英語タイトル：以前の約1.5倍 */
+/* 英語タイトル */
 
 .section-heading {
   margin: 0;
@@ -97,7 +111,6 @@ a {
   cursor: grab;
   touch-action: pan-y;
 
-  /* 左右の端で瓶を透明にする */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
@@ -127,20 +140,19 @@ a {
   width: 180px;
   z-index: 6;
   pointer-events: none;
-
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
 }
-  
+
 .fade-image-left {
   left: 0;
-  background-image: linear-gradient(to right, #A4D3FF, transparent);
+  background-image: url("fade-left.png");
 }
 
 .fade-image-right {
   right: 0;
-  background-image: linear-gradient(to left, #A4D3FF, transparent);
+  background-image: url("fade-right.png");
 }
 
 .carousel-track {
@@ -373,6 +385,7 @@ a {
 @media (max-width: 600px) {
   .page {
     padding-top: 12px;
+    padding-bottom: 60px;
   }
 
   .back {
@@ -392,7 +405,6 @@ a {
     padding-bottom: 6px;
   }
 
-  /* スマホも以前の約1.5倍 */
   .section-heading {
     font-size: 24px;
   }
@@ -469,7 +481,14 @@ a {
 
 <body>
 
-<div class="page">
+<div class="page" id="page">
+
+  <img
+    class="page-background"
+    id="pageBackground"
+    src="background.png"
+    alt=""
+  >
 
   <a class="back" href="../1.html">▶既存イラストを見る</a>
 
@@ -577,6 +596,29 @@ a {
 </div>
 
 <script>
+/* 背景画像の高さにページを合わせる */
+
+const page = document.getElementById("page");
+const pageBackground = document.getElementById("pageBackground");
+
+function fitPageToBackground() {
+  if (!pageBackground.naturalWidth || !pageBackground.naturalHeight) {
+    return;
+  }
+
+  const backgroundHeight = pageBackground.getBoundingClientRect().height;
+
+  page.style.minHeight = backgroundHeight + "px";
+}
+
+if (pageBackground.complete) {
+  fitPageToBackground();
+} else {
+  pageBackground.addEventListener("load", fitPageToBackground, { once: true });
+}
+
+window.addEventListener("resize", fitPageToBackground);
+
 /* 橙の小瓶 */
 
 const orangeWorks = [
@@ -602,7 +644,7 @@ const waterWorks = [
     title: "たからもの",
     bottle: "bin_azure.png"
   },
-    {
+  {
     type: "image",
     src: "azure-kobin/002.PNG",
     title: "ふたつの視線",

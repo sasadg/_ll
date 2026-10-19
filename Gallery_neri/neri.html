@@ -62,7 +62,7 @@ a {
   z-index: 1;
 }
 
-/* 既存イラストへのリンク：パソコンでは左端 */
+/* 既存イラストへのリンク */
 
 .back {
   display: block;
@@ -393,15 +393,13 @@ a {
     padding-bottom: 100px;
   }
 
-@media (max-width: 600px) {
   .back {
     width: 90vw;
     max-width: 850px;
     margin: 0 auto 12px;
-    padding-left: 0;
+    padding: 20px 0;
     font-size: 14px;
   }
-}
 
   .orange-section {
     margin-top: 60px;
@@ -532,6 +530,8 @@ a {
 
 </div>
 
+<!-- イラスト・漫画の拡大表示 -->
+
 <div class="art-modal" id="artModal">
   <div class="close" id="artClose">×</div>
 
@@ -542,8 +542,11 @@ a {
   <div class="comic-area" id="comicArea">
     <img class="comic-page" id="comicPage1" src="" alt="">
     <img class="comic-page" id="comicPage2" src="" alt="">
+    <img class="comic-page" id="comicPage3" src="" alt="">
   </div>
 </div>
+
+<!-- BOOTH購入確認 -->
 
 <div id="noticeModal">
   <div class="notice-box">
@@ -551,7 +554,7 @@ a {
     <h2>⚠️ 商品について</h2>
 
     <div class="language">
-      <div class="language-title">  ◆ 購入前にご確認ください</div>
+      <div class="language-title">◆ 購入前にご確認ください</div>
       <p>
         ・複数回に分けてのご注文も含め、1種類につきおひとり様2個までとなります。<br>
         ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
@@ -620,7 +623,8 @@ function fitPageToBackground() {
   const isMobile = window.innerWidth <= 600;
   const space = isMobile ? 20 : 40;
 
-  /* 以前の高さ指定を解除して、コンテンツ本来の高さを測る */
+  /* コンテンツ本来の高さを測る */
+
   page.style.minHeight = "0px";
 
   const pageHeight = Math.max(
@@ -652,7 +656,7 @@ function fitPageToBackground() {
     page.style.minHeight = pageHeight + "px";
 
   } else {
-    /* パソコンでは背景を画面幅に合わせる */
+    /* PCでは背景を画面幅に合わせる */
 
     pageBackground.style.width = "100%";
     pageBackground.style.height = "auto";
@@ -707,7 +711,7 @@ const waterWorks = [
     type: "comic",
     pages: [
       "azure-kobin/comic01/001.PNG",
-      "azure-kobin/comic01/002.PNG"
+      "azure-kobin/comic01/002.PNG",
       "azure-kobin/comic01/003.PNG"
     ],
     title: "自信をくれるおまじない",
@@ -743,6 +747,8 @@ const whiteWorks = [
 function createCarousel(trackId, works) {
   const track = document.getElementById(trackId);
   const windowEl = track.parentElement;
+
+  /* 作品を複製して途切れない横スクロールにする */
 
   for (let c = 0; c < 9; c++) {
     works.forEach((work, index) => {
@@ -782,6 +788,7 @@ function createCarousel(trackId, works) {
 
   function updateCycleWidth() {
     const items = track.querySelectorAll(".item");
+
     if (items.length <= works.length) return;
 
     const first = items[0].getBoundingClientRect();
@@ -817,7 +824,10 @@ function createCarousel(trackId, works) {
   }
 
   function autoMove() {
-    if (!dragging) position += velocity;
+    if (!dragging) {
+      position += velocity;
+    }
+
     requestAnimationFrame(autoMove);
   }
 
@@ -854,7 +864,9 @@ function createCarousel(trackId, works) {
   });
 
   windowEl.addEventListener("pointermove", e => {
-    if (dragging) pointerMove(e.clientX);
+    if (dragging) {
+      pointerMove(e.clientX);
+    }
   });
 
   windowEl.addEventListener("pointerup", pointerUp);
@@ -885,6 +897,7 @@ function createCarousel(trackId, works) {
       render();
       autoMove();
     },
+
     resize() {
       updateCycleWidth();
     }
@@ -900,17 +913,20 @@ const single = document.getElementById("single");
 const comicArea = document.getElementById("comicArea");
 const comicPage1 = document.getElementById("comicPage1");
 const comicPage2 = document.getElementById("comicPage2");
-const comicPage2 = document.getElementById("comicPage3");
+const comicPage3 = document.getElementById("comicPage3");
 
 function openArtwork(work) {
   if (work.type === "image") {
     single.src = work.src;
+
     singleArea.style.display = "flex";
     comicArea.style.display = "none";
+
   } else if (work.type === "comic") {
-    comicPage1.src = work.pages[0];
-    comicPage2.src = work.pages[1];
-    comicPage3.src = work.pages[2];
+    comicPage1.src = work.pages[0] || "";
+    comicPage2.src = work.pages[1] || "";
+    comicPage3.src = work.pages[2] || "";
+
     singleArea.style.display = "none";
     comicArea.style.display = "flex";
   }
@@ -920,6 +936,7 @@ function openArtwork(work) {
 
 function closeArtwork() {
   artModal.classList.remove("open");
+
   single.src = "";
   comicPage1.src = "";
   comicPage2.src = "";
@@ -938,7 +955,9 @@ artModal.addEventListener("click", e => {
     e.target === comicPage2 ||
     e.target === comicPage3 ||
     e.target === artClose
-  ) return;
+  ) {
+    return;
+  }
 
   closeArtwork();
 });
@@ -964,7 +983,9 @@ function closeNotice() {
 cancelButton.addEventListener("click", closeNotice);
 
 noticeModal.addEventListener("click", e => {
-  if (e.target === noticeModal) closeNotice();
+  if (e.target === noticeModal) {
+    closeNotice();
+  }
 });
 
 confirmButton.addEventListener("click", () => {
@@ -982,7 +1003,7 @@ document.addEventListener("keydown", e => {
   }
 });
 
-/* 開始 */
+/* カルーセルの開始 */
 
 const orangeCarousel = createCarousel("orangeTrack", orangeWorks);
 const waterCarousel = createCarousel("waterTrack", waterWorks);
@@ -994,6 +1015,7 @@ function startCarousels() {
   whiteCarousel.start();
 
   /* 小瓶とタイトルが配置された後に背景の高さを計算 */
+
   requestAnimationFrame(() => {
     fitPageToBackground();
   });
@@ -1002,7 +1024,9 @@ function startCarousels() {
 if (document.readyState === "complete") {
   startCarousels();
 } else {
-  window.addEventListener("load", startCarousels, { once: true });
+  window.addEventListener("load", startCarousels, {
+    once: true
+  });
 }
 
 /* 背景画像の読み込み後にも高さを調整 */
@@ -1017,8 +1041,11 @@ if (pageBackground.complete && pageBackground.naturalWidth) {
   });
 }
 
+/* 画面サイズ変更時 */
+
 window.addEventListener("resize", () => {
   fitPageToBackground();
+
   orangeCarousel.resize();
   waterCarousel.resize();
   whiteCarousel.resize();

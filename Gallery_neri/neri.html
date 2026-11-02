@@ -542,7 +542,6 @@ a {
   <div class="comic-area" id="comicArea">
     <img class="comic-page" id="comicPage1" src="" alt="">
     <img class="comic-page" id="comicPage2" src="" alt="">
-    <img class="comic-page" id="comicPage3" src="" alt="">
   </div>
 </div>
 
@@ -914,7 +913,6 @@ const single = document.getElementById("single");
 const comicArea = document.getElementById("comicArea");
 const comicPage1 = document.getElementById("comicPage1");
 const comicPage2 = document.getElementById("comicPage2");
-const comicPage3 = document.getElementById("comicPage3");
 
 function openArtwork(work) {
   if (work.type === "image") {
@@ -926,7 +924,6 @@ function openArtwork(work) {
   } else if (work.type === "comic") {
     comicPage1.src = work.pages[0] || "";
     comicPage2.src = work.pages[1] || "";
-    comicPage3.src = work.pages[2] || "";
 
     singleArea.style.display = "none";
     comicArea.style.display = "flex";
@@ -941,7 +938,6 @@ function closeArtwork() {
   single.src = "";
   comicPage1.src = "";
   comicPage2.src = "";
-  comicPage3.src = "";
 }
 
 artClose.addEventListener("click", e => {
@@ -954,7 +950,6 @@ artModal.addEventListener("click", e => {
     e.target === single ||
     e.target === comicPage1 ||
     e.target === comicPage2 ||
-    e.target === comicPage3 ||
     e.target === artClose
   ) {
     return;

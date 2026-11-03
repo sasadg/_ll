@@ -41,8 +41,6 @@ a {
   background: #B8D9FF;
 }
 
-/* 背景画像 */
-
 .page-background {
   position: absolute;
   top: var(--background-space);
@@ -54,8 +52,6 @@ a {
   pointer-events: none;
   user-select: none;
 }
-
-/* コンテンツを背景画像より手前に配置 */
 
 .page > :not(.page-background) {
   position: relative;
@@ -551,7 +547,7 @@ a {
   <!-- 既存イラストへのリンク -->
 
   <a class="back" id="backLink" href="../1.html">
-    ▶ 既存イラストを見る
+    ▶︎ 既存イラストを見る
   </a>
 
   <section class="bottle-section orange-section">
@@ -755,13 +751,13 @@ const translations = {
 
 const backTranslations = {
 
-  ja: "▶ 既存イラストを見る",
+  ja: "▶︎ 既存イラストを見る",
 
-  en: "▶ View Existing Illustrations",
+  en: "▶︎ View Existing Illustrations",
 
-  zh: "▶ 查看已有插画",
+  zh: "▶︎ 查看已有插画",
 
-  ko: "▶ 기존 일러스트 보기"
+  ko: "▶︎ 기존 일러스트 보기"
 
 };
 
@@ -989,6 +985,21 @@ function getTitle(trackId, index) {
    言語別画像の取得
 ================================= */
 
+/*
+   日本語：
+   元の画像をそのまま使用
+
+   英語・中国語・韓国語：
+   元画像のフォルダ内にある言語別フォルダを参照
+
+   例：
+   amber-kobin/002.PNG
+   amber-kobin/en/002.PNG
+
+   azure-kobin/comic01/001.PNG
+   azure-kobin/comic01/en/001.PNG
+*/
+
 function getLocalizedImage(src, lang) {
 
   if (lang === "ja") {
@@ -996,12 +1007,10 @@ function getLocalizedImage(src, lang) {
   }
 
   const parts = src.split("/");
-
   const filename = parts.pop();
-
   const folder = parts.join("/");
 
-  return folder + "/" + lang + "/" + filename;
+  return `${folder}/${lang}/${filename}`;
 
 }
 
@@ -1010,15 +1019,15 @@ function getLocalizedImage(src, lang) {
    作品画像の取得
 ================================= */
 
+/*
+   言語別画像を使うのは amber-kobin/002.PNG のみ。
+   それ以外の画像は全言語で共通。
+*/
+
 function getArtworkImage(work) {
 
   if (work.multilingual) {
-
-    return getLocalizedImage(
-      work.src,
-      currentLanguage
-    );
-
+    return getLocalizedImage(work.src, currentLanguage);
   }
 
   return work.src;
@@ -1029,6 +1038,11 @@ function getArtworkImage(work) {
 /* =================================
    漫画画像の取得
 ================================= */
+
+/*
+   comic01 のみ言語別画像を使用。
+   日本語は元画像をそのまま使用。
+*/
 
 function getComicPages(work) {
 
@@ -1050,7 +1064,6 @@ function getComicPages(work) {
 function createCarousel(trackId, works) {
 
   const track = document.getElementById(trackId);
-
   const windowEl = track.parentElement;
 
   for (let c = 0; c < 9; c++) {
@@ -1058,35 +1071,25 @@ function createCarousel(trackId, works) {
     works.forEach((work, index) => {
 
       const item = document.createElement("div");
-
       item.className = "item";
-
       item.dataset.index = index;
 
       const wrap = document.createElement("div");
-
       wrap.className = "bottle-wrap";
 
       const bottle = document.createElement("img");
-
       bottle.className = "bottle";
-
       bottle.src = work.bottle;
-
       bottle.alt = "";
-
       bottle.draggable = false;
 
       wrap.appendChild(bottle);
 
       const title = document.createElement("div");
-
       title.className = "title";
-
       title.innerHTML = getTitle(trackId, index);
 
       item.appendChild(wrap);
-
       item.appendChild(title);
 
       track.appendChild(item);
@@ -1097,17 +1100,12 @@ function createCarousel(trackId, works) {
 
 
   let position = 0;
-
   const velocity = -0.25;
 
   let dragging = false;
-
   let startX = 0;
-
   let lastX = 0;
-
   let moved = false;
-
   let cycleWidth = 0;
 
 
@@ -1180,11 +1178,8 @@ function createCarousel(trackId, works) {
   function pointerDown(x) {
 
     dragging = true;
-
     moved = false;
-
     startX = x;
-
     lastX = x;
 
     windowEl.classList.add("dragging");
@@ -1203,7 +1198,6 @@ function createCarousel(trackId, works) {
     }
 
     position += dx;
-
     lastX = x;
 
   }
@@ -1214,16 +1208,13 @@ function createCarousel(trackId, works) {
     if (!dragging) return;
 
     dragging = false;
-
     windowEl.classList.remove("dragging");
 
   }
 
 
   windowEl.addEventListener("pointerdown", e => {
-
     pointerDown(e.clientX);
-
   });
 
 
@@ -1237,20 +1228,15 @@ function createCarousel(trackId, works) {
 
 
   windowEl.addEventListener("pointerup", pointerUp);
-
   windowEl.addEventListener("pointercancel", pointerUp);
-
   windowEl.addEventListener("pointerleave", pointerUp);
 
 
   track.addEventListener("click", e => {
 
     if (moved) {
-
       moved = false;
-
       return;
-
     }
 
     const item = e.target.closest(".item");
@@ -1260,13 +1246,9 @@ function createCarousel(trackId, works) {
     const work = works[Number(item.dataset.index)];
 
     if (work.type === "booth") {
-
       openNotice(work.url);
-
     } else {
-
       openArtwork(work);
-
     }
 
   });
@@ -1277,17 +1259,13 @@ function createCarousel(trackId, works) {
     start() {
 
       setInitialPosition();
-
       render();
-
       autoMove();
 
     },
 
     resize() {
-
       updateCycleWidth();
-
     }
 
   };
@@ -1321,29 +1299,36 @@ const comicPage2 =
   document.getElementById("comicPage2");
 
 
+/* 現在拡大表示している作品 */
+
+let currentArtwork = null;
+
+
 function openArtwork(work) {
 
-  if (work.type === "image") {
+  currentArtwork = work;
 
-    single.src = getArtworkImage(work);
+  /*
+     漫画以外はすべて通常画像として扱う。
+     これにより橙の小瓶も正しく表示される。
+  */
 
-    singleArea.style.display = "flex";
-
-    comicArea.style.display = "none";
-
-  }
-
-  else if (work.type === "comic") {
+  if (work.type === "comic") {
 
     const pages = getComicPages(work);
 
     comicPage1.src = pages[0] || "";
-
     comicPage2.src = pages[1] || "";
 
     singleArea.style.display = "none";
-
     comicArea.style.display = "flex";
+
+  } else {
+
+    single.src = getArtworkImage(work);
+
+    singleArea.style.display = "flex";
+    comicArea.style.display = "none";
 
   }
 
@@ -1357,10 +1342,10 @@ function closeArtwork() {
   artModal.classList.remove("open");
 
   single.src = "";
-
   comicPage1.src = "";
-
   comicPage2.src = "";
+
+  currentArtwork = null;
 
 }
 
@@ -1368,7 +1353,6 @@ function closeArtwork() {
 artClose.addEventListener("click", e => {
 
   e.stopPropagation();
-
   closeArtwork();
 
 });
@@ -1382,9 +1366,7 @@ artModal.addEventListener("click", e => {
     e.target === comicPage2 ||
     e.target === artClose
   ) {
-
     return;
-
   }
 
   closeArtwork();
@@ -1405,6 +1387,7 @@ function changeLanguage(lang) {
   /* HTMLの言語属性 */
 
   document.documentElement.lang = lang;
+
 
   /* 戻るリンクの言語変更 */
 
@@ -1433,7 +1416,6 @@ function changeLanguage(lang) {
     if (!track) return;
 
     const index = Number(item.dataset.index);
-
     const title = item.querySelector(".title");
 
     if (!title) return;
@@ -1441,6 +1423,13 @@ function changeLanguage(lang) {
     title.innerHTML = getTitle(track.id, index);
 
   });
+
+
+  /* 拡大表示中の画像も言語に合わせて更新 */
+
+  if (currentArtwork && artModal.classList.contains("open")) {
+    openArtwork(currentArtwork);
+  }
 
 
   /* 選択言語を保存 */
@@ -1468,9 +1457,7 @@ function changeLanguage(lang) {
 languageButtons.forEach(button => {
 
   button.addEventListener("click", () => {
-
     changeLanguage(button.dataset.lang);
-
   });
 
 });
@@ -1495,7 +1482,6 @@ let destinationUrl = "";
 function openNotice(url) {
 
   destinationUrl = url;
-
   noticeModal.style.display = "flex";
 
 }
@@ -1504,7 +1490,6 @@ function openNotice(url) {
 function closeNotice() {
 
   destinationUrl = "";
-
   noticeModal.style.display = "none";
 
 }
@@ -1525,9 +1510,7 @@ noticeModal.addEventListener("click", e => {
 confirmButton.addEventListener("click", () => {
 
   if (destinationUrl) {
-
     window.location.href = destinationUrl;
-
   }
 
 });
@@ -1540,11 +1523,8 @@ confirmButton.addEventListener("click", () => {
 document.addEventListener("keydown", e => {
 
   if (e.key === "Escape") {
-
     closeArtwork();
-
     closeNotice();
-
   }
 
 });
@@ -1567,15 +1547,11 @@ const whiteCarousel =
 function startCarousels() {
 
   orangeCarousel.start();
-
   waterCarousel.start();
-
   whiteCarousel.start();
 
   requestAnimationFrame(() => {
-
     fitPageToBackground();
-
   });
 
 }
@@ -1651,9 +1627,7 @@ window.addEventListener("resize", () => {
   fitPageToBackground();
 
   orangeCarousel.resize();
-
   waterCarousel.resize();
-
   whiteCarousel.resize();
 
 });

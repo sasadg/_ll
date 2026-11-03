@@ -62,6 +62,33 @@ a {
   z-index: 1;
 }
 
+/* 言語切り替え */
+
+.language-switch {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 15px;
+}
+
+.language-switch button {
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 20px;
+  padding: 7px 13px;
+  background: rgba(255,255,255,.25);
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.language-switch button.active {
+  background: white;
+  color: #729BCB;
+}
+
 /* 既存イラストへのリンク */
 
 .back {
@@ -69,7 +96,7 @@ a {
   width: 100%;
   max-width: none;
   margin: 0 0 12px;
-  padding: 40px;
+  padding: 20px 40px;
   color: white;
   text-decoration: none;
   font-size: 16px;
@@ -125,6 +152,7 @@ a {
     black calc(100% - 260px),
     transparent 100%
   );
+
   mask-image: linear-gradient(
     to right,
     transparent 0,
@@ -388,6 +416,7 @@ a {
 /* スマホ */
 
 @media (max-width: 600px) {
+
   .page {
     --background-space: 20px;
     padding-bottom: 100px;
@@ -397,7 +426,7 @@ a {
     width: 90vw;
     max-width: 850px;
     margin: 0 auto 12px;
-    padding: 20px 0;
+    padding: 15px 0;
     font-size: 14px;
   }
 
@@ -426,6 +455,7 @@ a {
       black calc(100% - 70px),
       transparent 100%
     );
+
     mask-image: linear-gradient(
       to right,
       transparent 0,
@@ -461,6 +491,15 @@ a {
     padding: 0 4px;
   }
 
+  .language-switch {
+    gap: 5px;
+  }
+
+  .language-switch button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
   .comic-area {
     padding: 60px 10px 30px;
     gap: 12px;
@@ -484,6 +523,7 @@ a {
     font-size: 13px;
     padding: 8px 18px;
   }
+
 }
 </style>
 </head>
@@ -499,10 +539,24 @@ a {
     alt=""
   >
 
-  <a class="back" href="../1.html">▶ 既存イラストを見る</a>
+  <!-- 言語切り替え -->
+
+  <div class="language-switch">
+    <button type="button" data-lang="ja">日本語</button>
+    <button type="button" data-lang="en">English</button>
+    <button type="button" data-lang="zh">中文</button>
+    <button type="button" data-lang="ko">한국어</button>
+  </div>
+
+  <!-- 既存イラストへのリンク -->
+
+  <a class="back" id="backLink" href="../1.html">
+    ▶ 既存イラストを見る
+  </a>
 
   <section class="bottle-section orange-section">
     <h2 class="section-heading">Orange Bottle</h2>
+
     <div class="carousel-window">
       <div class="fade-image fade-image-left"></div>
       <div class="fade-image fade-image-right"></div>
@@ -512,6 +566,7 @@ a {
 
   <section class="bottle-section water-section">
     <h2 class="section-heading">Sky-blue Bottle</h2>
+
     <div class="carousel-window">
       <div class="fade-image fade-image-left"></div>
       <div class="fade-image fade-image-right"></div>
@@ -521,6 +576,7 @@ a {
 
   <section class="bottle-section white-section">
     <h2 class="section-heading">White Bottle</h2>
+
     <div class="carousel-window">
       <div class="fade-image fade-image-left"></div>
       <div class="fade-image fade-image-right"></div>
@@ -533,6 +589,7 @@ a {
 <!-- イラスト・漫画の拡大表示 -->
 
 <div class="art-modal" id="artModal">
+
   <div class="close" id="artClose">×</div>
 
   <div class="single-area" id="singleArea">
@@ -543,11 +600,13 @@ a {
     <img class="comic-page" id="comicPage1" src="" alt="">
     <img class="comic-page" id="comicPage2" src="" alt="">
   </div>
+
 </div>
 
 <!-- BOOTH購入確認 -->
 
 <div id="noticeModal">
+
   <div class="notice-box">
 
     <h2>⚠️ 商品について</h2>
@@ -600,29 +659,143 @@ a {
       <button type="button" class="cancel-button" id="cancelButton">
         戻る
       </button>
+
       <button type="button" class="confirm-button" id="confirmButton">
         確認しました
       </button>
     </div>
 
   </div>
+
 </div>
 
+
 <script>
-/* 背景画像をページ全体に合わせる */
+
+/* =================================
+   言語別タイトル
+================================= */
+
+const translations = {
+
+  ja: [
+    "紅葉",
+    "実り",
+    "食欲",
+    "読書",
+    "スポーツ",
+    "芸術",
+    "睡眠",
+    "紅葉",
+    "たからもの",
+    "ふたつの視線",
+    "自信をくれるおまじない",
+    "宙ぶらりん<br>シリモニ",
+    "足元ぐるぐる人外ズ<br>シリモニ",
+    "足元ぐるぐる人外ズ<br>雪山組"
+  ],
+
+  en: [
+    "Autumn Leaves",
+    "Harvest",
+    "Appetite",
+    "Reading",
+    "Sports",
+    "Art",
+    "Sleep",
+    "Autumn Leaves",
+    "Treasure",
+    "Two Gazes",
+    "A Little Charm for Confidence",
+    "Suspended<br>Cyril & Monica",
+    "Spinning Around Their Feet<br>Non-Humans",
+    "Spinning Around Their Feet<br>Mountain Group"
+  ],
+
+  zh: [
+    "红叶",
+    "丰收",
+    "食欲",
+    "阅读",
+    "运动",
+    "艺术",
+    "睡眠",
+    "红叶",
+    "珍宝",
+    "两道目光",
+    "带来自信的魔法",
+    "悬而未决<br>希里尔与莫妮卡",
+    "脚边绕圈的异形们<br>希里尔与莫妮卡",
+    "脚边绕圈的异形们<br>雪山组"
+  ],
+
+  ko: [
+    "단풍",
+    "풍요",
+    "식욕",
+    "독서",
+    "스포츠",
+    "예술",
+    "수면",
+    "단풍",
+    "보물",
+    "두 개의 시선",
+    "자신감을 주는 주문",
+    "공중에 둥둥<br>시릴과 모니카",
+    "발밑을 빙글빙글 도는 이종족들<br>시릴과 모니카",
+    "발밑을 빙글빙글 도는 이종족들<br>설산조"
+  ]
+
+};
+
+
+/* =================================
+   戻るリンクの言語別表記
+================================= */
+
+const backTranslations = {
+
+  ja: "▶ 既存イラストを見る",
+
+  en: "▶ View Existing Illustrations",
+
+  zh: "▶ 查看已有插画",
+
+  ko: "▶ 기존 일러스트 보기"
+
+};
+
+
+/* =================================
+   現在の言語
+================================= */
+
+let currentLanguage = "ja";
+
+const languageButtons =
+  document.querySelectorAll(".language-switch button");
+
+
+/* =================================
+   背景画像をページ全体に合わせる
+================================= */
 
 const page = document.getElementById("page");
-const pageBackground = document.getElementById("pageBackground");
+
+const pageBackground =
+  document.getElementById("pageBackground");
 
 function fitPageToBackground() {
-  if (!pageBackground.naturalWidth || !pageBackground.naturalHeight) {
+
+  if (
+    !pageBackground.naturalWidth ||
+    !pageBackground.naturalHeight
+  ) {
     return;
   }
 
   const isMobile = window.innerWidth <= 600;
   const space = isMobile ? 20 : 40;
-
-  /* コンテンツ本来の高さを測る */
 
   page.style.minHeight = "0px";
 
@@ -634,7 +807,6 @@ function fitPageToBackground() {
   pageBackground.style.top = space + "px";
 
   if (isMobile) {
-    /* スマホではページ全体の高さに背景を合わせる */
 
     const targetHeight = Math.max(
       pageHeight - space * 2,
@@ -646,16 +818,21 @@ function fitPageToBackground() {
       pageBackground.naturalWidth /
       pageBackground.naturalHeight;
 
-    pageBackground.style.height = targetHeight + "px";
-    pageBackground.style.width = backgroundWidth + "px";
+    pageBackground.style.height =
+      targetHeight + "px";
+
+    pageBackground.style.width =
+      backgroundWidth + "px";
+
     pageBackground.style.maxWidth = "none";
     pageBackground.style.left = "50%";
-    pageBackground.style.transform = "translateX(-50%)";
+
+    pageBackground.style.transform =
+      "translateX(-50%)";
 
     page.style.minHeight = pageHeight + "px";
 
   } else {
-    /* PCでは背景を画面幅に合わせる */
 
     pageBackground.style.width = "100%";
     pageBackground.style.height = "auto";
@@ -672,140 +849,298 @@ function fitPageToBackground() {
       pageHeight,
       backgroundHeight + space * 2
     ) + "px";
+
   }
+
 }
 
-/* 橙の小瓶 */
+
+/* =================================
+   橙の小瓶
+================================= */
 
 const orangeWorks = [
-  { src: "amber-kobin/001.PNG", title: "紅葉２" },
-  { src: "amber-kobin/002.PNG", title: "実り" },
-  { src: "amber-kobin/003.PNG", title: "食欲" },
-  { src: "amber-kobin/004.PNG", title: "読書" },
-  { src: "amber-kobin/005.PNG", title: "スポーツ" },
-  { src: "amber-kobin/006.PNG", title: "芸術" },
-  { src: "amber-kobin/007.PNG", title: "睡眠" },
-  { src: "amber-kobin/008.PNG", title: "紅葉" },
-].map(work => ({
-  ...work,
-  type: "image",
-  bottle: "bin_amber.png"
-}));
 
-/* 水の小瓶 */
+  {
+    src: "amber-kobin/001.PNG",
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/002.PNG",
+    multilingual: true,
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/003.PNG",
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/004.PNG",
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/005.PNG",
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/006.PNG",
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/007.PNG",
+    bottle: "bin_amber.png"
+  },
+
+  {
+    src: "amber-kobin/008.PNG",
+    bottle: "bin_amber.png"
+  }
+
+];
+
+
+/* =================================
+   水の小瓶
+================================= */
 
 const waterWorks = [
+
   {
     type: "image",
     src: "azure-kobin/001.PNG",
-    title: "たからもの",
     bottle: "bin_azure.png"
   },
+
   {
     type: "image",
     src: "azure-kobin/002.PNG",
-    title: "ふたつの視線",
     bottle: "bin_azure.png"
   },
+
   {
     type: "comic",
+
     pages: [
       "azure-kobin/comic01/001.PNG",
-      "azure-kobin/comic01/002.PNG",
-      "azure-kobin/comic01/003.PNG"
+      "azure-kobin/comic01/002.PNG"
     ],
-    title: "自信をくれるおまじない",
+
     bottle: "bin_azure.png"
   }
+
 ];
 
-/* 白の小瓶 */
+
+/* =================================
+   白の小瓶
+================================= */
 
 const whiteWorks = [
+
   {
     type: "booth",
     url: "https://sasadg.booth.pm/items/7975838",
-    title: "宙ぶらりん<br>シリモニ",
     bottle: "bin_snow1.png"
   },
+
   {
     type: "booth",
     url: "https://sasadg.booth.pm/items/8957919",
-    title: "足元ぐるぐる人外ズ<br>シリモニ",
     bottle: "bin_snow2.png"
   },
+
   {
     type: "booth",
     url: "https://sasadg.booth.pm/items/8957943",
-    title: "足元ぐるぐる人外ズ<br>雪山組",
     bottle: "bin_snow3.png"
   }
+
 ];
 
-/* カルーセル */
+
+/* =================================
+   作品タイトルの取得
+================================= */
+
+function getTitle(trackId, index) {
+
+  let titleIndex = index;
+
+  if (trackId === "waterTrack") {
+    titleIndex += 8;
+  }
+
+  if (trackId === "whiteTrack") {
+    titleIndex += 11;
+  }
+
+  return translations[currentLanguage][titleIndex];
+
+}
+
+
+/* =================================
+   言語別画像の取得
+================================= */
+
+function getLocalizedImage(src, lang) {
+
+  if (lang === "ja") {
+    return src;
+  }
+
+  const parts = src.split("/");
+
+  const filename = parts.pop();
+
+  const folder = parts.join("/");
+
+  return folder + "/" + lang + "/" + filename;
+
+}
+
+
+/* =================================
+   作品画像の取得
+================================= */
+
+function getArtworkImage(work) {
+
+  if (work.multilingual) {
+
+    return getLocalizedImage(
+      work.src,
+      currentLanguage
+    );
+
+  }
+
+  return work.src;
+
+}
+
+
+/* =================================
+   漫画画像の取得
+================================= */
+
+function getComicPages(work) {
+
+  if (currentLanguage === "ja") {
+    return work.pages;
+  }
+
+  return work.pages.map(src =>
+    getLocalizedImage(src, currentLanguage)
+  );
+
+}
+
+
+/* =================================
+   カルーセル
+================================= */
 
 function createCarousel(trackId, works) {
+
   const track = document.getElementById(trackId);
+
   const windowEl = track.parentElement;
 
-  /* 作品を複製して途切れない横スクロールにする */
-
   for (let c = 0; c < 9; c++) {
+
     works.forEach((work, index) => {
+
       const item = document.createElement("div");
+
       item.className = "item";
+
       item.dataset.index = index;
 
       const wrap = document.createElement("div");
+
       wrap.className = "bottle-wrap";
 
       const bottle = document.createElement("img");
+
       bottle.className = "bottle";
+
       bottle.src = work.bottle;
+
       bottle.alt = "";
+
       bottle.draggable = false;
 
       wrap.appendChild(bottle);
 
       const title = document.createElement("div");
+
       title.className = "title";
-      title.innerHTML = work.title;
+
+      title.innerHTML = getTitle(trackId, index);
 
       item.appendChild(wrap);
+
       item.appendChild(title);
+
       track.appendChild(item);
+
     });
+
   }
 
+
   let position = 0;
+
   const velocity = -0.25;
 
   let dragging = false;
+
   let startX = 0;
+
   let lastX = 0;
+
   let moved = false;
+
   let cycleWidth = 0;
 
+
   function updateCycleWidth() {
+
     const items = track.querySelectorAll(".item");
 
     if (items.length <= works.length) return;
 
-    const first = items[0].getBoundingClientRect();
-    const next = items[works.length].getBoundingClientRect();
+    const first =
+      items[0].getBoundingClientRect();
+
+    const next =
+      items[works.length].getBoundingClientRect();
 
     cycleWidth = next.left - first.left;
+
   }
 
+
   function setInitialPosition() {
+
     updateCycleWidth();
 
     if (cycleWidth) {
       position = -cycleWidth * 4;
     }
+
   }
 
+
   function normalizePosition() {
+
     if (!cycleWidth) return;
 
     while (position <= -cycleWidth * 5) {
@@ -815,31 +1150,50 @@ function createCarousel(trackId, works) {
     while (position >= -cycleWidth * 3) {
       position -= cycleWidth;
     }
+
   }
+
 
   function render() {
+
     normalizePosition();
-    track.style.transform = `translate3d(${position}px, 0, 0)`;
+
+    track.style.transform =
+      `translate3d(${position}px, 0, 0)`;
+
     requestAnimationFrame(render);
+
   }
 
+
   function autoMove() {
+
     if (!dragging) {
       position += velocity;
     }
 
     requestAnimationFrame(autoMove);
+
   }
+
 
   function pointerDown(x) {
+
     dragging = true;
+
     moved = false;
+
     startX = x;
+
     lastX = x;
+
     windowEl.classList.add("dragging");
+
   }
 
+
   function pointerMove(x) {
+
     if (!dragging) return;
 
     const dx = x - lastX;
@@ -849,203 +1203,461 @@ function createCarousel(trackId, works) {
     }
 
     position += dx;
+
     lastX = x;
+
   }
 
+
   function pointerUp() {
+
     if (!dragging) return;
 
     dragging = false;
+
     windowEl.classList.remove("dragging");
+
   }
 
+
   windowEl.addEventListener("pointerdown", e => {
+
     pointerDown(e.clientX);
+
   });
 
+
   windowEl.addEventListener("pointermove", e => {
+
     if (dragging) {
       pointerMove(e.clientX);
     }
+
   });
 
+
   windowEl.addEventListener("pointerup", pointerUp);
+
   windowEl.addEventListener("pointercancel", pointerUp);
+
   windowEl.addEventListener("pointerleave", pointerUp);
 
+
   track.addEventListener("click", e => {
+
     if (moved) {
+
       moved = false;
+
       return;
+
     }
 
     const item = e.target.closest(".item");
+
     if (!item) return;
 
     const work = works[Number(item.dataset.index)];
 
     if (work.type === "booth") {
+
       openNotice(work.url);
+
     } else {
+
       openArtwork(work);
+
     }
+
   });
 
+
   return {
+
     start() {
+
       setInitialPosition();
+
       render();
+
       autoMove();
+
     },
 
     resize() {
+
       updateCycleWidth();
+
     }
+
   };
+
 }
 
-/* イラスト・漫画の拡大 */
 
-const artModal = document.getElementById("artModal");
-const artClose = document.getElementById("artClose");
-const singleArea = document.getElementById("singleArea");
-const single = document.getElementById("single");
-const comicArea = document.getElementById("comicArea");
-const comicPage1 = document.getElementById("comicPage1");
-const comicPage2 = document.getElementById("comicPage2");
+/* =================================
+   イラスト・漫画の拡大表示
+================================= */
+
+const artModal =
+  document.getElementById("artModal");
+
+const artClose =
+  document.getElementById("artClose");
+
+const singleArea =
+  document.getElementById("singleArea");
+
+const single =
+  document.getElementById("single");
+
+const comicArea =
+  document.getElementById("comicArea");
+
+const comicPage1 =
+  document.getElementById("comicPage1");
+
+const comicPage2 =
+  document.getElementById("comicPage2");
+
 
 function openArtwork(work) {
+
   if (work.type === "image") {
-    single.src = work.src;
+
+    single.src = getArtworkImage(work);
 
     singleArea.style.display = "flex";
+
     comicArea.style.display = "none";
 
-  } else if (work.type === "comic") {
-    comicPage1.src = work.pages[0] || "";
-    comicPage2.src = work.pages[1] || "";
+  }
+
+  else if (work.type === "comic") {
+
+    const pages = getComicPages(work);
+
+    comicPage1.src = pages[0] || "";
+
+    comicPage2.src = pages[1] || "";
 
     singleArea.style.display = "none";
+
     comicArea.style.display = "flex";
+
   }
 
   artModal.classList.add("open");
+
 }
 
+
 function closeArtwork() {
+
   artModal.classList.remove("open");
 
   single.src = "";
+
   comicPage1.src = "";
+
   comicPage2.src = "";
+
 }
 
+
 artClose.addEventListener("click", e => {
+
   e.stopPropagation();
+
   closeArtwork();
+
 });
 
+
 artModal.addEventListener("click", e => {
+
   if (
     e.target === single ||
     e.target === comicPage1 ||
     e.target === comicPage2 ||
     e.target === artClose
   ) {
+
     return;
+
   }
 
   closeArtwork();
+
 });
 
-/* BOOTH購入確認 */
 
-const noticeModal = document.getElementById("noticeModal");
-const cancelButton = document.getElementById("cancelButton");
-const confirmButton = document.getElementById("confirmButton");
+/* =================================
+   言語切り替え
+================================= */
 
-let destinationUrl = "";
+function changeLanguage(lang) {
 
-function openNotice(url) {
-  destinationUrl = url;
-  noticeModal.style.display = "flex";
-}
+  if (!translations[lang]) return;
 
-function closeNotice() {
-  destinationUrl = "";
-  noticeModal.style.display = "none";
-}
+  currentLanguage = lang;
 
-cancelButton.addEventListener("click", closeNotice);
+  /* HTMLの言語属性 */
 
-noticeModal.addEventListener("click", e => {
-  if (e.target === noticeModal) {
-    closeNotice();
+  document.documentElement.lang = lang;
+
+  /* 戻るリンクの言語変更 */
+
+  document.getElementById("backLink").textContent =
+    backTranslations[lang];
+
+
+  /* 選択ボタンの表示 */
+
+  languageButtons.forEach(button => {
+
+    button.classList.toggle(
+      "active",
+      button.dataset.lang === lang
+    );
+
+  });
+
+
+  /* 作品タイトルの変更 */
+
+  document.querySelectorAll(".item").forEach(item => {
+
+    const track = item.closest(".carousel-track");
+
+    if (!track) return;
+
+    const index = Number(item.dataset.index);
+
+    const title = item.querySelector(".title");
+
+    if (!title) return;
+
+    title.innerHTML = getTitle(track.id, index);
+
+  });
+
+
+  /* 選択言語を保存 */
+
+  try {
+
+    localStorage.setItem("comicLanguage", lang);
+
+  } catch (e) {
+
+    console.warn("言語設定を保存できませんでした。");
+
   }
-});
 
-confirmButton.addEventListener("click", () => {
-  if (destinationUrl) {
-    window.location.href = destinationUrl;
-  }
-});
-
-/* ESCで閉じる */
-
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    closeArtwork();
-    closeNotice();
-  }
-});
-
-/* カルーセルの開始 */
-
-const orangeCarousel = createCarousel("orangeTrack", orangeWorks);
-const waterCarousel = createCarousel("waterTrack", waterWorks);
-const whiteCarousel = createCarousel("whiteTrack", whiteWorks);
-
-function startCarousels() {
-  orangeCarousel.start();
-  waterCarousel.start();
-  whiteCarousel.start();
-
-  /* 小瓶とタイトルが配置された後に背景の高さを計算 */
 
   requestAnimationFrame(() => {
     fitPageToBackground();
   });
+
 }
 
+
+/* 言語ボタン */
+
+languageButtons.forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    changeLanguage(button.dataset.lang);
+
+  });
+
+});
+
+
+/* =================================
+   BOOTH購入確認
+================================= */
+
+const noticeModal =
+  document.getElementById("noticeModal");
+
+const cancelButton =
+  document.getElementById("cancelButton");
+
+const confirmButton =
+  document.getElementById("confirmButton");
+
+let destinationUrl = "";
+
+
+function openNotice(url) {
+
+  destinationUrl = url;
+
+  noticeModal.style.display = "flex";
+
+}
+
+
+function closeNotice() {
+
+  destinationUrl = "";
+
+  noticeModal.style.display = "none";
+
+}
+
+
+cancelButton.addEventListener("click", closeNotice);
+
+
+noticeModal.addEventListener("click", e => {
+
+  if (e.target === noticeModal) {
+    closeNotice();
+  }
+
+});
+
+
+confirmButton.addEventListener("click", () => {
+
+  if (destinationUrl) {
+
+    window.location.href = destinationUrl;
+
+  }
+
+});
+
+
+/* =================================
+   ESCで閉じる
+================================= */
+
+document.addEventListener("keydown", e => {
+
+  if (e.key === "Escape") {
+
+    closeArtwork();
+
+    closeNotice();
+
+  }
+
+});
+
+
+/* =================================
+   カルーセルの開始
+================================= */
+
+const orangeCarousel =
+  createCarousel("orangeTrack", orangeWorks);
+
+const waterCarousel =
+  createCarousel("waterTrack", waterWorks);
+
+const whiteCarousel =
+  createCarousel("whiteTrack", whiteWorks);
+
+
+function startCarousels() {
+
+  orangeCarousel.start();
+
+  waterCarousel.start();
+
+  whiteCarousel.start();
+
+  requestAnimationFrame(() => {
+
+    fitPageToBackground();
+
+  });
+
+}
+
+
 if (document.readyState === "complete") {
+
   startCarousels();
+
 } else {
+
   window.addEventListener("load", startCarousels, {
     once: true
   });
+
 }
 
-/* 背景画像の読み込み後にも高さを調整 */
 
-if (pageBackground.complete && pageBackground.naturalWidth) {
+/* =================================
+   背景画像読み込み後の調整
+================================= */
+
+if (
+  pageBackground.complete &&
+  pageBackground.naturalWidth
+) {
+
   requestAnimationFrame(fitPageToBackground);
+
 } else {
+
   pageBackground.addEventListener("load", () => {
+
     requestAnimationFrame(fitPageToBackground);
+
   }, {
     once: true
   });
+
 }
 
-/* 画面サイズ変更時 */
+
+/* =================================
+   初期言語の読み込み
+================================= */
+
+let savedLanguage = "ja";
+
+try {
+
+  savedLanguage =
+    localStorage.getItem("comicLanguage") || "ja";
+
+} catch (e) {
+
+  savedLanguage = "ja";
+
+}
+
+if (!translations[savedLanguage]) {
+  savedLanguage = "ja";
+}
+
+changeLanguage(savedLanguage);
+
+
+/* =================================
+   画面サイズ変更時
+================================= */
 
 window.addEventListener("resize", () => {
+
   fitPageToBackground();
 
   orangeCarousel.resize();
+
   waterCarousel.resize();
+
   whiteCarousel.resize();
+
 });
+
 </script>
 
 </body>

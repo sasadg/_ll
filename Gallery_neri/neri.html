@@ -1410,8 +1410,8 @@ function updateArtworkNavigation() {
   artPrev.style.display = hasNavigation ? "block" : "none";
   artNext.style.display = hasNavigation ? "block" : "none";
 
-  artPrev.disabled = currentWorkIndex <= 0;
-  artNext.disabled = currentWorkIndex >= currentWorks.length - 1;
+  artPrev.disabled = false;
+  artNext.disabled = false;
 
 }
 
@@ -1475,10 +1475,19 @@ function closeArtwork() {
 
 function moveArtwork(direction) {
 
-  const nextIndex = currentWorkIndex + direction;
+  if (currentWorks.length <= 1) return;
 
-  if (nextIndex < 0 || nextIndex >= currentWorks.length) {
-    return;
+  let nextIndex =
+    currentWorkIndex + direction;
+
+  // 最後の次は最初へ、最初の前は最後へ
+
+  if (nextIndex < 0) {
+    nextIndex = currentWorks.length - 1;
+  }
+
+  if (nextIndex >= currentWorks.length) {
+    nextIndex = 0;
   }
 
   const nextWork = currentWorks[nextIndex];
@@ -1489,7 +1498,12 @@ function moveArtwork(direction) {
     return;
   }
 
-  openArtwork(nextWork, currentWorks, nextIndex, currentTrackId);
+  openArtwork(
+    nextWork,
+    currentWorks,
+    nextIndex,
+    currentTrackId
+  );
 
 }
 
@@ -1519,7 +1533,9 @@ artModal.addEventListener("click", e => {
     e.target === single ||
     e.target === comicPage1 ||
     e.target === comicPage2 ||
-    e.target === artClose
+    e.target === artClose ||
+    e.target === artPrev ||
+    e.target === artNext
   ) {
     return;
   }

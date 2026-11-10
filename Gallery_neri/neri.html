@@ -686,6 +686,7 @@ const translations = {
     "たからもの",
     "ふたつの視線",
     "自信をくれるおまじない",
+    "ぎゅうぎゅう",
     "宙ぶらりん<br>シリモニ",
     "足元ぐるぐる人外ズ<br>シリモニ",
     "足元ぐるぐる人外ズ<br>雪山組"
@@ -703,6 +704,7 @@ const translations = {
     "Treasure",
     "Two Gazes",
     "A Little Charm for Confidence",
+    "Squish-squish",
     "Dangle<br>cyirimoni",
     "Wiggly Little Creatures<br>cyirimoni",
     "Wiggly Little Creatures<br>Snow Mountain Group"
@@ -720,6 +722,7 @@ const translations = {
     "珍宝",
     "两道目光",
     "带来自信的魔法",
+    "挤呀挤",
     "悬悬悬挂挂<br>白薔薇組",
     "脚边转转的小生灵<br>白薔薇組",
     "脚边转转的小生灵<br>雪山组"
@@ -737,6 +740,7 @@ const translations = {
     "보물",
     "두 개의 시선",
     "자신감을 주는 주문",
+    "꾸욱꾸욱",
     "대롱대롱<br>시릴모니",
     "발밑을 빙글빙글 도는 작은 생명체들<br>시릴모니",
     "발밑을 빙글빙글 도는 작은 생명체들<br>설산조"
@@ -885,6 +889,7 @@ const orangeWorks = [
 
   {
     src: "amber-kobin/006.PNG",
+    multilingual: true,
     bottle: "bin_amber.png"
   },
 
@@ -927,6 +932,12 @@ const waterWorks = [
       "azure-kobin/comic01/002.PNG"
     ],
 
+    bottle: "bin_azure.png"
+  },
+
+  {
+    type: "image",
+    src: "azure-kobin/003.PNG",
     bottle: "bin_azure.png"
   }
 
@@ -973,7 +984,7 @@ function getTitle(trackId, index) {
   }
 
   if (trackId === "whiteTrack") {
-    titleIndex += 11;
+    titleIndex += 12;
   }
 
   return translations[currentLanguage][titleIndex];
@@ -995,6 +1006,9 @@ function getTitle(trackId, index) {
    例：
    amber-kobin/002.PNG
    amber-kobin/en/002.PNG
+
+   amber-kobin/006.PNG
+   amber-kobin/en/006.PNG
 
    azure-kobin/comic01/001.PNG
    azure-kobin/comic01/en/001.PNG
@@ -1020,7 +1034,9 @@ function getLocalizedImage(src, lang) {
 ================================= */
 
 /*
-   言語別画像を使うのは amber-kobin/002.PNG のみ。
+   言語別画像を使うのは
+   amber-kobin/002.PNG と
+   amber-kobin/006.PNG（芸術）。
    それ以外の画像は全言語で共通。
 */
 

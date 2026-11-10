@@ -301,6 +301,52 @@ a {
   user-select: none;
 }
 
+/* 拡大表示中の作品タイトル */
+
+.art-title {
+  position: fixed;
+  top: 18px;
+  left: 20px;
+  z-index: 60;
+  max-width: calc(100% - 110px);
+  color: white;
+  font-family: "Hina Mincho", serif;
+  font-size: 13px;
+  line-height: 1.5;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+  pointer-events: none;
+}
+
+/* 拡大表示中の左右矢印 */
+
+.art-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  border: none;
+  padding: 12px;
+  background: transparent;
+  color: white;
+  font: 32px sans-serif;
+  cursor: pointer;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+  user-select: none;
+}
+
+.art-nav:disabled {
+  opacity: .18;
+  cursor: default;
+}
+
+.art-prev {
+  left: 12px;
+}
+
+.art-next {
+  right: 12px;
+}
+
 .single-area {
   width: 100%;
   min-height: 100vh;
@@ -496,6 +542,25 @@ a {
     font-size: 12px;
   }
 
+  .art-title {
+    top: 14px;
+    left: 12px;
+    font-size: 12px;
+  }
+
+  .art-nav {
+    padding: 8px;
+    font-size: 26px;
+  }
+
+  .art-prev {
+    left: 2px;
+  }
+
+  .art-next {
+    right: 2px;
+  }
+
   .comic-area {
     padding: 60px 10px 30px;
     gap: 12px;
@@ -587,6 +652,12 @@ a {
 <div class="art-modal" id="artModal">
 
   <div class="close" id="artClose">×</div>
+
+  <div class="art-title" id="artTitle"></div>
+
+  <button type="button" class="art-nav art-prev" id="artPrev" aria-label="前の作品">❮</button>
+
+  <button type="button" class="art-nav art-next" id="artNext" aria-label="次の作品">❯</button>
 
   <div class="single-area" id="singleArea">
     <img class="single" id="single" src="" alt="">
@@ -1264,7 +1335,7 @@ function createCarousel(trackId, works) {
     if (work.type === "booth") {
       openNotice(work.url);
     } else {
-      openArtwork(work);
+      openArtwork(work, works, Number(item.dataset.index), trackId);
     }
 
   });
@@ -1314,15 +1385,47 @@ const comicPage1 =
 const comicPage2 =
   document.getElementById("comicPage2");
 
+const artTitle =
+  document.getElementById("artTitle");
+
+const artPrev =
+  document.getElementById("artPrev");
+
+const artNext =
+  document.getElementById("artNext");
+
 
 /* 現在拡大表示している作品 */
 
 let currentArtwork = null;
+let currentWorks = [];
+let currentWorkIndex = 0;
+let currentTrackId = "";
 
 
-function openArtwork(work) {
+function updateArtworkNavigation() {
+
+  const hasNavigation = currentWorks.length > 1;
+
+  artPrev.style.display = hasNavigation ? "block" : "none";
+  artNext.style.display = hasNavigation ? "block" : "none";
+
+  artPrev.disabled = currentWorkIndex <= 0;
+  artNext.disabled = currentWorkIndex >= currentWorks.length - 1;
+
+}
+
+
+function openArtwork(work, works, index, trackId) {
 
   currentArtwork = work;
+
+  if (works) currentWorks = works;
+  if (Number.isInteger(index)) currentWorkIndex = index;
+  if (trackId) currentTrackId = trackId;
+
+  artTitle.innerHTML = getTitle(currentTrackId, currentWorkIndex);
+  updateArtworkNavigation();
 
   /*
      漫画以外はすべて通常画像として扱う。
@@ -1362,8 +1465,44 @@ function closeArtwork() {
   comicPage2.src = "";
 
   currentArtwork = null;
+  currentWorks = [];
+  currentWorkIndex = 0;
+  currentTrackId = "";
+  artTitle.textContent = "";
 
 }
+
+
+function moveArtwork(direction) {
+
+  const nextIndex = currentWorkIndex + direction;
+
+  if (nextIndex < 0 || nextIndex >= currentWorks.length) {
+    return;
+  }
+
+  const nextWork = currentWorks[nextIndex];
+
+  if (nextWork.type === "booth") {
+    closeArtwork();
+    openNotice(nextWork.url);
+    return;
+  }
+
+  openArtwork(nextWork, currentWorks, nextIndex, currentTrackId);
+
+}
+
+
+artPrev.addEventListener("click", e => {
+  e.stopPropagation();
+  moveArtwork(-1);
+});
+
+artNext.addEventListener("click", e => {
+  e.stopPropagation();
+  moveArtwork(1);
+});
 
 
 artClose.addEventListener("click", e => {
@@ -1444,7 +1583,7 @@ function changeLanguage(lang) {
   /* 拡大表示中の画像も言語に合わせて更新 */
 
   if (currentArtwork && artModal.classList.contains("open")) {
-    openArtwork(currentArtwork);
+    openArtwork(currentArtwork, currentWorks, currentWorkIndex, currentTrackId);
   }
 
 
@@ -1533,7 +1672,7 @@ confirmButton.addEventListener("click", () => {
 
 
 /* =================================
-   ESCで閉じる
+   ESCで閉じる・左右キーで移動
 ================================= */
 
 document.addEventListener("keydown", e => {
@@ -1541,6 +1680,16 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     closeArtwork();
     closeNotice();
+  }
+
+  if (artModal.classList.contains("open")) {
+
+    if (e.key === "ArrowLeft") {
+      moveArtwork(-1);
+    } else if (e.key === "ArrowRight") {
+      moveArtwork(1);
+    }
+
   }
 
 });

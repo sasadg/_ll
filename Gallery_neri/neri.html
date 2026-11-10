@@ -272,6 +272,41 @@ a {
   text-shadow: 0 1px 4px rgba(65, 95, 145, .3);
 }
 
+/* バター展示への入口 */
+
+.butter-trigger {
+  position: absolute;
+  top: 76%;
+  right: 7%;
+  z-index: 5;
+  width: clamp(100px, 20vw, 190px);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: butterFloat 5s ease-in-out infinite;
+}
+
+.butter-trigger img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(60, 90, 130, .12));
+  transition: transform .3s ease;
+}
+
+.butter-trigger:active img {
+  transform: scale(.94);
+}
+
+@keyframes butterFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
 /* イラスト・漫画の拡大表示 */
 
 .art-modal {
@@ -381,6 +416,90 @@ a {
   width: auto;
   max-height: 90vh;
   object-fit: contain;
+}
+
+/* バター専用展示画面 */
+
+.butter-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(15, 25, 45, .94);
+  color: white;
+}
+
+.butter-modal.open {
+  display: block;
+}
+
+.butter-close {
+  position: fixed;
+  top: 12px;
+  right: 20px;
+  z-index: 90;
+  color: white;
+  font: 34px sans-serif;
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 0 1px 5px rgba(0,0,0,.5);
+}
+
+.butter-content {
+  min-height: 100%;
+  width: 100%;
+  padding: 65px 24px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+}
+
+.butter-description {
+  width: min(760px, 100%);
+  color: white;
+  font-family: "Hina Mincho", serif;
+  font-size: 14px;
+  line-height: 2;
+  text-align: center;
+  text-shadow: 0 1px 5px rgba(0,0,0,.4);
+  white-space: pre-line;
+}
+
+.butter-images {
+  width: min(1000px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(15px, 5vw, 55px);
+  flex-wrap: wrap;
+}
+
+.butter-art {
+  display: block;
+  width: min(42%, 420px);
+  max-height: 72vh;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.25));
+  animation: butterArtFloat 5s ease-in-out infinite;
+}
+
+.butter-art:nth-child(2) {
+  animation-delay: -2.5s;
+}
+
+@keyframes butterArtFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(1deg);
+  }
 }
 
 /* 購入確認 */
@@ -585,6 +704,39 @@ a {
     padding: 8px 18px;
   }
 
+  /* バター展示のスマホ表示 */
+
+  .butter-trigger {
+    top: 76%;
+    right: 5%;
+    width: 125px;
+  }
+
+  .butter-content {
+    padding: 65px 16px 35px;
+    gap: 25px;
+  }
+
+  .butter-description {
+    font-size: 12px;
+    line-height: 1.9;
+  }
+
+  .butter-images {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .butter-art {
+    width: min(90%, 420px);
+    max-height: none;
+  }
+
+  .butter-close {
+    top: 10px;
+    right: 15px;
+  }
+
 }
 </style>
 </head>
@@ -645,6 +797,18 @@ a {
     </div>
   </section>
 
+  <!-- バター展示への入口 -->
+
+  <div
+    class="butter-trigger"
+    id="butterTrigger"
+    role="button"
+    tabindex="0"
+    aria-label="青年とバターのファンアートを見る"
+  >
+    <img src="butter.png" alt="">
+  </div>
+
 </div>
 
 <!-- イラスト・漫画の拡大表示 -->
@@ -666,6 +830,36 @@ a {
   <div class="comic-area" id="comicArea">
     <img class="comic-page" id="comicPage1" src="" alt="">
     <img class="comic-page" id="comicPage2" src="" alt="">
+  </div>
+
+</div>
+
+<!-- バター専用展示画面 -->
+
+<div class="butter-modal" id="butterModal">
+
+  <div class="butter-close" id="butterClose">×</div>
+
+  <div class="butter-content">
+
+    <div class="butter-description" id="butterDescription"></div>
+
+    <div class="butter-images">
+
+      <img
+        class="butter-art"
+        src="butter-1.png"
+        alt="青年とバターのファンアート 1"
+      >
+
+      <img
+        class="butter-art"
+        src="butter-2.png"
+        alt="青年とバターのファンアート 2"
+      >
+
+    </div>
+
   </div>
 
 </div>
@@ -816,6 +1010,23 @@ const translations = {
     "발밑을 빙글빙글 도는 작은 생명체들<br>시릴모니",
     "발밑을 빙글빙글 도는 작은 생명체들<br>설산조"
   ]
+
+};
+
+
+/* =================================
+   バター展示の説明文
+================================= */
+
+const butterTranslations = {
+
+  ja: "※こちらに展示しているイラストは、星月夜と白トカゲ【お-03】にて展示されているSS『青年とバター』のファンアートです。\n\nSSを読んでからご覧いただくと、より楽しめると思います。気になった方は、ぜひ【お-03】へ！",
+
+  en: "※ The illustrations displayed here are fan art based on the short fic \"The Young Man and Butter,\" exhibited at 星月夜と白トカゲ【お-03】.\n\nWe hope you'll enjoy these illustrations even more after reading the fic. If you're interested, please stop by 【お-03】!",
+
+  zh: "※ 此处展示的插画是根据星月夜と白トカゲ【お-03】展出的短篇小说《青年与黄油》创作的同人插画。\n\n如果先阅读故事，再欣赏这些插画，相信会更有趣。感兴趣的话，欢迎前往【お-03】！",
+
+  ko: "※ 이곳에 전시된 일러스트는 星月夜と白トカゲ【お-03】에서 공개된 단편 소설 『청년과 버터』의 팬아트입니다.\n\n소설을 먼저 읽고 감상하시면 더욱 재미있게 즐기실 수 있을 것 같아요. 관심이 있으시다면 꼭 【お-03】에 방문해 주세요!"
 
 };
 
@@ -1067,24 +1278,6 @@ function getTitle(trackId, index) {
    言語別画像の取得
 ================================= */
 
-/*
-   日本語：
-   元の画像をそのまま使用
-
-   英語・中国語・韓国語：
-   元画像のフォルダ内にある言語別フォルダを参照
-
-   例：
-   amber-kobin/002.PNG
-   amber-kobin/en/002.PNG
-
-   amber-kobin/006.PNG
-   amber-kobin/en/006.PNG
-
-   azure-kobin/comic01/001.PNG
-   azure-kobin/comic01/en/001.PNG
-*/
-
 function getLocalizedImage(src, lang) {
 
   if (lang === "ja") {
@@ -1104,13 +1297,6 @@ function getLocalizedImage(src, lang) {
    作品画像の取得
 ================================= */
 
-/*
-   言語別画像を使うのは
-   amber-kobin/002.PNG と
-   amber-kobin/006.PNG（芸術）。
-   それ以外の画像は全言語で共通。
-*/
-
 function getArtworkImage(work) {
 
   if (work.multilingual) {
@@ -1125,11 +1311,6 @@ function getArtworkImage(work) {
 /* =================================
    漫画画像の取得
 ================================= */
-
-/*
-   comic01 のみ言語別画像を使用。
-   日本語は元画像をそのまま使用。
-*/
 
 function getComicPages(work) {
 
@@ -1395,8 +1576,6 @@ const artNext =
   document.getElementById("artNext");
 
 
-/* 現在拡大表示している作品 */
-
 let currentArtwork = null;
 let currentWorks = [];
 let currentWorkIndex = 0;
@@ -1426,11 +1605,6 @@ function openArtwork(work, works, index, trackId) {
 
   artTitle.innerHTML = getTitle(currentTrackId, currentWorkIndex);
   updateArtworkNavigation();
-
-  /*
-     漫画以外はすべて通常画像として扱う。
-     これにより橙の小瓶も正しく表示される。
-  */
 
   if (work.type === "comic") {
 
@@ -1479,8 +1653,6 @@ function moveArtwork(direction) {
 
   let nextIndex =
     currentWorkIndex + direction;
-
-  // 最後の次は最初へ、最初の前は最後へ
 
   if (nextIndex < 0) {
     nextIndex = currentWorks.length - 1;
@@ -1546,6 +1718,63 @@ artModal.addEventListener("click", e => {
 
 
 /* =================================
+   バター専用展示画面
+================================= */
+
+const butterModal =
+  document.getElementById("butterModal");
+
+const butterTrigger =
+  document.getElementById("butterTrigger");
+
+const butterClose =
+  document.getElementById("butterClose");
+
+const butterDescription =
+  document.getElementById("butterDescription");
+
+
+function openButter() {
+
+  butterDescription.textContent =
+    butterTranslations[currentLanguage];
+
+  butterModal.classList.add("open");
+
+}
+
+
+function closeButter() {
+
+  butterModal.classList.remove("open");
+
+}
+
+
+butterTrigger.addEventListener("click", openButter);
+
+butterTrigger.addEventListener("keydown", e => {
+
+  if (e.key === "Enter" || e.key === " ") {
+    e.preventDefault();
+    openButter();
+  }
+
+});
+
+
+butterClose.addEventListener("click", closeButter);
+
+butterModal.addEventListener("click", e => {
+
+  if (e.target === butterModal) {
+    closeButter();
+  }
+
+});
+
+
+/* =================================
    言語切り替え
 ================================= */
 
@@ -1555,18 +1784,12 @@ function changeLanguage(lang) {
 
   currentLanguage = lang;
 
-  /* HTMLの言語属性 */
-
   document.documentElement.lang = lang;
 
-
-  /* 戻るリンクの言語変更 */
 
   document.getElementById("backLink").textContent =
     backTranslations[lang];
 
-
-  /* 選択ボタンの表示 */
 
   languageButtons.forEach(button => {
 
@@ -1577,8 +1800,6 @@ function changeLanguage(lang) {
 
   });
 
-
-  /* 作品タイトルの変更 */
 
   document.querySelectorAll(".item").forEach(item => {
 
@@ -1596,14 +1817,18 @@ function changeLanguage(lang) {
   });
 
 
-  /* 拡大表示中の画像も言語に合わせて更新 */
-
   if (currentArtwork && artModal.classList.contains("open")) {
     openArtwork(currentArtwork, currentWorks, currentWorkIndex, currentTrackId);
   }
 
 
-  /* 選択言語を保存 */
+  /* バター展示の説明文も言語変更 */
+
+  if (butterModal.classList.contains("open")) {
+    butterDescription.textContent =
+      butterTranslations[currentLanguage];
+  }
+
 
   try {
 
@@ -1622,8 +1847,6 @@ function changeLanguage(lang) {
 
 }
 
-
-/* 言語ボタン */
 
 languageButtons.forEach(button => {
 
@@ -1696,6 +1919,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     closeArtwork();
     closeNotice();
+    closeButter();
   }
 
   if (artModal.classList.contains("open")) {

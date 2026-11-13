@@ -418,23 +418,29 @@ a {
   object-fit: contain;
 }
 
-/* バター展示の2枚がぷかぷか浮く */
+/* バター展示の2枚が上下左右にぷかぷか浮く */
 
 .butter-scene {
-  animation: butterFloat 4s ease-in-out infinite;
+  animation: butterFloat 5s ease-in-out infinite;
 }
 
 .butter-second {
-  animation: butterFloat 4s ease-in-out infinite;
-  animation-delay: -2s;
+  animation: butterFloat 5.5s ease-in-out infinite;
+  animation-delay: -2.5s;
 }
 
 @keyframes butterFloat {
   0%, 100% {
-    transform: translateY(0);
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(7px, -8px);
   }
   50% {
-    transform: translateY(-12px);
+    transform: translate(-3px, -14px);
+  }
+  75% {
+    transform: translate(-8px, -5px);
   }
 }
 

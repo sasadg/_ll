@@ -418,6 +418,24 @@ a {
   object-fit: contain;
 }
 
+  /* バター展示の2枚がぷかぷか浮く */
+.butter-art {
+  animation: butterFloat 4s ease-in-out infinite;
+}
+
+.butter-art:nth-child(2) {
+  animation-delay: -2s;
+}
+
+@keyframes butterFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
 /* バター専用展示画面 */
 
 .butter-modal {
@@ -497,7 +515,7 @@ a {
   /* アニメーション画像の位置・大きさはここで調整 */
   --anime-x: 30%;
   --anime-y: 18%;
-  --anime-width: 48%;
+  --anime-width: 40%;
 }
 
 .butter-base {

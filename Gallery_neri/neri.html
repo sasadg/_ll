@@ -3,16 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>【秋の終わりの学園祭】LUMI.</title>
+<title>【秋終祭】LUMI.</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Sacramento&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -23,13 +21,9 @@ html, body {
   font-family: "Hina Mincho", serif;
 }
 
-body {
-  background: #B8D9FF;
-}
+body { background: #B8D9FF; }
 
-a {
-  -webkit-tap-highlight-color: transparent;
-}
+a { -webkit-tap-highlight-color: transparent; }
 
 .page {
   --background-space: 40px;
@@ -99,7 +93,7 @@ a {
   text-shadow: 0 1px 4px rgba(70, 100, 150, .2);
 }
 
-/* 小瓶の各列 */
+/* 小瓶 */
 
 .bottle-section {
   width: 100%;
@@ -107,14 +101,10 @@ a {
   overflow: hidden;
 }
 
-.orange-section {
-  margin-top: 300px;
-}
+.orange-section { margin-top: 300px; }
 
 .water-section,
-.white-section {
-  margin-top: 30px;
-}
+.white-section { margin-top: 30px; }
 
 /* 英語タイトル */
 
@@ -158,9 +148,7 @@ a {
   );
 }
 
-.carousel-window.dragging {
-  cursor: grabbing;
-}
+.carousel-window.dragging { cursor: grabbing; }
 
 .fade-image {
   position: absolute;
@@ -232,30 +220,18 @@ a {
 }
 
 @keyframes float1 {
-  0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  50% {
-    transform: translate(3px, -10px) rotate(.6deg);
-  }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(3px, -10px) rotate(.6deg); }
 }
 
 @keyframes float2 {
-  0%, 100% {
-    transform: translate(0, -3px) rotate(0deg);
-  }
-  50% {
-    transform: translate(-3px, 9px) rotate(-.6deg);
-  }
+  0%, 100% { transform: translate(0, -3px) rotate(0deg); }
+  50% { transform: translate(-3px, 9px) rotate(-.6deg); }
 }
 
 @keyframes float3 {
-  0%, 100% {
-    transform: translate(-2px, 2px) rotate(-.3deg);
-  }
-  50% {
-    transform: translate(2px, -8px) rotate(.5deg);
-  }
+  0%, 100% { transform: translate(-2px, 2px) rotate(-.3deg); }
+  50% { transform: translate(2px, -8px) rotate(.5deg); }
 }
 
 /* 作品タイトル */
@@ -294,20 +270,14 @@ a {
   transition: transform .3s ease;
 }
 
-.butter-trigger:active img {
-  transform: scale(.94);
-}
+.butter-trigger:active img { transform: scale(.94); }
 
 @keyframes butterFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
-/* イラスト・漫画の拡大表示 */
+/* 拡大表示 */
 
 .art-modal {
   position: fixed;
@@ -321,9 +291,7 @@ a {
   overflow-x: hidden;
 }
 
-.art-modal.open {
-  display: block;
-}
+.art-modal.open { display: block; }
 
 .close {
   position: fixed;
@@ -335,8 +303,6 @@ a {
   z-index: 60;
   user-select: none;
 }
-
-/* 拡大表示中の作品タイトル */
 
 .art-title {
   position: fixed;
@@ -351,8 +317,6 @@ a {
   text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
   pointer-events: none;
 }
-
-/* 拡大表示中の左右矢印 */
 
 .art-nav {
   position: fixed;
@@ -374,13 +338,8 @@ a {
   cursor: default;
 }
 
-.art-prev {
-  left: 12px;
-}
-
-.art-next {
-  right: 12px;
-}
+.art-prev { left: 12px; }
+.art-next { right: 12px; }
 
 .single-area {
   width: 100%;
@@ -433,9 +392,7 @@ a {
   color: white;
 }
 
-.butter-modal.open {
-  display: block;
-}
+.butter-modal.open { display: block; }
 
 .butter-close {
   position: fixed;
@@ -472,13 +429,103 @@ a {
 }
 
 .butter-images {
-  width: min(1000px, 100%);
+  width: min(1100px, 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: clamp(15px, 5vw, 55px);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
+
+/* 1枚目のアニメーション展示 */
+
+.butter-scene {
+  position: relative;
+  width: min(42%, 420px);
+  flex: 0 1 420px;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.25));
+}
+
+.butter-scene > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.butter-character {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  left: 13%;
+  top: 9%;
+  object-fit: contain;
+  transform-origin: center;
+  pointer-events: none;
+}
+
+/* イタチの反時計回り3回転 */
+
+.butter-character.spinning {
+  animation: itachiSpin 2.4s ease-in-out forwards;
+}
+
+@keyframes itachiSpin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  100% {
+    transform: rotate(-1080deg) scale(1);
+  }
+}
+
+/* バターへの変身 */
+
+.butter-transformed {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  left: 13%;
+  top: 9%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(.3);
+  pointer-events: none;
+}
+
+.butter-transformed.floating {
+  animation: butterAppear 1s ease forwards,
+             butterFloatAnime 3s ease-in-out 1s infinite;
+}
+
+@keyframes butterAppear {
+  0% {
+    opacity: 0;
+    transform: scale(.3) rotate(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes butterFloatAnime {
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+}
+
+/* 2枚目 */
 
 .butter-art {
   display: block;
@@ -535,13 +582,9 @@ a {
   font-weight: normal;
 }
 
-.notice-box p {
-  margin: 0 0 18px;
-}
+.notice-box p { margin: 0 0 18px; }
 
-.notice-box .language {
-  margin-top: 22px;
-}
+.notice-box .language { margin-top: 22px; }
 
 .notice-box .language-title {
   font-weight: bold;
@@ -591,22 +634,14 @@ a {
     font-size: 14px;
   }
 
-  .orange-section {
-    margin-top: 60px;
-  }
+  .orange-section { margin-top: 60px; }
 
   .water-section,
-  .white-section {
-    margin-top: 10px;
-  }
+  .white-section { margin-top: 10px; }
 
-  .bottle-section {
-    padding-bottom: 6px;
-  }
+  .bottle-section { padding-bottom: 6px; }
 
-  .section-heading {
-    font-size: 24px;
-  }
+  .section-heading { font-size: 24px; }
 
   .carousel-window {
     -webkit-mask-image: linear-gradient(
@@ -616,7 +651,6 @@ a {
       black calc(100% - 70px),
       transparent 100%
     );
-
     mask-image: linear-gradient(
       to right,
       transparent 0,
@@ -626,9 +660,7 @@ a {
     );
   }
 
-  .fade-image {
-    width: 70px;
-  }
+  .fade-image { width: 70px; }
 
   .item {
     flex-basis: 125px;
@@ -652,9 +684,7 @@ a {
     padding: 0 4px;
   }
 
-  .language-switch {
-    gap: 5px;
-  }
+  .language-switch { gap: 5px; }
 
   .language-switch button {
     padding: 6px 10px;
@@ -672,13 +702,8 @@ a {
     font-size: 26px;
   }
 
-  .art-prev {
-    left: 2px;
-  }
-
-  .art-next {
-    right: 2px;
-  }
+  .art-prev { left: 2px; }
+  .art-next { right: 2px; }
 
   .comic-area {
     padding: 60px 10px 30px;
@@ -695,16 +720,12 @@ a {
     font-size: 12px;
   }
 
-  .notice-box h2 {
-    font-size: 17px;
-  }
+  .notice-box h2 { font-size: 17px; }
 
   .notice-buttons button {
     font-size: 13px;
     padding: 8px 18px;
   }
-
-  /* バター展示のスマホ表示 */
 
   .butter-trigger {
     top: 76%;
@@ -722,9 +743,16 @@ a {
     line-height: 1.9;
   }
 
+  /* スマホは1→2の縦並び */
+
   .butter-images {
     flex-direction: column;
     gap: 30px;
+  }
+
+  .butter-scene {
+    width: min(90%, 420px);
+    flex: none;
   }
 
   .butter-art {
@@ -736,8 +764,8 @@ a {
     top: 10px;
     right: 15px;
   }
-
 }
+
 </style>
 </head>
 
@@ -752,8 +780,6 @@ a {
     alt=""
   >
 
-  <!-- 言語切り替え -->
-
   <div class="language-switch">
     <button type="button" data-lang="ja">日本語</button>
     <button type="button" data-lang="en">English</button>
@@ -761,15 +787,12 @@ a {
     <button type="button" data-lang="ko">한국어</button>
   </div>
 
-  <!-- 既存イラストへのリンク -->
-
   <a class="back" id="backLink" href="../1.html">
     ▶︎ 既存イラストを見る
   </a>
 
   <section class="bottle-section orange-section">
     <h2 class="section-heading">Orange Bottle</h2>
-
     <div class="carousel-window">
       <div class="fade-image fade-image-left"></div>
       <div class="fade-image fade-image-right"></div>
@@ -779,7 +802,6 @@ a {
 
   <section class="bottle-section water-section">
     <h2 class="section-heading">Sky-blue Bottle</h2>
-
     <div class="carousel-window">
       <div class="fade-image fade-image-left"></div>
       <div class="fade-image fade-image-right"></div>
@@ -789,15 +811,12 @@ a {
 
   <section class="bottle-section white-section">
     <h2 class="section-heading">White Bottle</h2>
-
     <div class="carousel-window">
       <div class="fade-image fade-image-left"></div>
       <div class="fade-image fade-image-right"></div>
       <div class="carousel-track" id="whiteTrack"></div>
     </div>
   </section>
-
-  <!-- バター展示への入口 -->
 
   <div
     class="butter-trigger"
@@ -814,14 +833,11 @@ a {
 <!-- イラスト・漫画の拡大表示 -->
 
 <div class="art-modal" id="artModal">
-
   <div class="close" id="artClose">×</div>
-
   <div class="art-title" id="artTitle"></div>
 
-  <button type="button" class="art-nav art-prev" id="artPrev" aria-label="前の作品">❮</button>
-
-  <button type="button" class="art-nav art-next" id="artNext" aria-label="次の作品">❯</button>
+  <button type="button" class="art-nav art-prev" id="artPrev">❮</button>
+  <button type="button" class="art-nav art-next" id="artNext">❯</button>
 
   <div class="single-area" id="singleArea">
     <img class="single" id="single" src="" alt="">
@@ -831,7 +847,6 @@ a {
     <img class="comic-page" id="comicPage1" src="" alt="">
     <img class="comic-page" id="comicPage2" src="" alt="">
   </div>
-
 </div>
 
 <!-- バター専用展示画面 -->
@@ -846,11 +861,7 @@ a {
 
     <div class="butter-images">
 
-      <img
-        class="butter-art"
-        src="butter-1.png"
-        alt="1"
-      >
+      <!-- 2枚目：PCでは左 -->
 
       <img
         class="butter-art"
@@ -858,16 +869,42 @@ a {
         alt="2"
       >
 
+      <!-- 1枚目：PCでは右 -->
+
+      <div
+        class="butter-scene"
+        id="butterScene"
+        role="button"
+        tabindex="0"
+        aria-label="イタチバターのアニメーションを再生"
+      >
+
+        <img src="butter-1.png" alt="青年とバター">
+
+        <img
+          class="butter-character"
+          id="butterCharacter"
+          src="butter-anime-1.png"
+          alt=""
+        >
+
+        <img
+          class="butter-transformed"
+          id="butterTransformed"
+          src="butter-anime-2.png"
+          alt=""
+        >
+
+      </div>
+
     </div>
 
   </div>
-
 </div>
 
-<!-- BOOTH購入確認 -->
+<!-- 購入確認 -->
 
 <div id="noticeModal">
-
   <div class="notice-box">
 
     <h2>⚠️ 商品について</h2>
@@ -917,806 +954,12 @@ a {
     </div>
 
     <div class="notice-buttons">
-      <button type="button" class="cancel-button" id="cancelButton">
-        戻る
-      </button>
-
-      <button type="button" class="confirm-button" id="confirmButton">
-        確認しました
-      </button>
+      <button type="button" class="cancel-button" id="cancelButton">戻る</button>
+      <button type="button" class="confirm-button" id="confirmButton">確認しました</button>
     </div>
 
   </div>
-
 </div>
-
-
-<script>
-
-/* =================================
-   言語別タイトル
-================================= */
-
-const translations = {
-
-  ja: [
-    "紅葉",
-    "実り",
-    "食欲",
-    "読書",
-    "スポーツ",
-    "芸術",
-    "睡眠",
-    "紅葉",
-    "たからもの",
-    "ふたつの視線",
-    "自信をくれるおまじない",
-    "ぎゅうぎゅう",
-    "宙ぶらりん<br>シリモニ",
-    "足元ぐるぐる人外ズ<br>シリモニ",
-    "足元ぐるぐる人外ズ<br>雪山組"
-  ],
-
-  en: [
-    "Autumn Leaves",
-    "Harvest",
-    "Appetite",
-    "Reading",
-    "Sports",
-    "Art",
-    "Sleep",
-    "Autumn Leaves",
-    "Treasure",
-    "Two Gazes",
-    "A Little Charm for Confidence",
-    "Squish-squish",
-    "Dangle<br>cyirimoni",
-    "Wiggly Little Creatures<br>cyirimoni",
-    "Wiggly Little Creatures<br>Snow Mountain Group"
-  ],
-
-  zh: [
-    "红叶",
-    "丰收",
-    "食欲",
-    "阅读",
-    "运动",
-    "艺术",
-    "睡眠",
-    "红叶",
-    "珍宝",
-    "两道目光",
-    "带来自信的魔法",
-    "挤呀挤",
-    "悬悬悬挂挂<br>白薔薇組",
-    "脚边转转的小生灵<br>白薔薇組",
-    "脚边转转的小生灵<br>雪山组"
-  ],
-
-  ko: [
-    "단풍",
-    "풍요",
-    "식욕",
-    "독서",
-    "스포츠",
-    "예술",
-    "수면",
-    "단풍",
-    "보물",
-    "두 개의 시선",
-    "자신감을 주는 주문",
-    "꾸욱꾸욱",
-    "대롱대롱<br>시릴모니",
-    "발밑을 빙글빙글 도는 작은 생명체들<br>시릴모니",
-    "발밑을 빙글빙글 도는 작은 생명체들<br>설산조"
-  ]
-
-};
-
-
-/* =================================
-   バター展示の説明文
-================================= */
-
-const butterTranslations = {
-
-  ja: "※こちらに展示しているイラストは、星月夜と白トカゲ【お-03】にて展示されているSS『青年とバター』のファンアートです。SSを読んでからご覧いただくと、より楽しめると思います。気になった方は、ぜひ【お-03】へ！",
-
-  en: "※ The illustrations displayed here are fan art based on the short fic \"The Young Man and Butter,\" exhibited at 星月夜と白トカゲ【お-03】.We hope you'll enjoy these illustrations even more after reading the fic. If you're interested, please stop by 【お-03】!",
-
-  zh: "※ 此处展示的插画是根据星月夜と白トカゲ【お-03】展出的短篇小说《青年与黄油》创作的同人插画。如果先阅读故事，再欣赏这些插画，相信会更有趣。感兴趣的话，欢迎前往【お-03】！",
-
-  ko: "※ 이곳에 전시된 일러스트는 星月夜と白トカゲ【お-03】에서 공개된 단편 소설 『청년과 버터』의 팬아트입니다.소설을 먼저 읽고 감상하시면 더욱 재미있게 즐기실 수 있을 것 같아요. 관심이 있으시다면 꼭 【お-03】에 방문해 주세요!"
-
-};
-
-
-/* =================================
-   戻るリンクの言語別表記
-================================= */
-
-const backTranslations = {
-
-  ja: "▶︎ 既存イラストを見る",
-
-  en: "▶︎ View Existing Illustrations",
-
-  zh: "▶︎ 查看已有插画",
-
-  ko: "▶︎ 기존 일러스트 보기"
-
-};
-
-
-/* =================================
-   現在の言語
-================================= */
-
-let currentLanguage = "ja";
-
-const languageButtons =
-  document.querySelectorAll(".language-switch button");
-
-
-/* =================================
-   背景画像をページ全体に合わせる
-================================= */
-
-const page = document.getElementById("page");
-
-const pageBackground =
-  document.getElementById("pageBackground");
-
-function fitPageToBackground() {
-
-  if (
-    !pageBackground.naturalWidth ||
-    !pageBackground.naturalHeight
-  ) {
-    return;
-  }
-
-  const isMobile = window.innerWidth <= 600;
-  const space = isMobile ? 20 : 40;
-
-  page.style.minHeight = "0px";
-
-  const pageHeight = Math.max(
-    page.scrollHeight,
-    window.innerHeight
-  );
-
-  pageBackground.style.top = space + "px";
-
-  if (isMobile) {
-
-    const targetHeight = Math.max(
-      pageHeight - space * 2,
-      1
-    );
-
-    const backgroundWidth =
-      targetHeight *
-      pageBackground.naturalWidth /
-      pageBackground.naturalHeight;
-
-    pageBackground.style.height =
-      targetHeight + "px";
-
-    pageBackground.style.width =
-      backgroundWidth + "px";
-
-    pageBackground.style.maxWidth = "none";
-    pageBackground.style.left = "50%";
-
-    pageBackground.style.transform =
-      "translateX(-50%)";
-
-    page.style.minHeight = pageHeight + "px";
-
-  } else {
-
-    pageBackground.style.width = "100%";
-    pageBackground.style.height = "auto";
-    pageBackground.style.maxWidth = "none";
-    pageBackground.style.left = "0";
-    pageBackground.style.transform = "none";
-
-    const backgroundHeight =
-      window.innerWidth *
-      pageBackground.naturalHeight /
-      pageBackground.naturalWidth;
-
-    page.style.minHeight = Math.max(
-      pageHeight,
-      backgroundHeight + space * 2
-    ) + "px";
-
-  }
-
-}
-
-
-/* =================================
-   橙の小瓶
-================================= */
-
-const orangeWorks = [
-
-  {
-    src: "amber-kobin/001.PNG",
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/002.PNG",
-    multilingual: true,
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/003.PNG",
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/004.PNG",
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/005.PNG",
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/006.PNG",
-    multilingual: true,
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/007.PNG",
-    bottle: "bin_amber.png"
-  },
-
-  {
-    src: "amber-kobin/008.PNG",
-    bottle: "bin_amber.png"
-  }
-
-];
-
-
-/* =================================
-   水の小瓶
-================================= */
-
-const waterWorks = [
-
-  {
-    type: "image",
-    src: "azure-kobin/001.PNG",
-    bottle: "bin_azure.png"
-  },
-
-  {
-    type: "image",
-    src: "azure-kobin/002.PNG",
-    bottle: "bin_azure.png"
-  },
-
-  {
-    type: "comic",
-
-    pages: [
-      "azure-kobin/comic01/001.PNG",
-      "azure-kobin/comic01/002.PNG"
-    ],
-
-    bottle: "bin_azure.png"
-  },
-
-  {
-    type: "image",
-    src: "azure-kobin/003.PNG",
-    bottle: "bin_azure.png"
-  }
-
-];
-
-
-/* =================================
-   白の小瓶
-================================= */
-
-const whiteWorks = [
-
-  {
-    type: "booth",
-    url: "https://sasadg.booth.pm/items/7975838",
-    bottle: "bin_snow1.png"
-  },
-
-  {
-    type: "booth",
-    url: "https://sasadg.booth.pm/items/8957919",
-    bottle: "bin_snow2.png"
-  },
-
-  {
-    type: "booth",
-    url: "https://sasadg.booth.pm/items/8957943",
-    bottle: "bin_snow3.png"
-  }
-
-];
-
-
-/* =================================
-   作品タイトルの取得
-================================= */
-
-function getTitle(trackId, index) {
-
-  let titleIndex = index;
-
-  if (trackId === "waterTrack") {
-    titleIndex += 8;
-  }
-
-  if (trackId === "whiteTrack") {
-    titleIndex += 12;
-  }
-
-  return translations[currentLanguage][titleIndex];
-
-}
-
-
-/* =================================
-   言語別画像の取得
-================================= */
-
-function getLocalizedImage(src, lang) {
-
-  if (lang === "ja") {
-    return src;
-  }
-
-  const parts = src.split("/");
-  const filename = parts.pop();
-  const folder = parts.join("/");
-
-  return `${folder}/${lang}/${filename}`;
-
-}
-
-
-/* =================================
-   作品画像の取得
-================================= */
-
-function getArtworkImage(work) {
-
-  if (work.multilingual) {
-    return getLocalizedImage(work.src, currentLanguage);
-  }
-
-  return work.src;
-
-}
-
-
-/* =================================
-   漫画画像の取得
-================================= */
-
-function getComicPages(work) {
-
-  if (currentLanguage === "ja") {
-    return work.pages;
-  }
-
-  return work.pages.map(src =>
-    getLocalizedImage(src, currentLanguage)
-  );
-
-}
-
-
-/* =================================
-   カルーセル
-================================= */
-
-function createCarousel(trackId, works) {
-
-  const track = document.getElementById(trackId);
-  const windowEl = track.parentElement;
-
-  for (let c = 0; c < 9; c++) {
-
-    works.forEach((work, index) => {
-
-      const item = document.createElement("div");
-      item.className = "item";
-      item.dataset.index = index;
-
-      const wrap = document.createElement("div");
-      wrap.className = "bottle-wrap";
-
-      const bottle = document.createElement("img");
-      bottle.className = "bottle";
-      bottle.src = work.bottle;
-      bottle.alt = "";
-      bottle.draggable = false;
-
-      wrap.appendChild(bottle);
-
-      const title = document.createElement("div");
-      title.className = "title";
-      title.innerHTML = getTitle(trackId, index);
-
-      item.appendChild(wrap);
-      item.appendChild(title);
-
-      track.appendChild(item);
-
-    });
-
-  }
-
-
-  let position = 0;
-  const velocity = -0.25;
-
-  let dragging = false;
-  let startX = 0;
-  let lastX = 0;
-  let moved = false;
-  let cycleWidth = 0;
-
-
-  function updateCycleWidth() {
-
-    const items = track.querySelectorAll(".item");
-
-    if (items.length <= works.length) return;
-
-    const first =
-      items[0].getBoundingClientRect();
-
-    const next =
-      items[works.length].getBoundingClientRect();
-
-    cycleWidth = next.left - first.left;
-
-  }
-
-
-  function setInitialPosition() {
-
-    updateCycleWidth();
-
-    if (cycleWidth) {
-      position = -cycleWidth * 4;
-    }
-
-  }
-
-
-  function normalizePosition() {
-
-    if (!cycleWidth) return;
-
-    while (position <= -cycleWidth * 5) {
-      position += cycleWidth;
-    }
-
-    while (position >= -cycleWidth * 3) {
-      position -= cycleWidth;
-    }
-
-  }
-
-
-  function render() {
-
-    normalizePosition();
-
-    track.style.transform =
-      `translate3d(${position}px, 0, 0)`;
-
-    requestAnimationFrame(render);
-
-  }
-
-
-  function autoMove() {
-
-    if (!dragging) {
-      position += velocity;
-    }
-
-    requestAnimationFrame(autoMove);
-
-  }
-
-
-  function pointerDown(x) {
-
-    dragging = true;
-    moved = false;
-    startX = x;
-    lastX = x;
-
-    windowEl.classList.add("dragging");
-
-  }
-
-
-  function pointerMove(x) {
-
-    if (!dragging) return;
-
-    const dx = x - lastX;
-
-    if (Math.abs(x - startX) > 8) {
-      moved = true;
-    }
-
-    position += dx;
-    lastX = x;
-
-  }
-
-
-  function pointerUp() {
-
-    if (!dragging) return;
-
-    dragging = false;
-    windowEl.classList.remove("dragging");
-
-  }
-
-
-  windowEl.addEventListener("pointerdown", e => {
-    pointerDown(e.clientX);
-  });
-
-
-  windowEl.addEventListener("pointermove", e => {
-
-    if (dragging) {
-      pointerMove(e.clientX);
-    }
-
-  });
-
-
-  windowEl.addEventListener("pointerup", pointerUp);
-  windowEl.addEventListener("pointercancel", pointerUp);
-  windowEl.addEventListener("pointerleave", pointerUp);
-
-
-  track.addEventListener("click", e => {
-
-    if (moved) {
-      moved = false;
-      return;
-    }
-
-    const item = e.target.closest(".item");
-
-    if (!item) return;
-
-    const work = works[Number(item.dataset.index)];
-
-    if (work.type === "booth") {
-      openNotice(work.url);
-    } else {
-      openArtwork(work, works, Number(item.dataset.index), trackId);
-    }
-
-  });
-
-
-  return {
-
-    start() {
-
-      setInitialPosition();
-      render();
-      autoMove();
-
-    },
-
-    resize() {
-      updateCycleWidth();
-    }
-
-  };
-
-}
-
-
-/* =================================
-   イラスト・漫画の拡大表示
-================================= */
-
-const artModal =
-  document.getElementById("artModal");
-
-const artClose =
-  document.getElementById("artClose");
-
-const singleArea =
-  document.getElementById("singleArea");
-
-const single =
-  document.getElementById("single");
-
-const comicArea =
-  document.getElementById("comicArea");
-
-const comicPage1 =
-  document.getElementById("comicPage1");
-
-const comicPage2 =
-  document.getElementById("comicPage2");
-
-const artTitle =
-  document.getElementById("artTitle");
-
-const artPrev =
-  document.getElementById("artPrev");
-
-const artNext =
-  document.getElementById("artNext");
-
-
-let currentArtwork = null;
-let currentWorks = [];
-let currentWorkIndex = 0;
-let currentTrackId = "";
-
-
-function updateArtworkNavigation() {
-
-  const hasNavigation = currentWorks.length > 1;
-
-  artPrev.style.display = hasNavigation ? "block" : "none";
-  artNext.style.display = hasNavigation ? "block" : "none";
-
-  artPrev.disabled = false;
-  artNext.disabled = false;
-
-}
-
-
-function openArtwork(work, works, index, trackId) {
-
-  currentArtwork = work;
-
-  if (works) currentWorks = works;
-  if (Number.isInteger(index)) currentWorkIndex = index;
-  if (trackId) currentTrackId = trackId;
-
-  artTitle.innerHTML = getTitle(currentTrackId, currentWorkIndex);
-  updateArtworkNavigation();
-
-  if (work.type === "comic") {
-
-    const pages = getComicPages(work);
-
-    comicPage1.src = pages[0] || "";
-    comicPage2.src = pages[1] || "";
-
-    singleArea.style.display = "none";
-    comicArea.style.display = "flex";
-
-  } else {
-
-    single.src = getArtworkImage(work);
-
-    singleArea.style.display = "flex";
-    comicArea.style.display = "none";
-
-  }
-
-  artModal.classList.add("open");
-
-}
-
-
-function closeArtwork() {
-
-  artModal.classList.remove("open");
-
-  single.src = "";
-  comicPage1.src = "";
-  comicPage2.src = "";
-
-  currentArtwork = null;
-  currentWorks = [];
-  currentWorkIndex = 0;
-  currentTrackId = "";
-  artTitle.textContent = "";
-
-}
-
-
-function moveArtwork(direction) {
-
-  if (currentWorks.length <= 1) return;
-
-  let nextIndex =
-    currentWorkIndex + direction;
-
-  if (nextIndex < 0) {
-    nextIndex = currentWorks.length - 1;
-  }
-
-  if (nextIndex >= currentWorks.length) {
-    nextIndex = 0;
-  }
-
-  const nextWork = currentWorks[nextIndex];
-
-  if (nextWork.type === "booth") {
-    closeArtwork();
-    openNotice(nextWork.url);
-    return;
-  }
-
-  openArtwork(
-    nextWork,
-    currentWorks,
-    nextIndex,
-    currentTrackId
-  );
-
-}
-
-
-artPrev.addEventListener("click", e => {
-  e.stopPropagation();
-  moveArtwork(-1);
-});
-
-artNext.addEventListener("click", e => {
-  e.stopPropagation();
-  moveArtwork(1);
-});
-
-
-artClose.addEventListener("click", e => {
-
-  e.stopPropagation();
-  closeArtwork();
-
-});
-
-
-artModal.addEventListener("click", e => {
-
-  if (
-    e.target === single ||
-    e.target === comicPage1 ||
-    e.target === comicPage2 ||
-    e.target === artClose ||
-    e.target === artPrev ||
-    e.target === artNext
-  ) {
-    return;
-  }
-
-  closeArtwork();
-
-});
-
-
 /* =================================
    バター専用展示画面
 ================================= */
@@ -1772,6 +1015,65 @@ butterModal.addEventListener("click", e => {
   }
 
 });
+
+
+/* =================================
+   イタチとバターのアニメーション
+================================= */
+
+const butterScene =
+  document.querySelector(".butter-scene");
+
+const weaselAnimation =
+  document.querySelector(".butter-anime-weasel");
+
+const butterAnimation =
+  document.querySelector(".butter-anime-butter");
+
+let butterAnimationTimer = null;
+
+
+function startButterAnimation() {
+
+  if (!weaselAnimation || !butterAnimation) return;
+
+  clearTimeout(butterAnimationTimer);
+
+  weaselAnimation.classList.remove("spinning");
+  butterAnimation.classList.remove("floating");
+
+  weaselAnimation.style.display = "block";
+  butterAnimation.style.display = "none";
+
+  // アニメーションをリセット
+  void weaselAnimation.offsetWidth;
+
+  // イタチが反時計回りに3回転
+  weaselAnimation.classList.add("spinning");
+
+  butterAnimationTimer = setTimeout(() => {
+
+    weaselAnimation.style.display = "none";
+    butterAnimation.style.display = "block";
+
+    void butterAnimation.offsetWidth;
+
+    // バターがふわふわ浮く
+    butterAnimation.classList.add("floating");
+
+  }, 2400);
+
+}
+
+
+if (butterScene) {
+
+  butterScene.addEventListener(
+    "click",
+    startButterAnimation
+  );
+
+}
 
 
 /* =================================

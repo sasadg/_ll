@@ -495,9 +495,9 @@ a {
   -webkit-tap-highlight-color: transparent;
 
   /* アニメーション画像の位置・大きさはここで調整 */
-  --anime-x: 50%;
-  --anime-y: 38%;
-  --anime-width: 30%;
+  --anime-x: 35%;
+  --anime-y: 21%;
+  --anime-width: 24%;
 }
 
 .butter-base {
@@ -525,7 +525,7 @@ a {
 }
 
 .butter-anime.spinning {
-  animation: weaselSpin 2.4s linear forwards;
+  animation: weaselSpin var(--spin-duration, 2.4s) linear forwards;
 }
 
 .butter-anime.floating {
@@ -539,7 +539,7 @@ a {
     transform: translate(-50%, -50%) rotate(0deg);
   }
   to {
-    transform: translate(-50%, -50%) rotate(-1080deg);
+    transform: translate(-50%, -50%) rotate(var(--spin-angle));
   }
 }
 
@@ -563,6 +563,17 @@ a {
   flex: 0 1 420px;
   object-fit: contain;
   filter: drop-shadow(0 8px 16px rgba(0,0,0,.25));
+}
+
+  /* バター切り替え */
+  
+  .butter-anime {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.butter-anime.fade-out {
+  opacity: 0;
 }
 
 /* 購入確認 */
@@ -1826,9 +1837,17 @@ const butterAnime =
   document.getElementById("butterAnime");
 
 
+/* アニメーションの設定 */
+
+const SPIN_DURATION = 2400; // 回転時間（ミリ秒）
+const SPIN_ROTATIONS = 3;   // 回転数
+const FADE_DURATION = 500;  // フェード時間（ミリ秒）
+
+
 /* アニメーションのタイマー */
 
 let butterAnimationTimer = null;
+let butterFadeTimer = null;
 
 
 /* イタチからバターへ切り替えるアニメーション */
@@ -1842,11 +1861,25 @@ function restartButterAnimation() {
     butterAnimationTimer = null;
   }
 
+  if (butterFadeTimer) {
+    clearTimeout(butterFadeTimer);
+    butterFadeTimer = null;
+  }
+
   /* いったん最初の画像に戻す */
 
-  butterAnime.classList.remove("spinning", "floating");
+  butterAnime.classList.remove("spinning", "floating", "fade-out");
 
   butterAnime.src = "butter-anime-1.png";
+
+  /* 回転数を設定 */
+
+  butterAnime.style.setProperty(
+    "--spin-angle",
+    `${-360 * SPIN_ROTATIONS}deg`
+  );
+
+  butterAnime.style.animationDuration = `${SPIN_DURATION}ms`;
 
   /* アニメーションをリセットして再生 */
 
@@ -1855,21 +1888,35 @@ function restartButterAnimation() {
   butterAnime.classList.add("spinning");
 
 
-  /* 2.4秒後にバターへ切り替える */
+  /* 回転終了後、フェードアウト */
 
   butterAnimationTimer = setTimeout(() => {
 
-    butterAnime.classList.remove("spinning");
+    butterAnime.classList.add("fade-out");
 
-    butterAnime.src = "butter-anime-2.png";
 
-    void butterAnime.offsetWidth;
+    /* フェードアウト完了後に画像を切り替える */
 
-    butterAnime.classList.add("floating");
+    butterFadeTimer = setTimeout(() => {
 
-    butterAnimationTimer = null;
+      butterAnime.classList.remove("spinning");
 
-  }, 2400);
+      butterAnime.src = "butter-anime-2.png";
+
+      void butterAnime.offsetWidth;
+
+      /* フェードイン */
+
+      butterAnime.classList.remove("fade-out");
+
+      butterAnime.classList.add("floating");
+
+      butterAnimationTimer = null;
+      butterFadeTimer = null;
+
+    }, FADE_DURATION);
+
+  }, SPIN_DURATION);
 
 }
 
@@ -1892,14 +1939,21 @@ function closeButter() {
 
   butterModal.classList.remove("open");
 
-  /* 閉じたときはタイマーを解除 */
+  /* タイマーを解除 */
 
   if (butterAnimationTimer) {
     clearTimeout(butterAnimationTimer);
     butterAnimationTimer = null;
   }
 
-  butterAnime.classList.remove("spinning", "floating");
+  if (butterFadeTimer) {
+    clearTimeout(butterFadeTimer);
+    butterFadeTimer = null;
+  }
+
+  /* 最初の状態に戻す */
+
+  butterAnime.classList.remove("spinning", "floating", "fade-out");
 
   butterAnime.src = "butter-anime-1.png";
 

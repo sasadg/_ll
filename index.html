@@ -126,7 +126,6 @@ a:hover{
     color:#666;
 }
 
-
 .character{
     margin-bottom:15px;
 }
@@ -145,33 +144,62 @@ a:hover{
     margin:25px 0;
 }
 
-.event-intro{
-    font-size:0.85em;
-    color:#777;
-    margin-top:-8px;
+.event-slider{
+    height:260px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scroll-snap-type:y mandatory;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    padding:8px 5px 15px;
+    mask-image:linear-gradient(
+        to bottom,
+        black 0%,
+        black 65%,
+        transparent 100%
+    );
+}
+
+.event-slider::-webkit-scrollbar{
+    display:none;
 }
 
 .event{
-    margin:18px 0;
-    padding:0 0 15px 10px;
-    border-left:2px solid rgba(255,255,255,0.9);
+    min-height:180px;
+    box-sizing:border-box;
+    margin:0 0 15px 0;
+    padding:20px;
+    border-radius:12px;
+
+    background:rgba(255,255,255,0.7);
+    border:1px solid rgba(255,255,255,0.8);
+
+    scroll-snap-align:start;
+    transition:opacity 0.3s;
 }
 
 .event-date{
-    font-size:0.8em;
+    font-size:0.85em;
     color:#888;
-    margin:0 0 5px 0;
+    margin:0 0 8px 0;
 }
 
-.event a{
+.event-title{
+    display:block;
+    font-size:1.1em;
     font-weight:bold;
+    margin-bottom:8px;
 }
 
 .event-description{
-    font-size:0.8em;
+    font-size:0.85em;
     color:#777;
-    line-height:1.8;
+    line-height:1.9;
     margin:5px 0 0 0;
+}
+
+.event-description a{
+    font-weight:bold;
 }
 
 
@@ -208,6 +236,10 @@ a:hover{
     .top-menu a{
         padding:7px 13px;
         font-size:0.9em;
+    }
+
+    .event-slider{
+        height:260px;
     }
 
 }
@@ -292,13 +324,19 @@ a:hover{
 
 <h2>Event Archive</h2>
 
+
+<div class="event-slider">
+
+
 <!-- イベント記録 1 -->
 
 <div class="event">
 
 <p class="event-date">2026.11</p>
 
-<a href="https://sw.180r.com/Nerie_fes/" target="_blank">
+<a class="event-title"
+href="https://sw.180r.com/Nerie_fes/"
+target="_blank">
 秋の終わりの学園祭
 </a>
 
@@ -306,15 +344,19 @@ a:hover{
 サイウィ非公式webオンリーイベント<br>
 開催期間：2026/11/21~23<br>
 <a href="3.html">
-展示ページ
+展示はこちら（展示場所：う-12）
+</a>
+
 </p>
 
 </div>
 
 
 <!-- イベント記録を追加する場合は
-     上の event のブロックをコピー -->
+     上の event ブロックをコピー -->
 
+
+</div>
 
 </div>
 

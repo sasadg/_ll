@@ -449,7 +449,7 @@ a {
     transform: translate(-3px, -5px);
   }
 }
-  
+
 /* バター専用展示画面 */
 
 .butter-modal {
@@ -458,7 +458,7 @@ a {
   z-index: 80;
   display: none;
   width: 100%;
-  height: 100%;
+    height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   background: rgba(15, 25, 45, .94);
@@ -598,7 +598,7 @@ a {
 }
 
   /* バター切り替え */
-  
+
   .butter-anime {
   opacity: 1;
   transition: opacity 0.5s ease;
@@ -957,8 +957,7 @@ a {
     <div class="butter-description" id="butterDescription"></div>
 
     <div class="butter-images">
-
-      <!-- 1枚目：アニメーション付き -->
+            <!-- 1枚目：アニメーション付き -->
 
       <div
         class="butter-scene"
@@ -1458,8 +1457,7 @@ function getComicPages(work) {
 /* =================================
    カルーセル
 ================================= */
-
-function createCarousel(trackId, works) {
+  function createCarousel(trackId, works) {
 
   const track = document.getElementById(trackId);
   const windowEl = track.parentElement;
@@ -1954,12 +1952,11 @@ function restartButterAnimation() {
 
 function openButter() {
 
-  butterDescription.textContent =
+  butterDescription.innerHTML =
     butterTranslations[currentLanguage];
 
   butterModal.classList.add("open");
-
-  /* 展示を開いたときも最初から再生 */
+    /* 展示を開いたときも最初から再生 */
 
   restartButterAnimation();
 

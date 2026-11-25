@@ -1,691 +1,661 @@
+
+
 <!DOCTYPE html>
+
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>【秋終祭】LUMI.</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Sacramento&display=swap" rel="stylesheet">
 
 <style>
+
 * {
+
   box-sizing: border-box;
+
 }
 
 html, body {
+
   margin: 0;
+
   padding: 0;
+
   width: 100%;
+
   min-height: 100%;
+
   overflow-x: hidden;
+
   font-family: "Hina Mincho", serif;
+
 }
 
 body {
+
   background: #B8D9FF;
+
 }
 
 a {
+
   -webkit-tap-highlight-color: transparent;
+
 }
 
 .page {
+
   --background-space: 40px;
+
   width: 100%;
+
   min-height: 100vh;
+
   padding: var(--background-space) 0;
+
   padding-bottom: var(--background-space);
+
   position: relative;
+
   background: #B8D9FF;
+
 }
 
 .page-background {
+
   position: absolute;
+
   top: var(--background-space);
+
   left: 0;
+
   display: block;
+
   width: 100%;
+
   height: auto;
+
   z-index: 0;
+
   pointer-events: none;
+
   user-select: none;
+
 }
 
 .page > :not(.page-background) {
+
   position: relative;
+
   z-index: 1;
+
 }
 
 /* 言語切り替え */
 
 .language-switch {
+
   display: flex;
+
   justify-content: center;
+
   flex-wrap: wrap;
+
   gap: 8px;
+
   padding: 10px 15px;
+
 }
 
 .language-switch button {
+
   border: 1px solid rgba(255,255,255,.8);
+
   border-radius: 20px;
+
   padding: 7px 13px;
+
   background: rgba(255,255,255,.25);
+
   color: white;
+
   font-family: inherit;
+
   font-size: 13px;
+
   cursor: pointer;
+
   transition: .2s;
+
 }
 
 .language-switch button.active {
+
   background: white;
+
   color: #729BCB;
+
 }
 
 /* 既存イラストへのリンク */
 
 .back {
+
   display: block;
+
   width: 100%;
+
   max-width: none;
+
   margin: 0 0 12px;
+
   padding: 20px 40px;
+
   color: white;
+
   text-decoration: none;
+
   font-size: 16px;
+
   text-shadow: 0 1px 4px rgba(70, 100, 150, .2);
+
 }
 
 /* 小瓶の各列 */
 
 .bottle-section {
+
   width: 100%;
+
   padding: 0 0 10px;
+
   overflow: hidden;
+
 }
 
 .orange-section {
+
   margin-top: 300px;
+
 }
 
 .water-section,
+
 .white-section {
+
   margin-top: 30px;
+
 }
 
 /* 英語タイトル */
 
 .section-heading {
+
   margin: 0;
+
   padding: 0 12px;
+
   text-align: center;
+
   font-family: "Sacramento", cursive;
+
   font-size: clamp(28px, 3.75vw, 45px);
+
   line-height: 1.15;
+
   font-weight: normal;
+
   letter-spacing: .015em;
+
   color: white;
+
   text-shadow: 0 1px 5px rgba(75, 110, 160, .15);
+
 }
 
 /* カルーセル */
 
 .carousel-window {
+
   position: relative;
+
   width: 100%;
+
   overflow: hidden;
+
   margin-top: 0;
+
   cursor: grab;
+
   touch-action: pan-y;
 
   -webkit-mask-image: linear-gradient(
+
     to right,
+
     transparent 0,
+
     black 260px,
+
     black calc(100% - 260px),
+
     transparent 100%
+
   );
 
   mask-image: linear-gradient(
+
     to right,
+
     transparent 0,
+
     black 260px,
+
     black calc(100% - 260px),
+
     transparent 100%
+
   );
+
 }
 
 .carousel-window.dragging {
+
   cursor: grabbing;
+
 }
 
 .fade-image {
+
   position: absolute;
+
   top: 0;
+
   bottom: 0;
+
   width: 260px;
+
   z-index: 6;
+
   pointer-events: none;
+
   background-repeat: no-repeat;
+
   background-position: center;
+
   background-size: contain;
+
 }
 
 .fade-image-left {
+
   left: 0;
+
   background-image: url("fade-left.png");
+
 }
 
 .fade-image-right {
+
   right: 0;
+
   background-image: url("fade-right.png");
+
 }
 
 .carousel-track {
+
   display: flex;
+
   width: max-content;
+
   align-items: flex-start;
+
   will-change: transform;
+
 }
 
 .item {
+
   flex: 0 0 170px;
+
   width: 170px;
+
   text-align: center;
+
   cursor: pointer;
+
   user-select: none;
+
   -webkit-user-select: none;
+
   -webkit-tap-highlight-color: transparent;
+
 }
 
 .bottle-wrap {
+
   width: 170px;
+
   height: 150px;
+
   display: flex;
+
   justify-content: center;
+
   align-items: center;
+
 }
 
 .bottle {
+
   width: 135px;
+
   height: 140px;
+
   object-fit: contain;
+
   pointer-events: none;
+
   user-select: none;
+
   -webkit-user-drag: none;
+
   will-change: transform;
+
 }
 
 .item:nth-child(3n + 1) .bottle {
+
   animation: float1 4.2s ease-in-out infinite;
+
 }
 
 .item:nth-child(3n + 2) .bottle {
+
   animation: float2 4.7s ease-in-out infinite;
+
 }
 
 .item:nth-child(3n) .bottle {
+
   animation: float3 4.4s ease-in-out infinite;
+
 }
 
 @keyframes float1 {
+
   0%, 100% {
+
     transform: translate(0, 0) rotate(0deg);
+
   }
+
   50% {
+
     transform: translate(3px, -10px) rotate(.6deg);
+
   }
+
 }
 
 @keyframes float2 {
+
   0%, 100% {
+
     transform: translate(0, -3px) rotate(0deg);
+
   }
+
   50% {
+
     transform: translate(-3px, 9px) rotate(-.6deg);
+
   }
+
 }
 
 @keyframes float3 {
+
   0%, 100% {
+
     transform: translate(-2px, 2px) rotate(-.3deg);
+
   }
+
   50% {
+
     transform: translate(2px, -8px) rotate(.5deg);
+
   }
+
 }
 
 /* 作品タイトル */
 
 .title {
+
   margin-top: 0;
+
   padding: 0 5px;
+
   font-family: "Hina Mincho", serif;
+
   font-size: 12px;
+
   line-height: 1.7;
+
   white-space: normal;
+
   overflow-wrap: anywhere;
+
   color: white;
+
   text-shadow: 0 1px 4px rgba(65, 95, 145, .3);
-}
 
-/* バター展示への入口 */
-
-.butter-trigger {
-  position: absolute;
-  top: 76%;
-  right: 0%;
-  z-index: 5;
-  width: clamp(100px, 20vw, 190px);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  animation: butterFloat 5s ease-in-out infinite;
-}
-
-.butter-trigger img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(60, 90, 130, .12));
-  transition: transform .3s ease;
-}
-
-.butter-trigger:active img {
-  transform: scale(.94);
-}
-
-@keyframes butterFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
 }
 
 /* イラスト・漫画の拡大表示 */
 
 .art-modal {
+
   position: fixed;
+
   inset: 0;
+
   z-index: 50;
+
   display: none;
+
   width: 100%;
+
   height: 100%;
+
   background: rgba(0, 0, 0, .92);
+
   overflow-y: auto;
+
   overflow-x: hidden;
+
 }
 
 .art-modal.open {
+
   display: block;
+
 }
 
 .close {
+
   position: fixed;
+
   top: 10px;
+
   right: 20px;
+
   color: white;
+
   font: 32px sans-serif;
+
   cursor: pointer;
+
   z-index: 60;
+
   user-select: none;
+
 }
 
 /* 拡大表示中の作品タイトル */
 
 .art-title {
+
   position: fixed;
+
   top: 18px;
+
   left: 20px;
+
   z-index: 60;
+
   max-width: calc(100% - 110px);
+
   color: white;
+
   font-family: "Hina Mincho", serif;
+
   font-size: 13px;
+
   line-height: 1.5;
+
   text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+
   pointer-events: none;
+
 }
 
 /* 拡大表示中の左右矢印 */
 
 .art-nav {
+
   position: fixed;
+
   top: 50%;
+
   transform: translateY(-50%);
+
   z-index: 60;
+
   border: none;
+
   padding: 12px;
+
   background: transparent;
+
   color: white;
+
   font: 32px sans-serif;
+
   cursor: pointer;
+
   text-shadow: 0 1px 5px rgba(0, 0, 0, .8);
+
   user-select: none;
+
 }
 
 .art-nav:disabled {
+
   opacity: .18;
+
   cursor: default;
+
 }
 
 .art-prev {
+
   left: 12px;
+
 }
 
 .art-next {
+
   right: 12px;
+
 }
 
 .single-area {
+
   width: 100%;
+
   min-height: 100vh;
+
   display: flex;
+
   justify-content: center;
+
   align-items: center;
+
 }
 
 .single {
+
   display: block;
+
   max-width: 100%;
+
   max-height: 100vh;
+
   width: auto;
+
   height: auto;
+
   object-fit: contain;
+
 }
 
 .comic-area {
+
   width: 100%;
+
   min-height: 100vh;
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 20px;
+
   padding: 70px 20px 40px;
+
 }
 
 .comic-page {
+
   display: block;
+
   max-width: 900px;
+
   width: auto;
+
   max-height: 90vh;
+
   object-fit: contain;
-}
 
-/* バター展示の2枚がゆっくりふわふわ浮く */
-
-.butter-scene {
-  animation: butterFloat 7s ease-in-out infinite;
-}
-
-/* バター展示の2枚がゆっくりふわふわ浮く */
-
-.butter-scene {
-  animation: butterFloat 7s ease-in-out infinite;
-}
-
-.butter-second {
-  animation: butterFloat 8s ease-in-out infinite;
-  animation-delay: -4s;
-}
-
-@keyframes butterFloat {
-  0%, 100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(3px, -5px);
-  }
-  50% {
-    transform: translate(0, -9px);
-  }
-  75% {
-    transform: translate(-3px, -5px);
-  }
-}
-
-/* バター専用展示画面 */
-
-.butter-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  display: none;
-  width: 100%;
-    height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(15, 25, 45, .94);
-  color: white;
-}
-
-.butter-modal.open {
-  display: block;
-}
-
-.butter-close {
-  position: fixed;
-  top: 12px;
-  right: 18px;
-  z-index: 90;
-  color: white;
-  font: 34px sans-serif;
-  cursor: pointer;
-  user-select: none;
-  text-shadow: 0 1px 5px rgba(0,0,0,.5);
-}
-
-.butter-content {
-  min-height: 100%;
-  width: 100%;
-  padding: 65px 24px 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 35px;
-}
-  
-.butter-description {
-  width: min(760px, 100%);
-  color: white;
-  font-family: "Hina Mincho", serif;
-  font-size: 14px;
-  line-height: 2;
-  text-align: center;
-  text-shadow: 0 1px 5px rgba(0,0,0,.4);
-  white-space: pre-line;
-}
-
-.butter-description a,
-.butter-description a:visited,
-.butter-description a:hover,
-.butter-description a:active {
-  color: white;
-}
-
-
-/* バター画像の配置 */
-
-.butter-images {
-  width: min(1000px, 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row-reverse;
-  flex-wrap: nowrap;
-  gap: clamp(15px, 5vw, 55px);
-}
-
-/* 1枚目のイラストとアニメーション画像を重ねる */
-
-.butter-scene {
-  position: relative;
-  display: block;
-  width: min(42%, 420px);
-  max-height: 72vh;
-  flex: 0 1 420px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-
-  /* アニメーション画像の位置・大きさはここで調整 */
-  --anime-x: 30%;
-  --anime-y: 18%;
-  --anime-width: 40%;
-}
-
-.butter-base {
-  display: block;
-  width: 100%;
-  max-height: 72vh;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,.25));
-  pointer-events: none;
-  user-select: none;
-}
-
-.butter-anime {
-  position: absolute;
-  left: var(--anime-x);
-  top: var(--anime-y);
-  width: var(--anime-width);
-  height: auto;
-  object-fit: contain;
-  transform: translate(-50%, -50%);
-  transform-origin: center center;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-.butter-anime.spinning {
-  animation: weaselSpin var(--spin-duration, 2.4s) linear forwards;
-}
-
-.butter-anime.floating {
-  animation: butterOverlayFloat 3.5s ease-in-out infinite;
-}
-
-/* 反時計回りに3回転 */
-
-@keyframes weaselSpin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(var(--spin-angle));
-  }
-}
-
-/* バター画像のふわふわ */
-
-@keyframes butterOverlayFloat {
-  0%, 100% {
-    transform: translate(-50%, -50%) translateY(0);
-  }
-  50% {
-    transform: translate(-50%, -50%) translateY(-10px);
-  }
-}
-
-/* 2枚目のイラスト */
-
-.butter-second {
-  display: block;
-  width: min(42%, 420px);
-  max-height: 72vh;
-  flex: 0 1 420px;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,.25));
-}
-
-  /* バター切り替え */
-
-  .butter-anime {
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-
-.butter-anime.fade-out {
-  opacity: 0;
-}
-
-/* 購入確認 */
-
-#noticeModal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: rgba(40, 42, 60, .35);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.notice-box {
-  width: min(520px, 100%);
-  max-height: 85vh;
-  overflow-y: auto;
-  background: #F8F6F0;
-  color: #886F58;
-  padding: 28px 24px 24px;
-  border-radius: 10px;
-  text-align: left;
-  line-height: 1.7;
-  font-size: 13px;
-}
-
-.notice-box h2 {
-  margin: 0 0 18px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: normal;
-}
-
-.notice-box p {
-  margin: 0 0 18px;
-}
-
-.notice-box .language {
-  margin-top: 22px;
-}
-
-.notice-box .language-title {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.notice-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.notice-buttons button {
-  border: none;
-  padding: 9px 22px;
-  border-radius: 5px;
-  font-family: inherit;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.cancel-button {
-  background: #fff;
-  color: #886F58;
-}
-
-.confirm-button {
-  background: #886F58;
-  color: white;
 }
 
 /* スマホ */
@@ -693,172 +663,191 @@ a {
 @media (max-width: 600px) {
 
   .page {
+
     --background-space: 20px;
+
     padding-bottom: 100px;
+
   }
 
   .back {
+
     width: 90vw;
+
     max-width: 850px;
+
     margin: 0 auto 12px;
+
     padding: 15px 0;
+
     font-size: 14px;
+
   }
 
   .orange-section {
+
     margin-top: 60px;
+
   }
 
   .water-section,
+
   .white-section {
+
     margin-top: 10px;
+
   }
 
   .bottle-section {
+
     padding-bottom: 6px;
+
   }
 
   .section-heading {
+
     font-size: 24px;
+
   }
 
   .carousel-window {
+
     -webkit-mask-image: linear-gradient(
+
       to right,
+
       transparent 0,
+
       black 70px,
+
       black calc(100% - 70px),
+
       transparent 100%
+
     );
 
     mask-image: linear-gradient(
+
       to right,
+
       transparent 0,
+
       black 70px,
+
       black calc(100% - 70px),
+
       transparent 100%
+
     );
+
   }
 
   .fade-image {
+
     width: 70px;
+
   }
 
   .item {
+
     flex-basis: 125px;
+
     width: 125px;
+
   }
 
   .bottle-wrap {
+
     width: 125px;
+
     height: 125px;
+
   }
 
   .bottle {
+
     width: 30vw;
+
     height: 34vw;
+
     max-width: 115px;
+
     max-height: 125px;
+
   }
 
   .title {
+
     font-size: 11px;
+
     padding: 0 4px;
+
   }
 
   .language-switch {
+
     gap: 5px;
+
   }
 
   .language-switch button {
+
     padding: 6px 10px;
+
     font-size: 12px;
+
   }
 
   .art-title {
+
     top: 14px;
+
     left: 12px;
+
     font-size: 12px;
+
   }
 
   .art-nav {
+
     padding: 8px;
+
     font-size: 26px;
+
   }
 
   .art-prev {
+
     left: 2px;
+
   }
 
   .art-next {
+
     right: 2px;
+
   }
 
   .comic-area {
+
     padding: 60px 10px 30px;
+
     gap: 12px;
+
   }
 
   .comic-page {
+
     max-width: 100%;
+
     max-height: none;
-  }
 
-  .notice-box {
-    padding: 24px 18px 20px;
-    font-size: 12px;
-  }
-
-  .notice-box h2 {
-    font-size: 17px;
-  }
-
-  .notice-buttons button {
-    font-size: 13px;
-    padding: 8px 18px;
-  }
-
-  /* バター展示のスマホ表示 */
-
-  .butter-trigger {
-    top: 76%;
-    right: 5%;
-    width: 125px;
-  }
-
-  .butter-content {
-    padding: 65px 16px 35px;
-    gap: 25px;
-  }
-
-  .butter-description {
-    font-size: 12px;
-    line-height: 1.9;
-  }
-
-  .butter-images {
-    flex-direction: column;
-    gap: 30px;
-  }
-
-  .butter-scene,
-  .butter-second {
-    width: min(90%, 420px);
-    max-height: none;
-    flex: 0 1 auto;
-  }
-
-  .butter-base {
-    max-height: none;
-  }
-
-  .butter-close {
-    top: 10px;
-    right: 15px;
   }
 
 }
+
 </style>
+
 </head>
 
 <body>
@@ -866,68 +855,86 @@ a {
 <div class="page" id="page">
 
   <img
+
     class="page-background"
+
     id="pageBackground"
+
     src="background.png"
+
     alt=""
+
   >
 
   <!-- 言語切り替え -->
 
   <div class="language-switch">
+
     <button type="button" data-lang="ja">日本語</button>
+
     <button type="button" data-lang="en">English</button>
+
     <button type="button" data-lang="zh">中文</button>
+
     <button type="button" data-lang="ko">한국어</button>
+
   </div>
 
   <!-- 既存イラストへのリンク -->
 
   <a class="back" id="backLink" href="../1.html">
+
     ▶︎ 既存イラストを見る
+
   </a>
 
   <section class="bottle-section orange-section">
+
     <h2 class="section-heading">Orange Bottle</h2>
 
     <div class="carousel-window">
+
       <div class="fade-image fade-image-left"></div>
+
       <div class="fade-image fade-image-right"></div>
+
       <div class="carousel-track" id="orangeTrack"></div>
+
     </div>
+
   </section>
 
   <section class="bottle-section water-section">
+
     <h2 class="section-heading">Sky-blue Bottle</h2>
 
     <div class="carousel-window">
+
       <div class="fade-image fade-image-left"></div>
+
       <div class="fade-image fade-image-right"></div>
+
       <div class="carousel-track" id="waterTrack"></div>
+
     </div>
+
   </section>
 
   <section class="bottle-section white-section">
+
     <h2 class="section-heading">White Bottle</h2>
 
     <div class="carousel-window">
+
       <div class="fade-image fade-image-left"></div>
+
       <div class="fade-image fade-image-right"></div>
+
       <div class="carousel-track" id="whiteTrack"></div>
+
     </div>
+
   </section>
-
-  <!-- バター展示への入口 -->
-
-  <div
-    class="butter-trigger"
-    id="butterTrigger"
-    role="button"
-    tabindex="0"
-    aria-label="青年とバターのファンアートを見る"
-  >
-    <img src="butter.png" alt="">
-  </div>
 
 </div>
 
@@ -944,232 +951,173 @@ a {
   <button type="button" class="art-nav art-next" id="artNext" aria-label="次の作品">❯</button>
 
   <div class="single-area" id="singleArea">
+
     <img class="single" id="single" src="" alt="">
+
   </div>
 
   <div class="comic-area" id="comicArea">
+
     <img class="comic-page" id="comicPage1" src="" alt="">
+
     <img class="comic-page" id="comicPage2" src="" alt="">
-  </div>
-
-</div>
-
-<!-- バター専用展示画面 -->
-
-<div class="butter-modal" id="butterModal">
-
-  <div class="butter-close" id="butterClose">×</div>
-
-  <div class="butter-content">
-
-    <div class="butter-description" id="butterDescription"></div>
-
-    <div class="butter-images">
-            <!-- 1枚目：アニメーション付き -->
-
-      <div
-        class="butter-scene"
-        id="butterScene"
-        role="button"
-        tabindex="0"
-        aria-label="アニメーションを再生"
-      >
-
-        <img
-          class="butter-base"
-          src="butter-1.png"
-          alt="青年とバターのイラスト"
-        >
-
-        <img
-          class="butter-anime"
-          id="butterAnime"
-          src="butter-anime-1.png"
-          alt=""
-        >
-
-      </div>
-
-      <!-- 2枚目：静止画 -->
-
-      <img
-        class="butter-second"
-        src="butter-2.png"
-        alt="青年とバターのイラスト"
-      >
-
-    </div>
 
   </div>
 
 </div>
 
-<!-- BOOTH購入確認 -->
-
-<div id="noticeModal">
-
-  <div class="notice-box">
-
-    <h2>⚠️ 商品について</h2>
-
-    <div class="language">
-      <div class="language-title">◆ 購入前にご確認ください</div>
-      <p>
-        ・複数回に分けてのご注文も含め、1種類につきおひとり様2個までとなります。<br>
-        ※3個以上購入された場合、LUMI.にていただいた全商品のご注文を返金させていただきます。<br>
-        ・発送はネコポスで行います。<br>
-        ・転売目的のご購入は禁止しております。<br>
-        ・在庫がなくなり次第、販売終了となります。
-      </p>
-    </div>
-
-    <div class="language">
-      <div class="language-title">◆ Please read before purchasing</div>
-      <p>
-        ・Limited to 2 items per design per person, including orders placed separately.<br>
-        ※If you purchase 3 or more items, all of your orders from LUMI. will be refunded.<br>
-        ・Orders will be shipped via Nekopos.<br>
-        ・Purchases for resale are prohibited.<br>
-        ・Sales will end when stock runs out.
-      </p>
-    </div>
-
-    <div class="language">
-      <div class="language-title">◆ 购买前请确认</div>
-      <p>
-        ・包括分多次下单在内，每人每款限购2件。<br>
-        ※如果购买3件或以上，您在LUMI.购买的所有订单都将被退款。<br>
-        ・商品将通过Nekopos寄送。<br>
-        ・禁止以转卖为目的购买。<br>
-        ・售罄后将结束销售。
-      </p>
-    </div>
-
-    <div class="language">
-      <div class="language-title">◆ 구매 전 확인해 주세요</div>
-      <p>
-        ・여러 번에 나누어 주문하는 경우를 포함하여, 1종류당 1인 2개까지 구매하실 수 있습니다.<br>
-        ※3개 이상 구매하신 경우, LUMI.에서 구매하신 모든 주문이 환불됩니다.<br>
-        ・상품은 네코포스로 배송됩니다.<br>
-        ・재판매를 목적으로 한 구매는 금지됩니다.<br>
-        ・재고 소진 시 판매가 종료됩니다.
-      </p>
-    </div>
-
-    <div class="notice-buttons">
-      <button type="button" class="cancel-button" id="cancelButton">
-        戻る
-      </button>
-
-      <button type="button" class="confirm-button" id="confirmButton">
-        確認しました
-      </button>
-    </div>
-
-  </div>
-
-</div>
 <script>
 
 /* =================================
+
    言語別タイトル
+
 ================================= */
 
 const translations = {
 
   ja: [
+
     "紅葉２",
+
     "実り",
+
     "食欲",
+
     "読書",
+
     "スポーツ",
+
     "芸術",
+
     "睡眠",
+
     "紅葉",
+
     "たからもの",
+
     "ふたつの視線",
+
     "自信をくれるおまじない",
+
     "ぎゅうぎゅう",
-    "宙ぶらりん<br>シリモニ",
-    "足元ぐるぐる人外ズ<br>シリモニ",
-    "足元ぐるぐる人外ズ<br>雪山組"
+
+    "会場限定イラスト1",
+
+    "会場限定イラスト2",
+
+    "会場限定イラスト3"
+
   ],
 
   en: [
+
     "Autumn Leaves 2",
+
     "Harvest",
+
     "Appetite",
+
     "Reading",
+
     "Sports",
+
     "Art",
+
     "Sleep",
+
     "Autumn Leaves",
+
     "Treasure",
+
     "Two Gazes",
+
     "A Little Charm for Confidence",
+
     "Squish-squish",
-    "Dangle<br>cyirimoni",
-    "Wiggly Little Creatures<br>cyirimoni",
-    "Wiggly Little Creatures<br>Snow Mountain Group"
+
+    "Venue-exclusive Illustration 1",
+
+    "Venue-exclusive Illustration 2",
+
+    "Venue-exclusive Illustration 3"
+
   ],
 
   zh: [
+
     "红叶2",
+
     "丰收",
+
     "食欲",
+
     "阅读",
+
     "运动",
+
     "艺术",
+
     "睡眠",
+
     "红叶",
+
     "珍宝",
+
     "两道目光",
+
     "带来自信的魔法",
+
     "挤呀挤",
-    "悬悬悬挂挂<br>白薔薇組",
-    "脚边转转的小生灵<br>白薔薇組",
-    "脚边转转的小生灵<br>雪山组"
+
+    "会场限定插画1",
+
+    "会场限定插画2",
+
+    "会场限定插画3"
+
   ],
 
   ko: [
+
     "단풍2",
+
     "풍요",
+
     "식욕",
+
     "독서",
+
     "스포츠",
+
     "예술",
+
     "수면",
+
     "단풍",
+
     "보물",
+
     "두 개의 시선",
+
     "자신감을 주는 주문",
+
     "꾸욱꾸욱",
-    "대롱대롱<br>시릴모니",
-    "발밑을 빙글빙글 도는 작은 생명체들<br>시릴모니",
-    "발밑을 빙글빙글 도는 작은 생명체들<br>설산조"
+
+    "행사장 한정 일러스트 1",
+
+    "행사장 한정 일러스트 2",
+
+    "행사장 한정 일러스트 3"
+
   ]
 
 };
 
-
 /* =================================
-   バター展示の説明文
-================================= */
 
-const butterTranslations = {
-
-ja: "※こちらに展示しているイラストは、星月夜と白トカゲ【お-03】にて展示されているSS<a href=\"https://xfolio.jp/portfolio/a_yousou/works/6315663\" target=\"_blank\">『青年とバター』</a>のファンアートです。SSを読んでからご覧いただくと、より楽しめると思います。気になった方は、ぜひ【お-03】へ！\n",
-
-en: "※ The illustrations displayed here are fan art based on the short fic <a href=\"https://xfolio.jp/portfolio/a_yousou/works/6315663\" target=\"_blank\">\"The Young Man and Butter\"</a>, exhibited at 星月夜と白トカゲ【お-03】. We hope you'll enjoy these illustrations even more after reading the fic. If you're interested, please stop by 【お-03】!\n",
-
-zh: "※ 此处展示的插画是根据星月夜と白トカゲ【お-03】展出的短篇小说<a href=\"https://xfolio.jp/portfolio/a_yousou/works/6315663\" target=\"_blank\">《青年与黄油》</a>创作的同人插画。如果先阅读故事，再欣赏这些插画，相信会更有趣。感兴趣的话，欢迎前往【お-03】！\n",
-
-ko: "※ 이곳에 전시된 일러스트는 星月夜と白トカゲ【お-03】에서 공개된 단편 소설 <a href=\"https://xfolio.jp/portfolio/a_yousou/works/6315663\" target=\"_blank\">『청년과 버터』</a>의 팬아트입니다. 소설을 먼저 읽고 감상하시면 더욱 재미있게 즐기실 수 있을 것 같아요. 관심이 있으시다면 꼭 【お-03】에 방문해 주세요!\n"
-};
-
-
-/* =================================
    戻るリンクの言語別表記
+
 ================================= */
 
 const backTranslations = {
@@ -1184,43 +1132,56 @@ const backTranslations = {
 
 };
 
-
 /* =================================
+
    現在の言語
+
 ================================= */
 
 let currentLanguage = "ja";
 
 const languageButtons =
+
   document.querySelectorAll(".language-switch button");
 
-
 /* =================================
+
    背景画像をページ全体に合わせる
+
 ================================= */
 
 const page = document.getElementById("page");
 
 const pageBackground =
+
   document.getElementById("pageBackground");
 
 function fitPageToBackground() {
 
   if (
+
     !pageBackground.naturalWidth ||
+
     !pageBackground.naturalHeight
+
   ) {
+
     return;
+
   }
 
   const isMobile = window.innerWidth <= 600;
+
   const space = isMobile ? 20 : 40;
 
   page.style.minHeight = "0px";
 
   const pageHeight = Math.max(
+
     page.scrollHeight,
+
     window.innerHeight
+
   );
 
   pageBackground.style.top = space + "px";
@@ -1228,25 +1189,35 @@ function fitPageToBackground() {
   if (isMobile) {
 
     const targetHeight = Math.max(
+
       pageHeight - space * 2,
+
       1
+
     );
 
     const backgroundWidth =
+
       targetHeight *
+
       pageBackground.naturalWidth /
+
       pageBackground.naturalHeight;
 
     pageBackground.style.height =
+
       targetHeight + "px";
 
     pageBackground.style.width =
+
       backgroundWidth + "px";
 
     pageBackground.style.maxWidth = "none";
+
     pageBackground.style.left = "50%";
 
     pageBackground.style.transform =
+
       "translateX(-50%)";
 
     page.style.minHeight = pageHeight + "px";
@@ -1254,144 +1225,213 @@ function fitPageToBackground() {
   } else {
 
     pageBackground.style.width = "100%";
+
     pageBackground.style.height = "auto";
+
     pageBackground.style.maxWidth = "none";
+
     pageBackground.style.left = "0";
+
     pageBackground.style.transform = "none";
 
     const backgroundHeight =
+
       window.innerWidth *
+
       pageBackground.naturalHeight /
+
       pageBackground.naturalWidth;
 
     page.style.minHeight = Math.max(
+
       pageHeight,
+
       backgroundHeight + space * 2
+
     ) + "px";
 
   }
 
 }
 
-
 /* =================================
+
    橙の小瓶
+
 ================================= */
 
 const orangeWorks = [
 
   {
+
     src: "amber-kobin/001.PNG",
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/002.PNG",
+
     multilingual: true,
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/003.PNG",
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/004.PNG",
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/005.PNG",
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/006.PNG",
+
     multilingual: true,
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/007.PNG",
+
     bottle: "bin_amber.png"
+
   },
 
   {
+
     src: "amber-kobin/008.PNG",
+
     bottle: "bin_amber.png"
+
   }
 
 ];
 
-
 /* =================================
+
    水の小瓶
+
 ================================= */
 
 const waterWorks = [
 
   {
+
     type: "image",
+
     src: "azure-kobin/001.PNG",
+
     bottle: "bin_azure.png"
+
   },
 
   {
+
     type: "image",
+
     src: "azure-kobin/002.PNG",
+
     bottle: "bin_azure.png"
+
   },
 
   {
+
     type: "comic",
 
     pages: [
+
       "azure-kobin/comic01/001.PNG",
+
       "azure-kobin/comic01/002.PNG"
+
     ],
 
     bottle: "bin_azure.png"
+
   },
 
   {
+
     type: "image",
+
     src: "azure-kobin/003.PNG",
+
     bottle: "bin_azure.png"
+
   }
 
 ];
 
-
 /* =================================
+
    白の小瓶
+
 ================================= */
 
 const whiteWorks = [
 
   {
-    type: "booth",
-    url: "https://sasadg.booth.pm/items/7975838",
-    bottle: "bin_snow1.png"
+
+    type: "image",
+
+    src: "snow-kobin/001.PNG",
+
+    bottle: "bin_snow.png"
+
   },
 
   {
-    type: "booth",
-    url: "https://sasadg.booth.pm/items/8957919",
-    bottle: "bin_snow2.png"
+
+    type: "image",
+
+    src: "snow-kobin/002.PNG",
+
+    bottle: "bin_snow.png"
+
   },
 
   {
-    type: "booth",
-    url: "https://sasadg.booth.pm/items/8957943",
-    bottle: "bin_snow3.png"
+
+    type: "image",
+
+    src: "snow-kobin/003.PNG",
+
+    bottle: "bin_snow.png"
+
   }
 
 ];
 
-
 /* =================================
+
    作品タイトルの取得
+
 ================================= */
 
 function getTitle(trackId, index) {
@@ -1399,75 +1439,95 @@ function getTitle(trackId, index) {
   let titleIndex = index;
 
   if (trackId === "waterTrack") {
+
     titleIndex += 8;
+
   }
 
   if (trackId === "whiteTrack") {
+
     titleIndex += 12;
+
   }
 
   return translations[currentLanguage][titleIndex];
 
 }
 
-
 /* =================================
+
    言語別画像の取得
+
 ================================= */
 
 function getLocalizedImage(src, lang) {
 
   if (lang === "ja") {
+
     return src;
+
   }
 
   const parts = src.split("/");
+
   const filename = parts.pop();
+
   const folder = parts.join("/");
 
   return `${folder}/${lang}/${filename}`;
 
 }
 
-
 /* =================================
+
    作品画像の取得
+
 ================================= */
 
 function getArtworkImage(work) {
 
   if (work.multilingual) {
+
     return getLocalizedImage(work.src, currentLanguage);
+
   }
 
   return work.src;
 
 }
 
-
 /* =================================
+
    漫画画像の取得
+
 ================================= */
 
 function getComicPages(work) {
 
   if (currentLanguage === "ja") {
+
     return work.pages;
+
   }
 
   return work.pages.map(src =>
+
     getLocalizedImage(src, currentLanguage)
+
   );
 
 }
 
-
 /* =================================
+
    カルーセル
+
 ================================= */
-  function createCarousel(trackId, works) {
+
+function createCarousel(trackId, works) {
 
   const track = document.getElementById(trackId);
+
   const windowEl = track.parentElement;
 
   for (let c = 0; c < 9; c++) {
@@ -1475,25 +1535,35 @@ function getComicPages(work) {
     works.forEach((work, index) => {
 
       const item = document.createElement("div");
+
       item.className = "item";
+
       item.dataset.index = index;
 
       const wrap = document.createElement("div");
+
       wrap.className = "bottle-wrap";
 
       const bottle = document.createElement("img");
+
       bottle.className = "bottle";
+
       bottle.src = work.bottle;
+
       bottle.alt = "";
+
       bottle.draggable = false;
 
       wrap.appendChild(bottle);
 
       const title = document.createElement("div");
+
       title.className = "title";
+
       title.innerHTML = getTitle(trackId, index);
 
       item.appendChild(wrap);
+
       item.appendChild(title);
 
       track.appendChild(item);
@@ -1502,16 +1572,19 @@ function getComicPages(work) {
 
   }
 
-
   let position = 0;
+
   const velocity = -0.25;
 
   let dragging = false;
-  let startX = 0;
-  let lastX = 0;
-  let moved = false;
-  let cycleWidth = 0;
 
+  let startX = 0;
+
+  let lastX = 0;
+
+  let moved = false;
+
+  let cycleWidth = 0;
 
   function updateCycleWidth() {
 
@@ -1520,76 +1593,84 @@ function getComicPages(work) {
     if (items.length <= works.length) return;
 
     const first =
+
       items[0].getBoundingClientRect();
 
     const next =
+
       items[works.length].getBoundingClientRect();
 
     cycleWidth = next.left - first.left;
 
   }
 
-
   function setInitialPosition() {
 
     updateCycleWidth();
 
     if (cycleWidth) {
+
       position = -cycleWidth * 4;
+
     }
 
   }
-
 
   function normalizePosition() {
 
     if (!cycleWidth) return;
 
     while (position <= -cycleWidth * 5) {
+
       position += cycleWidth;
+
     }
 
     while (position >= -cycleWidth * 3) {
+
       position -= cycleWidth;
+
     }
 
   }
-
 
   function render() {
 
     normalizePosition();
 
     track.style.transform =
+
       `translate3d(${position}px, 0, 0)`;
 
     requestAnimationFrame(render);
 
   }
 
-
   function autoMove() {
 
     if (!dragging) {
+
       position += velocity;
+
     }
 
     requestAnimationFrame(autoMove);
 
   }
 
-
   function pointerDown(x) {
 
     dragging = true;
+
     moved = false;
+
     startX = x;
+
     lastX = x;
 
     windowEl.classList.add("dragging");
 
   }
-
 
   function pointerMove(x) {
 
@@ -1598,49 +1679,57 @@ function getComicPages(work) {
     const dx = x - lastX;
 
     if (Math.abs(x - startX) > 8) {
+
       moved = true;
+
     }
 
     position += dx;
+
     lastX = x;
 
   }
-
 
   function pointerUp() {
 
     if (!dragging) return;
 
     dragging = false;
+
     windowEl.classList.remove("dragging");
 
   }
 
-
   windowEl.addEventListener("pointerdown", e => {
-    pointerDown(e.clientX);
-  });
 
+    pointerDown(e.clientX);
+
+  });
 
   windowEl.addEventListener("pointermove", e => {
 
     if (dragging) {
+
       pointerMove(e.clientX);
+
     }
 
   });
 
-
   windowEl.addEventListener("pointerup", pointerUp);
-  windowEl.addEventListener("pointercancel", pointerUp);
-  windowEl.addEventListener("pointerleave", pointerUp);
 
+  windowEl.addEventListener("pointercancel", pointerUp);
+
+  windowEl.addEventListener("pointerleave", pointerUp);
 
   track.addEventListener("click", e => {
 
     if (moved) {
+
       moved = false;
+
       return;
+
     }
 
     const item = e.target.closest(".item");
@@ -1649,95 +1738,122 @@ function getComicPages(work) {
 
     const work = works[Number(item.dataset.index)];
 
-    if (work.type === "booth") {
-      openNotice(work.url);
-    } else {
-      openArtwork(work, works, Number(item.dataset.index), trackId);
-    }
+    openArtwork(
+
+      work,
+
+      works,
+
+      Number(item.dataset.index),
+
+      trackId
+
+    );
 
   });
-
 
   return {
 
     start() {
 
       setInitialPosition();
+
       render();
+
       autoMove();
 
     },
 
     resize() {
+
       updateCycleWidth();
+
     }
 
   };
 
 }
-  /* =================================
+
+/* =================================
+
    イラスト・漫画の拡大表示
+
 ================================= */
 
 const artModal =
+
   document.getElementById("artModal");
 
 const artClose =
+
   document.getElementById("artClose");
 
 const singleArea =
+
   document.getElementById("singleArea");
 
 const single =
+
   document.getElementById("single");
 
 const comicArea =
+
   document.getElementById("comicArea");
 
 const comicPage1 =
+
   document.getElementById("comicPage1");
 
 const comicPage2 =
+
   document.getElementById("comicPage2");
 
 const artTitle =
+
   document.getElementById("artTitle");
 
 const artPrev =
+
   document.getElementById("artPrev");
 
 const artNext =
+
   document.getElementById("artNext");
 
-
 let currentArtwork = null;
-let currentWorks = [];
-let currentWorkIndex = 0;
-let currentTrackId = "";
 
+let currentWorks = [];
+
+let currentWorkIndex = 0;
+
+let currentTrackId = "";
 
 function updateArtworkNavigation() {
 
   const hasNavigation = currentWorks.length > 1;
 
   artPrev.style.display = hasNavigation ? "block" : "none";
+
   artNext.style.display = hasNavigation ? "block" : "none";
 
   artPrev.disabled = false;
+
   artNext.disabled = false;
 
 }
-
 
 function openArtwork(work, works, index, trackId) {
 
   currentArtwork = work;
 
   if (works) currentWorks = works;
+
   if (Number.isInteger(index)) currentWorkIndex = index;
+
   if (trackId) currentTrackId = trackId;
 
   artTitle.innerHTML = getTitle(currentTrackId, currentWorkIndex);
+
   updateArtworkNavigation();
 
   if (work.type === "comic") {
@@ -1745,9 +1861,11 @@ function openArtwork(work, works, index, trackId) {
     const pages = getComicPages(work);
 
     comicPage1.src = pages[0] || "";
+
     comicPage2.src = pages[1] || "";
 
     singleArea.style.display = "none";
+
     comicArea.style.display = "flex";
 
   } else {
@@ -1755,6 +1873,7 @@ function openArtwork(work, works, index, trackId) {
     single.src = getArtworkImage(work);
 
     singleArea.style.display = "flex";
+
     comicArea.style.display = "none";
 
   }
@@ -1763,280 +1882,118 @@ function openArtwork(work, works, index, trackId) {
 
 }
 
-
 function closeArtwork() {
 
   artModal.classList.remove("open");
 
   single.src = "";
+
   comicPage1.src = "";
+
   comicPage2.src = "";
 
   currentArtwork = null;
+
   currentWorks = [];
+
   currentWorkIndex = 0;
+
   currentTrackId = "";
+
   artTitle.textContent = "";
 
 }
-
 
 function moveArtwork(direction) {
 
   if (currentWorks.length <= 1) return;
 
   let nextIndex =
+
     currentWorkIndex + direction;
 
   if (nextIndex < 0) {
+
     nextIndex = currentWorks.length - 1;
+
   }
 
   if (nextIndex >= currentWorks.length) {
+
     nextIndex = 0;
+
   }
 
   const nextWork = currentWorks[nextIndex];
 
-  if (nextWork.type === "booth") {
-    closeArtwork();
-    openNotice(nextWork.url);
-    return;
-  }
-
   openArtwork(
+
     nextWork,
+
     currentWorks,
+
     nextIndex,
+
     currentTrackId
+
   );
 
 }
 
-
 artPrev.addEventListener("click", e => {
+
   e.stopPropagation();
+
   moveArtwork(-1);
+
 });
 
 artNext.addEventListener("click", e => {
-  e.stopPropagation();
-  moveArtwork(1);
-});
 
+  e.stopPropagation();
+
+  moveArtwork(1);
+
+});
 
 artClose.addEventListener("click", e => {
 
   e.stopPropagation();
+
   closeArtwork();
 
 });
-
 
 artModal.addEventListener("click", e => {
 
   if (
+
     e.target === single ||
+
     e.target === comicPage1 ||
+
     e.target === comicPage2 ||
+
     e.target === artClose ||
+
     e.target === artPrev ||
+
     e.target === artNext
+
   ) {
+
     return;
+
   }
 
   closeArtwork();
 
 });
 
-
 /* =================================
-   バター専用展示画面
-================================= */
 
-const butterModal =
-  document.getElementById("butterModal");
-
-const butterTrigger =
-  document.getElementById("butterTrigger");
-
-const butterClose =
-  document.getElementById("butterClose");
-
-const butterDescription =
-  document.getElementById("butterDescription");
-
-const butterScene =
-  document.getElementById("butterScene");
-
-const butterAnime =
-  document.getElementById("butterAnime");
-
-
-/* アニメーションの設定 */
-
-const SPIN_DURATION = 2400; // 回転時間（ミリ秒）
-const SPIN_ROTATIONS = 10;   // 回転数
-const FADE_DURATION = 500;  // フェード時間（ミリ秒）
-
-
-/* アニメーションのタイマー */
-
-let butterAnimationTimer = null;
-let butterFadeTimer = null;
-
-
-/* イタチからバターへ切り替えるアニメーション */
-
-function restartButterAnimation() {
-
-  /* 前のタイマーが残っていたら解除 */
-
-  if (butterAnimationTimer) {
-    clearTimeout(butterAnimationTimer);
-    butterAnimationTimer = null;
-  }
-
-  if (butterFadeTimer) {
-    clearTimeout(butterFadeTimer);
-    butterFadeTimer = null;
-  }
-
-  /* いったん最初の画像に戻す */
-
-  butterAnime.classList.remove("spinning", "floating", "fade-out");
-
-  butterAnime.src = "butter-anime-1.png";
-
-  /* 回転数を設定 */
-
-  butterAnime.style.setProperty(
-    "--spin-angle",
-    `${-360 * SPIN_ROTATIONS}deg`
-  );
-
-  butterAnime.style.animationDuration = `${SPIN_DURATION}ms`;
-
-  /* アニメーションをリセットして再生 */
-
-  void butterAnime.offsetWidth;
-
-  butterAnime.classList.add("spinning");
-
-
-  /* 回転終了後、フェードアウト */
-
-  butterAnimationTimer = setTimeout(() => {
-
-    butterAnime.classList.add("fade-out");
-
-
-    /* フェードアウト完了後に画像を切り替える */
-
-    butterFadeTimer = setTimeout(() => {
-
-      butterAnime.classList.remove("spinning");
-
-      butterAnime.src = "butter-anime-2.png";
-
-      void butterAnime.offsetWidth;
-
-      /* フェードイン */
-
-      butterAnime.classList.remove("fade-out");
-
-      butterAnime.classList.add("floating");
-
-      butterAnimationTimer = null;
-      butterFadeTimer = null;
-
-    }, FADE_DURATION);
-
-  }, SPIN_DURATION);
-
-}
-
-
-function openButter() {
-
-  butterDescription.innerHTML =
-    butterTranslations[currentLanguage];
-
-  butterModal.classList.add("open");
-    /* 展示を開いたときも最初から再生 */
-
-  restartButterAnimation();
-
-}
-
-
-function closeButter() {
-
-  butterModal.classList.remove("open");
-
-  /* タイマーを解除 */
-
-  if (butterAnimationTimer) {
-    clearTimeout(butterAnimationTimer);
-    butterAnimationTimer = null;
-  }
-
-  if (butterFadeTimer) {
-    clearTimeout(butterFadeTimer);
-    butterFadeTimer = null;
-  }
-
-  /* 最初の状態に戻す */
-
-  butterAnime.classList.remove("spinning", "floating", "fade-out");
-
-  butterAnime.src = "butter-anime-1.png";
-
-}
-
-
-/* 展示入口 */
-
-butterTrigger.addEventListener("click", openButter);
-
-butterTrigger.addEventListener("keydown", e => {
-
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    openButter();
-  }
-
-});
-
-
-/* 1枚目のイラストをクリックすると再生し直す */
-
-butterScene.addEventListener("click", restartButterAnimation);
-
-butterScene.addEventListener("keydown", e => {
-
-  if (e.key === "Enter" || e.key === " ") {
-    e.preventDefault();
-    restartButterAnimation();
-  }
-
-});
-
-
-butterClose.addEventListener("click", closeButter);
-
-butterModal.addEventListener("click", e => {
-
-  if (e.target === butterModal) {
-    closeButter();
-  }
-
-});
-
-
-/* =================================
    言語切り替え
+
 ================================= */
 
 function changeLanguage(lang) {
@@ -2047,20 +2004,21 @@ function changeLanguage(lang) {
 
   document.documentElement.lang = lang;
 
-
   document.getElementById("backLink").textContent =
-    backTranslations[lang];
 
+    backTranslations[lang];
 
   languageButtons.forEach(button => {
 
     button.classList.toggle(
+
       "active",
+
       button.dataset.lang === lang
+
     );
 
   });
-
 
   document.querySelectorAll(".item").forEach(item => {
 
@@ -2069,6 +2027,7 @@ function changeLanguage(lang) {
     if (!track) return;
 
     const index = Number(item.dataset.index);
+
     const title = item.querySelector(".title");
 
     if (!title) return;
@@ -2077,19 +2036,11 @@ function changeLanguage(lang) {
 
   });
 
-
   if (currentArtwork && artModal.classList.contains("open")) {
+
     openArtwork(currentArtwork, currentWorks, currentWorkIndex, currentTrackId);
+
   }
-
-
-  /* バター展示の説明文も言語変更 */
-
-  if (butterModal.classList.contains("open")) {
-butterDescription.innerHTML =
-  butterTranslations[currentLanguage];
-  }
-
 
   try {
 
@@ -2101,127 +2052,87 @@ butterDescription.innerHTML =
 
   }
 
-
   requestAnimationFrame(() => {
+
     fitPageToBackground();
+
   });
 
 }
-
 
 languageButtons.forEach(button => {
 
   button.addEventListener("click", () => {
+
     changeLanguage(button.dataset.lang);
+
   });
 
 });
 
-
 /* =================================
-   BOOTH購入確認
-================================= */
 
-const noticeModal =
-  document.getElementById("noticeModal");
-
-const cancelButton =
-  document.getElementById("cancelButton");
-
-const confirmButton =
-  document.getElementById("confirmButton");
-
-let destinationUrl = "";
-
-
-function openNotice(url) {
-
-  destinationUrl = url;
-  noticeModal.style.display = "flex";
-
-}
-
-
-function closeNotice() {
-
-  destinationUrl = "";
-  noticeModal.style.display = "none";
-
-}
-
-
-cancelButton.addEventListener("click", closeNotice);
-
-
-noticeModal.addEventListener("click", e => {
-
-  if (e.target === noticeModal) {
-    closeNotice();
-  }
-
-});
-
-
-confirmButton.addEventListener("click", () => {
-
-  if (destinationUrl) {
-    window.location.href = destinationUrl;
-  }
-
-});
-
-
-/* =================================
    ESCで閉じる・左右キーで移動
+
 ================================= */
 
 document.addEventListener("keydown", e => {
 
   if (e.key === "Escape") {
+
     closeArtwork();
-    closeNotice();
-    closeButter();
+
   }
 
   if (artModal.classList.contains("open")) {
 
     if (e.key === "ArrowLeft") {
+
       moveArtwork(-1);
+
     } else if (e.key === "ArrowRight") {
+
       moveArtwork(1);
+
     }
 
   }
 
 });
 
-
 /* =================================
+
    カルーセルの開始
+
 ================================= */
 
 const orangeCarousel =
+
   createCarousel("orangeTrack", orangeWorks);
 
 const waterCarousel =
+
   createCarousel("waterTrack", waterWorks);
 
 const whiteCarousel =
-  createCarousel("whiteTrack", whiteWorks);
 
+  createCarousel("whiteTrack", whiteWorks);
 
 function startCarousels() {
 
   orangeCarousel.start();
+
   waterCarousel.start();
+
   whiteCarousel.start();
 
   requestAnimationFrame(() => {
+
     fitPageToBackground();
+
   });
 
 }
-
 
 if (document.readyState === "complete") {
 
@@ -2230,19 +2141,25 @@ if (document.readyState === "complete") {
 } else {
 
   window.addEventListener("load", startCarousels, {
+
     once: true
+
   });
 
 }
 
-
 /* =================================
+
    背景画像読み込み後の調整
+
 ================================= */
 
 if (
+
   pageBackground.complete &&
+
   pageBackground.naturalWidth
+
 ) {
 
   requestAnimationFrame(fitPageToBackground);
@@ -2254,14 +2171,17 @@ if (
     requestAnimationFrame(fitPageToBackground);
 
   }, {
+
     once: true
+
   });
 
 }
 
-
 /* =================================
+
    初期言語の読み込み
+
 ================================= */
 
 let savedLanguage = "ja";
@@ -2269,6 +2189,7 @@ let savedLanguage = "ja";
 try {
 
   savedLanguage =
+
     localStorage.getItem("comicLanguage") || "ja";
 
 } catch (e) {
@@ -2278,14 +2199,17 @@ try {
 }
 
 if (!translations[savedLanguage]) {
+
   savedLanguage = "ja";
+
 }
 
 changeLanguage(savedLanguage);
 
-
 /* =================================
+
    画面サイズ変更時
+
 ================================= */
 
 window.addEventListener("resize", () => {
@@ -2293,7 +2217,9 @@ window.addEventListener("resize", () => {
   fitPageToBackground();
 
   orangeCarousel.resize();
+
   waterCarousel.resize();
+
   whiteCarousel.resize();
 
 });
@@ -2301,4 +2227,5 @@ window.addEventListener("resize", () => {
 </script>
 
 </body>
+
 </html>

@@ -1,13 +1,19 @@
+
+
 <!DOCTYPE html>
+
 <html lang="ja">
 
 <head>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>笹団子</title>
@@ -15,226 +21,600 @@
 <style>
 
 html{
+
     scroll-behavior:smooth;
+
 }
 
 body{
+
     background-color:#FFFFFF;
+
     font-family:"Klee One", cursive;
+
     margin:40px;
+
 }
 
 h1{
+
     text-align:center;
+
     color:#4b4b4b;
+
 }
 
-.container{
-    display:flex;
-}
+h2{
 
-.main{
-    width:85%;
-    background-image:
-        linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
-        url("haikei.png");
-    background-size:cover;
-    background-position:center;
-    padding:20px;
-    border-radius:15px;
-}
+    color:#4b4b4b;
 
-.side{
-    width:15%;
-    margin-left:20px;
-    background:#E4E5EE;
-    padding:20px;
-    border-radius:15px;
-}
-
-img{
-    width:100px;
-    border-radius:10px;
 }
 
 a{
+
     text-decoration:none;
+
     color:#555;
+
 }
 
 a:hover{
+
     color:#333;
+
 }
 
+/* 全体の配置 */
+
+.container{
+
+    display:grid;
+
+    grid-template-columns:minmax(0, 1fr) 220px;
+
+    grid-template-areas:
+
+        "main side"
+
+        "site-links .";
+
+    gap:20px;
+
+    align-items:start;
+
+}
+
+.main{
+
+    grid-area:main;
+
+    min-width:0;
+
+    background-image:
+
+        linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
+
+        url("haikei.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+    padding:20px;
+
+    border-radius:15px;
+
+}
+
+.side{
+
+    grid-area:side;
+
+    min-width:0;
+
+    background:#E4E5EE;
+
+    padding:20px;
+
+    border-radius:15px;
+
+}
 
 /* 上部メニューボタン */
 
 .top-menu{
+
     display:flex;
+
     justify-content:center;
+
     gap:10px;
+
     margin-bottom:20px;
+
     flex-wrap:wrap;
+
 }
 
 .top-menu a{
+
     display:block;
+
     padding:8px 18px;
+
     background:rgba(255,255,255,0.65);
+
     border:1px solid rgba(255,255,255,0.8);
+
     border-radius:8px;
+
     color:#555;
+
     transition:0.2s;
+
 }
 
 .top-menu a:hover{
-    background:rgba(255,255,255,0.85);
-    color:#333;
-}
 
+    background:rgba(255,255,255,0.85);
+
+    color:#333;
+
+}
 
 /* リンクボタン */
 
 .link-button{
+
     display:block;
+
     width:100%;
+
     max-width:400px;
+
     padding:12px 20px;
+
     margin:10px 0 3px 0;
+
     box-sizing:border-box;
 
     background:rgba(255,255,255,0.65);
+
     border:1px solid rgba(255,255,255,0.8);
+
     border-radius:8px;
 
     color:#555;
+
     transition:0.2s;
+
 }
 
 .link-button:hover{
-    background:rgba(255,255,255,0.85);
-    color:#333;
-}
 
+    background:rgba(255,255,255,0.85);
+
+    color:#333;
+
+}
 
 /* リンクの説明 */
 
 .link-description{
+
     margin:0 0 12px 5px;
+
     font-size:0.85em;
+
     color:#666;
+
 }
 
 .character{
+
     margin-bottom:15px;
+
 }
 
+/* Gallery */
 
-/* イベント参加記録 */
+.Gallery{
+
+    margin-bottom:12px;
+
+}
+
+/* Event Archive */
 
 .event-archive{
+
     margin-top:25px;
+
     padding-top:5px;
+
 }
 
 .event-archive hr{
+
     border:0;
+
     border-top:1px solid rgba(255,255,255,0.8);
+
     margin:25px 0;
+
 }
 
 .event-slider{
+
     height:260px;
+
     overflow-y:auto;
+
     overflow-x:hidden;
+
     scroll-snap-type:y mandatory;
+
     scroll-behavior:smooth;
+
     scrollbar-width:none;
+
     padding:8px 5px 15px;
+
 }
 
 .event-slider::-webkit-scrollbar{
+
     display:none;
+
 }
 
 .event{
+
     min-height:0;
+
     box-sizing:border-box;
+
     margin:0 0 10px 0;
+
     padding:12px;
+
     border-radius:12px;
 
     background:transparent;
+
     border:1px solid rgba(255,255,255,0.8);
 
     scroll-snap-align:start;
+
 }
 
 .event-date{
+
     font-size:0.85em;
+
     color:#888;
+
     margin:0 0 8px 0;
+
 }
 
 .event-title{
+
     display:block;
+
     font-size:1.1em;
+
     font-weight:bold;
+
     margin-bottom:8px;
+
 }
 
 .event-description{
+
     font-size:0.85em;
+
     color:#777;
+
     line-height:1.9;
+
     margin:5px 0 0 0;
+
 }
 
-.event-description a{
+/* LINK全体 */
+
+.site-links{
+
+    grid-area:site-links;
+
+    min-width:0;
+
+    background-image:
+
+        linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
+
+        url("haikei.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+    padding:20px;
+
+    border-radius:15px;
+
+}
+
+.site-links hr{
+
+    border:0;
+
+    border-top:1px solid rgba(255,255,255,0.8);
+
+    margin:25px 0;
+
+}
+
+.link-notice{
+
+    font-size:0.85em;
+
+    color:#666;
+
+    line-height:1.9;
+
+    margin-bottom:25px;
+
+}
+
+/* 自分のバナー */
+
+.my-site-link{
+
+    text-align:center;
+
+    margin:35px auto 40px;
+
+}
+
+.my-site-banner{
+
+    display:block;
+
+    width:200px;
+
+    height:40px;
+
+    margin:0 auto 15px;
+
+}
+
+.my-site-banner img{
+
+    display:block;
+
+    width:200px;
+
+    height:40px;
+
+    object-fit:contain;
+
+    border-radius:0;
+
+}
+
+.my-site-info{
+
+    font-size:0.85em;
+
+    color:#666;
+
+    line-height:1.8;
+
+}
+
+.my-site-info p{
+
+    margin:2px 0;
+
+}
+
+/* みんなのリンク */
+
+.site-link-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:12px 5px;
+
+    border-bottom:1px solid rgba(255,255,255,0.8);
+
+}
+
+.site-link-banner{
+
+    display:block;
+
+    width:200px;
+
+    height:40px;
+
+    flex-shrink:0;
+
+}
+
+.site-link-banner img{
+
+    display:block;
+
+    width:200px;
+
+    height:40px;
+
+    object-fit:contain;
+
+    border-radius:0;
+
+}
+
+.site-link-info{
+
+    flex:1;
+
+    min-width:0;
+
+    font-size:0.85em;
+
+    color:#666;
+
+    line-height:1.8;
+
+}
+
+.site-link-info p{
+
+    margin:2px 0;
+
+}
+
+.site-link-name{
+
     font-weight:bold;
+
+    color:#555;
+
 }
 
-
-/* スマホだけ変更 */
+/* スマホ表示 */
 
 @media (max-width:600px){
 
     body{
+
         margin:15px;
+
     }
 
     .container{
-        display:block;
+
+        display:flex;
+
+        flex-direction:column;
+
         width:100%;
+
+        gap:20px;
+
     }
 
     .main{
+
+        order:1;
+
         width:100%;
+
         box-sizing:border-box;
+
         padding:20px;
+
     }
 
     .side{
+
+        order:2;
+
         width:100%;
+
         box-sizing:border-box;
-        margin:20px 0 0 0;
+
         padding:20px;
+
+    }
+
+    .site-links{
+
+        order:3;
+
+        width:100%;
+
+        box-sizing:border-box;
+
+        padding:20px;
+
     }
 
     .top-menu{
+
         gap:6px;
+
     }
 
     .top-menu a{
+
         padding:7px 13px;
+
         font-size:0.9em;
+
     }
 
     .event-slider{
+
         height:260px;
+
+    }
+
+    .site-link-item{
+
+        gap:8px;
+
+        padding:12px 0;
+
+    }
+
+    .site-link-banner{
+
+        width:38%;
+
+        height:40px;
+
+    }
+
+    .site-link-banner img{
+
+        width:100%;
+
+        height:40px;
+
+        object-fit:contain;
+
+    }
+
+    .site-link-info{
+
+        font-size:0.78em;
+
+    }
+
+    .my-site-banner{
+
+        max-width:100%;
+
+    }
+
+    .my-site-banner img{
+
+        max-width:100%;
+
     }
 
 }
+
+/* スマホ表示ここまで */
 
 </style>
 
@@ -244,69 +624,105 @@ a:hover{
 
 <div class="container">
 
+<!-- 左側：About / Artwork / Links -->
+
 <div class="main">
 
 <h2 id="about">About</h2>
 
 <p>
+
 主に『サイレント・ウィッチ』に関するイラストなどを気ままに投稿しています。<br>
+
 シリルとシリモニとイタチを愛で隊
+
 </p>
 
 <h2 id="artwork">Artwork</h2>
 
 <p>
+
 好きなものを、好きなときに、好きなだけ描いています。<br>
+
 二次創作や捏造を含むため、苦手な方はご注意ください。<br><br>
+
 保存・個人利用はご自由にどうぞ。<br>
+
 アイコンやヘッダーへの無断使用・無断転載・AI学習などはご遠慮ください。
+
 </p>
 
 <h2>Links</h2>
 
-<a class="link-button" href="https://twitter.com/27__sasa" target="_blank">X</a>
+<a class="link-button" href="https://twitter.com/27__sasa" target="_blank">
+
+X
+
+</a>
 
 <p class="link-description">だいたいここに居ます。</p>
 
-<a class="link-button" href="https://www.pixiv.net/users/121175181" target="_blank">Pixiv</a>
+<a class="link-button" href="https://www.pixiv.net/users/121175181" target="_blank">
+
+Pixiv
+
+</a>
 
 <p class="link-description">没案をssに昇華してポイポイしています。</p>
 
-<a class="link-button" href="https://sasadg.booth.pm/" target="_blank">BOOTH</a>
+<a class="link-button" href="https://sasadg.booth.pm/" target="_blank">
+
+BOOTH
+
+</a>
 
 <p class="link-description">主に無料配布をしています。</p>
 
-<a class="link-button" href="https://wavebox.me/wave/45xs3ciwrw9npp5n/" target="_blank">Wavebox</a>
+<a class="link-button" href="https://wavebox.me/wave/45xs3ciwrw9npp5n/" target="_blank">
+
+Wavebox
+
+</a>
 
 <p class="link-description">絵文字や感想、リクエストなどはこちらから</p>
 
 </div>
 
+<!-- 右側：Gallery / Event Archive -->
 
 <div class="side" id="Gallery">
 
 <h2>Gallery</h2>
 
 <div class="Gallery">
+
 <a href="1.html">サイレント・ウィッチ</a>
+
 </div>
 
 <div class="Gallery">
-<a href="2.html">その他なろう作品/準備中</a>
+
+<a href="2.html">その他作品/準備中</a>
+
 </div>
 
 <div class="Gallery">
+
 <a href="3.html"></a>
+
 </div>
 
 <div class="Gallery">
+
 <a href="4.html"></a>
+
 </div>
 
 <div class="Gallery">
-<a href="5.html"></a>
-</div>
 
+<a href="5.html"></a>
+
+</div>
 
 <!-- Event Archive -->
 
@@ -316,40 +732,92 @@ a:hover{
 
 <h2>Event Archive</h2>
 
-
 <div class="event-slider">
-
-
-<!-- イベント記録 1 -->
 
 <div class="event">
 
-<p class="event-date">2026/11/21~23</p>
+<p class="event-date">2026.11</p>
 
 <p class="event-description">
-秋の終わりの学園祭2026に参加しました<br>
+
+秋の終わりの学園祭2026に参加しました(2026/11/21~23)<br>
+
 <a href="Gallery_neri/neri.html">
-展示はこちら
+
+展示ページ
+
 </a>
 
 </p>
 
 </div>
 
-
-<!-- イベント記録を追加する場合は
-     上の event ブロックをコピー -->
-
+</div>
 
 </div>
 
 </div>
 
-<br>
+<!-- 自分のリンク / みんなのリンク -->
+
+<div class="site-links">
+
+<!-- 自分のバナー：見出しなし -->
+
+<div class="my-site-link">
+
+<a class="my-site-banner" href="https://sasadg.github.io/_ll/">
+
+<img src="banner.png" alt="笹団子">
+
+</a>
+
+<div class="my-site-info">
+
+<p>管理人：笹団子</p>
+
+<p>サイト：https://sasadg.github.io/_ll/</p>
+
+<p>ああああ</p>
+
+</div>
+
+</div>
+
+<hr>
+
+<!-- みんなのリンク -->
+
+<h2>Links</h2>
+
+<p class="link-notice">
+
+</p>
+
+<div class="site-link-item">
+
+<a class="banner-1" href="https://krg.xii.jp/">
+
+<img src="banner-1.png" alt="krg">
+
+</a>
+
+<div class="site-link-info">
+
+<p class="site-link-name">管理人：倉下 様</p>
+
+<p>サイレント・ウィッチ / 忘却のカースナイト / ミラキュラス / 歴史創作 / 他版権</p>
+
+</div>
+
+</div>
+
+<!-- ここに同じブロックを追加していく -->
 
 </div>
 
 </div>
 
 </body>
+
 </html>

@@ -43,7 +43,7 @@ a:hover{
 
 .container{
     display:grid;
-    grid-template-columns:minmax(0, 1fr) 220px;
+    grid-template-columns:minmax(0, 1fr) 260px;
     grid-template-areas:
         "main side"
         "site-links .";
@@ -195,7 +195,7 @@ a:hover{
     border-bottom:1px solid #e5e5e5;
 }
 
-/* バナーサイズ統一 */
+/* PC用バナーサイズ */
 
 .site-link-item > a{
     display:block;
@@ -211,7 +211,7 @@ a:hover{
     object-fit:contain;
     border-radius:0;
 }
-    
+
 .site-link-info{
     flex:1;
     min-width:0;
@@ -303,25 +303,33 @@ a:hover{
         height:260px;
     }
 
+    /* スマホ用バナーサイズ */
+
     .site-link-item{
-        gap:8px;
+        display:flex;
+        align-items:center;
+        gap:10px;
         padding:12px 0;
     }
 
     .site-link-item > a{
-        width:240px;
-        height:48px;
-        flex:0 0 240px;
+        width:160px;
+        height:32px;
+        flex:0 0 160px;
     }
 
     .site-link-item > a img{
+        display:block;
         width:100%;
-        height:48px;
+        height:32px;
         object-fit:contain;
     }
 
     .site-link-info{
+        flex:1;
+        min-width:0;
         font-size:0.78em;
+        line-height:1.7;
     }
 
     .my-site-banner{
@@ -446,7 +454,6 @@ Wavebox
 
 <h2>Bookmark</h2>
 
-
 <div class="site-link-item">
 
 <a class="banner-1" href="https://krg.xii.jp/">
@@ -459,7 +466,6 @@ Wavebox
 </div>
 
 </div>
-
 
 <div class="site-link-item">
 
@@ -474,7 +480,6 @@ Wavebox
 
 </div>
 
-
 <div class="site-link-item">
 
 <a class="banner-3" href="https://erla.jp/hositotokage/">
@@ -488,10 +493,7 @@ Wavebox
 
 </div>
 
-
 <hr>
-
-
 
 <div class="my-site-link">
 

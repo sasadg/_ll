@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>メッセージカード</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 30px 16px 40px;
+  background: #FFEABC;
+  font-family: "Klee One", serif;
+  color: #554638;
+}
+
+#card-list {
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* カード1行分 */
+.card-row {
+  display: grid;
+  grid-template-columns: 125px minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  min-height: 120px;
+}
+
+/* 左のカード画像 */
+.card-preview {
+  position: relative;
+  width: 125px;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.card-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+/* 2枚セットのサムネイル */
+.card-preview.pair {
+  height: 125px;
+}
+
+.card-preview.pair img {
+  position: absolute;
+  width: 85%;
+  max-height: 125px;
+  object-fit: contain;
+}
+
+.card-preview.pair img:first-child {
+  z-index: 2;
+  left: 0;
+  top: 0;
+}
+
+.card-preview.pair img:last-child {
+  z-index: 1;
+  right: 0;
+  top: 8px;
+}
+
+/* 右の吹き出し */
+.message-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.message-button img {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 最後のお礼 */
+footer {
+  text-align: center;
+  margin: 65px auto 10px;
+  font-size: 15px;
+  line-height: 2;
+}
+
+/* 拡大表示の背景 */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.55);
+  align-items: center;
+  justify-content: center;
+}
+
+/* 白い正方形 */
+.modal-paper {
+  position: relative;
+  width: min(80vw, 80vh);
+  height: min(80vw, 80vh);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7%;
+}
+
+/* メッセージ本文 */
+#message-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: clamp(14px, 2.5vw, 21px);
+  line-height: 2;
+}
+
+/* 画像表示エリア */
+#image-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+#image-content img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* スライド画像 */
+.slide-image {
+  display: none !important;
+}
+
+.slide-image.active {
+  display: block !important;
+}
+
+/* 左右ボタン */
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: #554638;
+  font-size: 25px;
+  width: 35px;
+  height: 45px;
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+#prev-image {
+  left: 5px;
+}
+
+#next-image {
+  right: 5px;
+}
+
+/* スライド枚数表示 */
+#slide-count {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #554638;
+}
+
+/* 戻るボタン */
+.back-button {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: #554638;
+  font-family: "Klee One", serif;
+  font-size: 13px;
+  padding: 5px 12px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+/* スマートフォン */
+@media (max-width: 600px) {
+  body {
+    padding: 22px 10px 30px;
+  }
+
+  #card-list {
+    gap: 22px;
+  }
+
+  .card-row {
+    grid-template-columns: 85px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 95px;
+  }
+
+  .card-preview {
+    width: 85px;
+    min-height: 85px;
+  }
+
+  .card-preview img {
+    max-height: 105px;
+  }
+
+  .card-preview.pair {
+    height: 90px;
+  }
+
+  .card-preview.pair img {
+    max-height: 90px;
+  }
+
+  .message-button img {
+    max-width: 100%;
+  }
+
+  footer {
+    font-size: 13px;
+    margin-top: 45px;
+  }
+
+  .slide-arrow {
+    width: 30px;
+    height: 40px;
+    font-size: 21px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="card-list"></div>
+
+<footer>
+たくさんのメッセージカード、ありがとうございました！
+</footer>
+
+<!-- メッセージ表示 -->
+<div class="modal" id="message-modal">
+  <div class="modal-paper">
+    <div id="message-text"></div>
+    <button class="back-button" onclick="closeModals()">戻る</button>
+  </div>
+</div>
+
+<!-- 画像拡大表示 -->
+<div class="modal" id="image-modal">
+  <div class="modal-paper">
+
+    <div id="image-content"></div>
+
+    <div id="slide-count"></div>
+
+    <button class="slide-arrow" id="prev-image" onclick="changeSlide(-1)">‹</button>
+    <button class="slide-arrow" id="next-image" onclick="changeSlide(1)">›</button>
+
+    <button class="back-button" onclick="closeModals()">戻る</button>
+  </div>
+</div>
+
+<script>
+
+// メッセージ本文
+const messages = [
+  "シリモニの可愛さが伝わって嬉しいです〜！ありがとうございます🫶
+基本は乗算を使って塗っています！
+最近だと仕上げで平行波グラデーションという加工を使うのにハマっていますね。いい感じに見えます。",
+  "こちらこそ、開催していただきありがとうございます！
+イタチバター、図らずもアクキーを思い出す動きになってお気に入りです。グルグル。
+会場限定も楽しんでいただけていたら嬉しいです！",
+  "イタチバターは誰が見ても可愛いと思えるイラストを目指したので、好きと言っていただけて嬉しいです🫶
+ありがとうございます！",
+  "心赴くままにいっぱい描きました！
+シリルとレイは個人的にいちばん楽しいイラストになりました。この2人の絡みは書籍でかなり増えたので、今後も着実に増えてほしいですね。",
+  "恋をしている時、想い人からもらったものが傍にあると思い出してしまうよね〜と思い描きました。素敵と言っていただけて嬉しいです！",
+  "いつもありがとうございます〜！
+シリル様確保、私もお気に入りです😂
+平和じゃないシリモニを描きたいと思いつつ、原作のシリモニが平和すぎて、つい平和な方向に行ってしまいます。強い。",
+  "ありがとうございます〜！
+アクキーもサイコーに可愛くできたと自画自賛しております。喜んでいただけると嬉しいです！",
+  "サイト作りを始めてまだ2~3ヶ月の素人なので、楽しんでいただけて安心しました！ありがとうございます！
+へへ、準備期間が長かったのでたくさん描いちゃいました。喜んでいただけて幸いです！",
+  "どうも、愛されシリルサークルです🫶
+感動いただけて幸いです〜！頑張った甲斐があります💪
+展示のテーマはかなり悩んだ部分なので、最高と言っていただけて嬉しいです！",
+  "宙ぶらりん含めご購入いただきありがとうございます！
+いつも見てくださって嬉しいです〜！これからもぜひ温かい目で見ていただけると嬉しいです✨️",
+  "ありがとうございます〜！届いたらぜひいっぱいグルグルしてください！
+展示方法が一風変わっていて、より楽しめたのではないかなと自画自賛しています。気に入っていただけて嬉しいです！",
+  "カウントダウン告知の時から楽しんでもらえて嬉しいです〜！動きがあるのでより楽しめたかと思います🫶
+今回シリモニ要素があまりない展示になってしまいましたが、好きと言っていただけて嬉しいです！
+アクキーもご購入いただきありがとうございました！",
+  "9月から丸々3ヶ月を描けて展示を増やしたので、かなりのボリュームになったと思います。楽しんでいただけて幸いです🫶
+たからもの、表情に気をつけて描いたので好きと言っていただけて嬉しいです！",
+  "既存作品はかなり多いのに、見ていただけて嬉しいです！
+イタチーズが子供のようなことをして、かいぬしにコラー！！されるされるのが好きでよく描いてしまいます笑 ありがとうございます！",
+  "肩幅、笑っていただけて嬉しいです！(怒られなくて安心しています)
+シリモニを見に来た人には申し訳ないくらいの多量のシリルです。自分得の展示で幸せになっていただきこちらも幸せです！ありがとうございます！",
+  "いつもありがとうございます〜！ｱｲﾓﾆ……アイモニ！？とっても珍しいですね！？
+HPも素敵と言っていただけて嬉しいです！グッズも素敵になったと自負しているので、ぜひ気に入っていただけると幸いです🫶",
+  "つい楽しくなってしまって、気がついたら凝りすぎてしまいました！笑
+幸せな気持ちになったと言われてこちらも幸せです！ありがとうございました！",
+  "せっかくページを別で用意するなら、ただ展示するだけじゃつまらない！と謎にやる気が出てしまい、気がついたらイタチが回っていました。ありがとうございます！",
+  "展示のために真面目に描かねば！と進めていたら飽きてしまい、こうなりました。楽しかったです(悪い顔)
+沈黙師弟は空白を埋めるために描きましたが、結果的にいい味になって良かったです！",
+  "展示ページは今回のかなりの不安要素だったので、可愛いと言っていただけて嬉しいです！ 
+急遽変更したブースですが、笑っていただけて幸いです！用意していた過去の私と、思いつく機会をくれたフォロワーさんに感謝です✨️",
+  "ありがとうございます！皆さまもお疲れ様でした🙌
+急遽思いついた3日間にわたる新規絵展示でしたが、楽しんでいただけて嬉しいです！(無計画すぎて前夜に描いたりしてました笑)",
+  "皆さんが安心できるようなブースにしました🫶笑
+色々とやりたいことを詰め込んだ展示内容でしたが、どれも楽しんでいただけたようで嬉しいです！ありがとうございます✨",
+  "以前から！！ありがとうございます🥰
+元々女性キャラ描きだったので、その時の癖で可愛さが残るのかなぁとほんのり思っています。憧れていただき恐縮です……！✨️",
+  "こちらこそいつも見ていただきありがとうございます！可愛いと言っていただけて嬉しいです！
+もふもふとシリモニは心の栄養剤なので、これからもどんどんと増やしていく所存です🫶",
+  "ご購入いただきありがとうございます〜！
+他にやりたいことが多すぎて、ネップリは断念しました(色々なものに手を出しすぎました笑)。代わりにポストカードを同封したので、楽しんでいただけたら嬉しいです！",
+  "肩での撮影ありがとうございます笑✨️
+過去絵も含めると意外とキャラ数が多いので、そこも楽しんでいただけていたらと思います！",
+  "お褒めいただきありがとうございます🫶
+白薔薇もガラス玉も、2人がふとした時に触れたいと思うたからものになっていたらなぁという想いから描きました。気に入っていただけて嬉しいです！",
+  "まさか完売するとは思わず、ご購入いただいた皆さまに感謝です✨️
+「シリルの体は硬そう」と言った話から派生して生まれたお話でしたが、好きと言っていただけて嬉しいです🫶 人外によるアレコレで、すぐに経年劣化を迎えそうだなと哀れみの目を向けています。かわいそう。",
+  "2種も！ご購入いただきありがとうございます〜！
+かなり急ピッチで作成したサイトですが、AIに助けてもらいながらどうにか形になりました。これからたくさん勉強をして、来年はもっとすごくすごいサイトにしたいです✨",
+];
+
+// カードの構成
+// 12・13、16・17は2枚で1セット
+
+const cardGroups = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+  [12, 13],
+  14, 15,
+  [16, 17],
+  18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+];
+
+const list = document.getElementById("card-list");
+
+cardGroups.forEach((group, index) => {
+
+  const numbers = Array.isArray(group) ? group : [group];
+
+  const row = document.createElement("div");
+  row.className = "card-row";
+
+  // 左：カード画像
+  const preview = document.createElement("button");
+  preview.className = "card-preview";
+  preview.type = "button";
+
+  if (numbers.length === 2) {
+    preview.classList.add("pair");
+  }
+
+  numbers.forEach(number => {
+    const img = document.createElement("img");
+    img.src = `messagecard/${String(number).padStart(2, "0")}.png`;
+    img.alt = "";
+    preview.appendChild(img);
+  });
+
+  preview.addEventListener("click", () => {
+    openImage(numbers);
+  });
+
+  // 右：吹き出し
+  const messageButton = document.createElement("button");
+  messageButton.className = "message-button";
+  messageButton.type = "button";
+
+  const bubble = document.createElement("img");
+  bubble.src = "parts/messagebubble.png";
+  bubble.alt = "メッセージ";
+
+  messageButton.appendChild(bubble);
+
+  messageButton.addEventListener("click", () => {
+    openMessage(index);
+  });
+
+  row.appendChild(preview);
+  row.appendChild(messageButton);
+
+  list.appendChild(row);
+});
+
+// メッセージを表示
+function openMessage(index) {
+  document.getElementById("message-text").textContent =
+    messages[index] || "";
+
+  document.getElementById("message-modal").style.display = "flex";
+}
+
+// 現在のスライド情報
+let currentImages = [];
+let currentSlide = 0;
+
+// 画像を拡大
+function openImage(numbers) {
+  currentImages = numbers;
+  currentSlide = 0;
+
+  const content = document.getElementById("image-content");
+  content.innerHTML = "";
+
+  numbers.forEach((number, index) => {
+    const img = document.createElement("img");
+
+    img.src = `messagecard/${String(number).padStart(2, "0")}.png`;
+    img.alt = "";
+    img.className = "slide-image";
+
+    if (index === 0) {
+      img.classList.add("active");
+    }
+
+    content.appendChild(img);
+  });
+
+  updateSlide();
+
+  document.getElementById("image-modal").style.display = "flex";
+}
+
+// スライドを切り替える
+function changeSlide(direction) {
+  if (currentImages.length <= 1) return;
+
+  currentSlide += direction;
+
+  if (currentSlide < 0) {
+    currentSlide = currentImages.length - 1;
+  }
+
+  if (currentSlide >= currentImages.length) {
+    currentSlide = 0;
+  }
+
+  updateSlide();
+}
+
+// スライド表示を更新
+function updateSlide() {
+  const images = document.querySelectorAll("#image-content img");
+
+  images.forEach((img, index) => {
+    img.classList.toggle("active", index === currentSlide);
+  });
+
+  const isMultiple = currentImages.length > 1;
+
+  document.getElementById("prev-image").style.display =
+    isMultiple ? "block" : "none";
+
+  document.getElementById("next-image").style.display =
+    isMultiple ? "block" : "none";
+
+  document.getElementById("slide-count").textContent =
+    isMultiple ? `${currentSlide + 1} / ${currentImages.length}` : "";
+}
+
+// スワイプ操作
+let touchStartX = 0;
+
+const imageContent = document.getElementById("image-content");
+
+imageContent.addEventListener("touchstart", event => {
+  touchStartX = event.changedTouches[0].screenX;
+}, { passive: true });
+
+imageContent.addEventListener("touchend", event => {
+  const touchEndX = event.changedTouches[0].screenX;
+  const distance = touchEndX - touchStartX;
+
+  if (Math.abs(distance) > 40) {
+    changeSlide(distance < 0 ? 1 : -1);
+  }
+}, { passive: true });
+
+// 閉じる
+function closeModals() {
+  document.getElementById("message-modal").style.display = "none";
+  document.getElementById("image-modal").style.display = "none";
+}
+
+// Escキーでも閉じられる
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeModals();
+  }
+
+  if (document.getElementById("image-modal").style.display === "flex") {
+    if (event.key === "ArrowRight") changeSlide(1);
+    if (event.key === "ArrowLeft") changeSlide(-1);
+  }
+});
+
+</script>
+
+</body>
+</html>

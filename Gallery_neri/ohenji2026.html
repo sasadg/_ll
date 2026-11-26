@@ -8,7 +8,7 @@
 
 <meta property="og:site_name" content="LUMI.">
 <meta property="og:title" content="LUMI.">
-<meta property="og:description" content="メッセージカードのお返事">
+<meta property="og:description" content="秋終祭お返事">
 <meta property="og:image" content="https://sasadg.github.io/_ll/Gallery_neri/messagecard/ogp.png">
 <meta property="og:url" content="https://sasadg.github.io/_ll/Gallery_neri/ohenji2026.html">
 
@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap" rel="stylesheet">
 
-<title>メッセージカードのお返事</title>
+<title>メッセージカード</title>
 
 <style>
 * {
@@ -102,13 +102,14 @@ body {
   border: none;
   padding: 0;
   cursor: pointer;
-  width: 100%;
+  width: min(100%, 420px);
+  justify-self: start;
+  container-type: inline-size;
 }
 
 .message-button img {
   display: block;
   width: 100%;
-  max-width: 400px;
   height: auto;
   object-fit: contain;
 }
@@ -116,16 +117,16 @@ body {
 /* 吹き出しの上に重ねるメッセージ */
 .message-preview-text {
   position: absolute;
-  inset: 18% 13% 18% 13%;
+  inset: 18% 17% 20% 17%;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   overflow: hidden;
   text-align: center;
   overflow-wrap: anywhere;
-  white-space: pre-wrap;
-  font-size: clamp(11px, 1.25vw, 15px);
-  line-height: 1.55;
+  white-space: pre-line;
+  font-size: clamp(11px, 3.2cqi, 14px);
+  line-height: 1.4;
   color: #554638;
   pointer-events: none;
 }
@@ -286,15 +287,15 @@ footer {
     max-height: 110px;
   }
 
-  .message-button img {
-    max-width: 100%;
+  .message-button {
+    width: 100%;
   }
 
   .message-preview-text {
-    inset: 17% 12% 17% 12%;
-    font-size: clamp(9px, 2.4vw, 12px);
-    line-height: 1.45;
-    -webkit-line-clamp: 3;
+    inset: 18% 16% 20% 16%;
+    font-size: clamp(10px, 3.2cqi, 12px);
+    line-height: 1.35;
+    -webkit-line-clamp: 4;
   }
 
   footer {
